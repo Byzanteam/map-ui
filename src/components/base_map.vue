@@ -4,6 +4,7 @@
       :accessToken="accessToken"
       :mapStyle="mapStyle"
       @load="onMapLoaded">
+      <el-regions-layer :regionsOptions="regionsOptions" />
     </el-map>
   </div>
 </template>
@@ -11,6 +12,7 @@
 <script>
 import { MglMap } from "vue-mapbox";
 import Mapbox from "mapbox-gl";
+import VRegionsLayer from "./regionsLayer"
 import PROFILE from '../resources/profile.vue'
 
 export default {
