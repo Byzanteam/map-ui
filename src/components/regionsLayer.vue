@@ -1,5 +1,5 @@
 <template>
-  <div class="container">
+  <div>
     <MglGeojsonLayer
       sourceId="regionsFillLayer"
       :source="sourceData"
@@ -48,6 +48,7 @@ export default {
     this.parseRegionsFillLayer();
     this.parseRegionsLineLayer();
     this.parseSourceData();
+    this.bindEvents()
   },
   methods: {
     parseRegionsFillLayer() {
@@ -81,6 +82,12 @@ export default {
         "type": "geojson",
         "data": this.regionsOptions.data
       }
+    },
+    bindEvents() {
+      this.map.on("click", `${this.regionsOptions.name}-fill`, (e) => this.callback(e, `${this.regionsOptions.name}-fill`))
+    },
+    callback(e, layerId) {
+      console.log(e)
     }
   }
 }

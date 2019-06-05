@@ -26,10 +26,10 @@ export default {
     return {
       profile: PROFILE,
       map: null,
-      accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A", // your access token. Needed if you using Mapbox maps
+      accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
       mapStyle: {
         // mapbox样式版本号，必需的配置，值一定为8
-        "version": 8, //TODO 改成常量
+        "version": 8, // TODO 改成常量
         "zoom": 10,
         "center": [],
         // 当使用text-field布局的必需的以PBF加载字集的url模板
