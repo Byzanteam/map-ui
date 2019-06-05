@@ -1,7 +1,13 @@
 <template>
   <div class="container">
     <MglGeojsonLayer
-      sourceId="regionsLayer"
+      sourceId="regionsFillLayer"
+      :source="sourceData"
+      layerId="myLayer"
+      :layer="regionsFillLayer"
+    />
+    <MglGeojsonLayer
+      sourceId="regionsLineLayer"
       :source="sourceData"
       layerId="myLayer"
       :layer="regionsLineLayer"
@@ -15,37 +21,66 @@ import { MglGeojsonLayer } from "vue-mapbox";
 export default {
   name: "RegionsLayer",
   props: {
+    map: {
+      type: Object,
+      default () {
+        return null;
+      }
+    },
     regionsOptions: {
       type: Object,
       default () {
         return null;
-      },
-    },
+      }
+    }
   },
   components: {
     MglGeojsonLayer,
   },
   data () {
     return {
+      regionsFillLayer: null,
       regionsLineLayer: null,
       sourceData: null
     }
   },
-
   created() {
-    this.regionsLineLayer = {
-      'id': 'sichuan-fill',
-      'type': 'fill',
-      'paint': {
-        'fill-color': '#006d2c',
-        'fill-opacity': .2,
-        'fill-antialias': true,
-        'fill-outline-color': '#ed6498'
+    this.parseRegionsFillLayer();
+    this.parseRegionsLineLayer();
+    this.parseSourceData();
+  },
+  methods: {
+    parseRegionsFillLayer() {
+      let fill_profile = this.regionsOptions.style.background;
+      if (!fill_profile) return;
+      this.regionsFillLayer = {
+        'id': `${this.regionsOptions.name}-fill`,
+        'type': 'fill',
+        'paint': {
+          'fill-color': fill_profile.color,
+          'fill-opacity': fill_profile.opacity
+        }
       }
-    }
-    this.sourceData = {
-      "type": "geojson",
-      "data": this.regionsOptions.data
+    },
+    parseRegionsLineLayer() {
+      let line_profile = this.regionsOptions.style.outline;
+      if (!line_profile) return;
+      this.regionsLineLayer = {
+        'id': `${this.regionsOptions.name}-line`,
+        'type': 'line',
+        'paint': {
+          'line-color': line_profile.color,
+          'line-width': line_profile.width,
+          "line-opacity": line_profile.opacity,
+          'line-dasharray': line_profile.dasharray
+        }
+      }
+    },
+    parseSourceData() {
+      this.sourceData = {
+        "type": "geojson",
+        "data": this.regionsOptions.data
+      }
     }
   }
 }
