@@ -84,7 +84,9 @@ export default {
       }
     },
     bindEvents() {
-      this.map.on("click", `${this.regionsOptions.name}-fill`, (e) => this.callback(e, `${this.regionsOptions.name}-fill`))
+      this.map.on("click", `${this.regionsOptions.name}-fill`, (e) => {
+        this.callback(e, `${this.regionsOptions.name}-fill`)
+      })
     },
     callback(e, layerId) {
       console.log(e)
