@@ -17,6 +17,7 @@
 
 <script>
 import { MglGeojsonLayer } from "vue-mapbox";
+import _ from 'lodash';
 
 export default {
   name: "RegionsLayer",
@@ -48,11 +49,16 @@ export default {
     this.parseRegionsFillLayer();
     this.parseRegionsLineLayer();
     this.parseSourceData();
-    this.bindEvents()
   },
   methods: {
+    parseSourceData() {
+      this.sourceData = {
+        "type": "geojson",
+        "data": this.regionsOptions.data
+      }
+    },
     parseRegionsFillLayer() {
-      let fill_profile = this.regionsOptions.style.background;
+      let fill_profile = this.regionsOptions.elements.background.style;
       if (!fill_profile) return;
       this.regionsFillLayer = {
         'id': `${this.regionsOptions.name}-fill`,
@@ -62,9 +68,10 @@ export default {
           'fill-opacity': fill_profile.opacity
         }
       }
+      this.bindEvents(fill_profile.events, `${this.regionsOptions.name}-fill`);
     },
     parseRegionsLineLayer() {
-      let line_profile = this.regionsOptions.style.outline;
+      let line_profile = this.regionsOptions.elements.outline.style;
       if (!line_profile) return;
       this.regionsLineLayer = {
         'id': `${this.regionsOptions.name}-line`,
@@ -76,19 +83,16 @@ export default {
           'line-dasharray': line_profile.dasharray
         }
       }
+      this.bindEvents(line_profile.events, `${this.regionsOptions.name}-line`);
     },
-    parseSourceData() {
-      this.sourceData = {
-        "type": "geojson",
-        "data": this.regionsOptions.data
-      }
-    },
-    bindEvents() {
-      this.map.on("click", `${this.regionsOptions.name}-fill`, (e) => {
-        this.callback(e, `${this.regionsOptions.name}-fill`)
+    bindEvents(events, layerId) {
+      _.forOwn(events, (funcName, event) => {
+        this.map.on(event, layerId, (e) => {
+          this[funcName](e, layerId)
+        })
       })
     },
-    callback(e, layerId) {
+    hightlight (e) {
       console.log(e)
     }
   }

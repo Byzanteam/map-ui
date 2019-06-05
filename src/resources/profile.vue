@@ -65,26 +65,35 @@ export default {
         name: "regions",
         data:
           "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/china/china.json",
-        style: {
+        elements: {
           outline: {
-            type: "line",
-            color: "#006d2c",
-            width: 2,
-            opacity: 1,
-            dasharray: [2, 2]
+            style: {
+              type: "line",
+              color: "#006d2c",
+              width: 2,
+              opacity: 1,
+              dasharray: [2, 2]
+            },
+            events: {
+              "click": "hightlight"
+            }
           },
           background: {
-            color: "#006d2c",
-            opacity: 0.3,
-            events: [
-              {"click": "hightlight"}
-            ]
+            style: {
+              color: "#006d2c",
+              opacity: 0.3,
+            },
+            events: {
+              "click": "hightlight"
+            }
           },
           highlight: {
-            type: "line",
-            "background-color": "",
-            "line-color": "",
-            opacity: 0.2
+            style: {
+              "type": "line",
+              "background-color": "",
+              "line-color": "",
+              "opacity": 0.2
+            }
           }
         }
       }
