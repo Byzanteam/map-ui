@@ -2,7 +2,7 @@
 export default {
   parameter: {
     center: [104.0723, 30.602836],
-    style: "mapbox://styles/mapbox/dark-v10",
+    style: "mapbox://styles/mapbox/streets-v11",
     zoom: 5,
     layers: {
       marker: {
@@ -68,11 +68,13 @@ export default {
         style: {
           outline: {
             type: "line",
-            color: "",
-            opacity: 0.2
+            color: "#006d2c",
+            width: 2,
+            opacity: 1,
+            dasharray: [2, 2]
           },
           background: {
-            color: "#ce2c69",
+            color: "#006d2c",
             opacity: 0.3
           },
           highlight: {
