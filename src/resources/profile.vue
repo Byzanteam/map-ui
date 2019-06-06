@@ -67,6 +67,7 @@ export default {
           "https://raw.githubusercontent.com/ufoe/d3js-geojson/master/china/china.json",
         elements: {
           outline: {
+            name: "china",
             style: {
               type: "line",
               color: "#006d2c",
@@ -79,6 +80,7 @@ export default {
             }
           },
           background: {
+            name: "chinaFill",
             style: {
               color: "#006d2c",
               opacity: 0.3,
@@ -88,12 +90,29 @@ export default {
             }
           },
           highlight: {
-            style: {
-              "type": "line",
-              "background-color": "",
-              "line-color": "",
-              "opacity": 0.2
-            }
+            outline: {
+              name: "highlight",
+              style: {
+                type: "line",
+                color: "#006d2c",
+                width: 2,
+                opacity: 1,
+                dasharray: [2, 2]
+              },
+              events: {
+                "click": "hightlight"
+              }
+            },
+            background: {
+              name: "highlight",
+              style: {
+                color: "#006d2c",
+                opacity: 0.3,
+              },
+              events: {
+                "click": "hightlightCancel"
+              }
+            },
           }
         }
       }
