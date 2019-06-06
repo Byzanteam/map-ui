@@ -1,11 +1,7 @@
 <template>
   <div>
-    <el-regions-layer
-        :regionsOptions="regionsOptions"
-        :map="map" />
-    <el-regions-layer
-        :regionsOptions="regionsHighlightOptions"
-        :map="map" />
+    <el-regions-layer :regionsOptions="regionsLayerOptions" />
+    <el-regions-layer :regionsOptions="highlightLayerOptions" />
   </div>
 </template>
 
@@ -44,24 +40,26 @@ export default {
     initRegionsLayer() {
       let layers = this.regionsOptions.elements;
       this.regionsLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.outline),
-        "line_layer_options": this.parseRegionsLineLayer(layers.background)
+        "fill_layer_options": this.parseRegionsFillLayer(layers.background),
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline)
       }
     },
     initHighlightLayer() {
       let layers = this.regionsOptions.elements.highlight;
       this.highlightLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.outline),
-        "line_layer_options": this.parseRegionsLineLayer(layers.background)
+        "fill_layer_options": this.parseRegionsFillLayer(layers.background),
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline)
       }
     },
     parseRegionsFillLayer(profile) {
-      fill_layer = {
-        'id': `${profile.name}Fill`,
-        'type': 'fill',
-        'paint': {
-          'fill-color': profile.style.color,
-          'fill-opacity': profile.style.opacity
+      let fill_layer = {
+        "style": {
+          "id": `${profile.name}FillLayer`,
+          "type": "fill",
+          "paint": {
+            "fill-color": profile.style.color,
+            "fill-opacity": profile.style.opacity
+          },
         },
         "source": {
           "id": profile.name,
@@ -69,18 +67,21 @@ export default {
           "data": this.regionsOptions.data
         }
       }
+      this.addSource(profile.name, this.regionsOptions.data);
       this.bindEvents(profile.events, `${this.regionsOptions.name}-fill`);
       return fill_layer;
     },
     parseRegionsLineLayer(profile) {
-      line_layer = {
-        'id': `${profile.name}LineLayer`,
-        'type': 'line',
-        'paint': {
-          'line-color': profile.style.color,
-          'line-width': profile.style.width,
-          "line-opacity": profile.style.opacity,
-          'line-dasharray': profile.style.dasharray
+      let line_layer = {
+        "style": {
+          "id": `${profile.name}LineLayer`,
+          "type": "line",
+          "paint": {
+            "line-color": profile.style.color,
+            "line-width": profile.style.width,
+            "line-opacity": profile.style.opacity,
+            "line-dasharray": profile.style.dasharray
+          },
         },
         "source": {
           "id": profile.name,

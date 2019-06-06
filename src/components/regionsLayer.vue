@@ -1,16 +1,16 @@
 <template>
   <div>
     <MglGeojsonLayer
-      :sourceId="regionsFillLayer.soure.id"
-      :source="regionsFillLayer.soure.data"
-      :layerId="regionsFillLayer.id"
-      :layer="regionsFillLayer"
+      :sourceId="regionsFillLayer.source.id"
+      :source.sync="regionsFillLayer.source"
+      :layerId="regionsFillLayer.style.id"
+      :layer="regionsFillLayer.style"
     />
     <MglGeojsonLayer
-      :sourceId="regionsLineLayer.soure.id"
-      :source="regionsLineLayer.soure.data"
-      :layerId="regionsLineLayer.id"
-      :layer="regionsLineLayer"
+      :sourceId="regionsLineLayer.source.id"
+      :source.sync="regionsLineLayer.source"
+      :layerId="regionsLineLayer.style.id"
+      :layer="regionsLineLayer.style"
     />
   </div>
 </template>
@@ -22,12 +22,6 @@ import _ from 'lodash';
 export default {
   name: "RegionsLayer",
   props: {
-    map: {
-      type: Object,
-      default () {
-        return null;
-      }
-    },
     regionsOptions: {
       type: Object,
       default () {

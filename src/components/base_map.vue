@@ -5,7 +5,7 @@
       :mapStyle="mapStyle"
       @load="onMapLoaded">
       <el-regions-box
-        :regionsProfile="regionsOptions"
+        :regionsOptions="regionsOptions"
         :map="map" />
     </el-map>
   </div>
