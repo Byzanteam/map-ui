@@ -85,11 +85,16 @@ export default {
       this.bindEvents(profile.events, `${profile.name}LineLayer`);
       return line_layer;
     },
-    addSource(sourceId, data){
-      this.map.addSource(sourceId, {
-        type: "geojson",
-        data: data
-      })
+    addSource(sourceId, geojson){
+      let source = this.map.getSource(sourceId)
+      if(source){
+        source.setData(geojson)
+      } else {
+        this.map.addSource(sourceId, {
+          type: "geojson",
+          data: geojson
+        })
+      }
     },
     bindEvents(events, layerId) {
       _.forOwn(events, (funcName, event) => {
@@ -105,9 +110,9 @@ export default {
         "type":"FeatureCollection",
         "features": [_.pick(features[0], ["type", "properties", "geometry"])]
       })
-      this.initHighlightLayer(highlight_regions_geojson);
+      this.drawHighlightLayer(highlight_regions_geojson);
     },
-    initHighlightLayer(geojson) {
+    drawHighlightLayer(geojson) {
       let layers = this.regionsOptions.elements.highlight;
       this.highlightLayerOptions = {
         "fill_layer_options": this.parseRegionsFillLayer(layers.background, geojson),
