@@ -1,7 +1,7 @@
 <template>
   <div>
     <el-regions-layer :regionsOptions="regionsLayerOptions" />
-    <el-regions-layer :regionsOptions="highlightLayerOptions" />
+    <el-regions-layer :regionsOptions="highlightLayerOptions" v-if="highlightLayerOptions"/>
   </div>
 </template>
 
@@ -34,24 +34,16 @@ export default {
   },
   created() {
     this.initRegionsLayer();
-    this.initHighlightLayer();
   },
   methods: {
     initRegionsLayer() {
       let layers = this.regionsOptions.elements;
       this.regionsLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline)
+        "fill_layer_options": this.parseRegionsFillLayer(layers.background, this.regionsOptions.data),
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline, this.regionsOptions.data)
       }
     },
-    initHighlightLayer() {
-      let layers = this.regionsOptions.elements.highlight;
-      this.highlightLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline)
-      }
-    },
-    parseRegionsFillLayer(profile) {
+    parseRegionsFillLayer(profile, geojson) {
       let fill_layer = {
         "style": {
           "id": `${profile.name}FillLayer`,
@@ -64,14 +56,14 @@ export default {
         "source": {
           "id": profile.name,
           "type": "geojson",
-          "data": this.regionsOptions.data
+          "data": geojson
         }
       }
-      this.addSource(profile.name, this.regionsOptions.data);
-      this.bindEvents(profile.events, `${this.regionsOptions.name}-fill`);
+      this.addSource(profile.name, geojson);
+      this.bindEvents(profile.events, `${profile.name}FillLayer`);
       return fill_layer;
     },
-    parseRegionsLineLayer(profile) {
+    parseRegionsLineLayer(profile, geojson) {
       let line_layer = {
         "style": {
           "id": `${profile.name}LineLayer`,
@@ -86,11 +78,11 @@ export default {
         "source": {
           "id": profile.name,
           "type": "geojson",
-          "data": this.regionsOptions.data
+          "data": geojson
         }
       }
-      this.addSource(profile.name, this.regionsOptions.data);
-      this.bindEvents(profile.events, `${this.regionsOptions.name}-line`);
+      this.addSource(profile.name, geojson);
+      this.bindEvents(profile.events, `${profile.name}LineLayer`);
       return line_layer;
     },
     addSource(sourceId, data){
@@ -106,9 +98,22 @@ export default {
         })
       })
     },
-    hightlight (e) {
-      console.log(e)
-    }
+    hightlight (e, layerId) {
+      let bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
+      let features = this.map.queryRenderedFeatures(bbox, { layers: [layerId] });
+      let highlight_regions_geojson = _.assignIn({
+        "type":"FeatureCollection",
+        "features": [_.pick(features[0], ["type", "properties", "geometry"])]
+      })
+      this.initHighlightLayer(highlight_regions_geojson);
+    },
+    initHighlightLayer(geojson) {
+      let layers = this.regionsOptions.elements.highlight;
+      this.highlightLayerOptions = {
+        "fill_layer_options": this.parseRegionsFillLayer(layers.background, geojson),
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline, geojson)
+      }
+    },
   }
 }
 </script>

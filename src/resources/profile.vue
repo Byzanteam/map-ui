@@ -94,7 +94,7 @@ export default {
               name: "highlightLine",
               style: {
                 type: "line",
-                color: "#006d2c",
+                color: "burlywood",
                 width: 2,
                 opacity: 1,
                 dasharray: [2, 2]
@@ -106,11 +106,11 @@ export default {
             background: {
               name: "highlight",
               style: {
-                color: "#006d2c",
+                color: "aqua",
                 opacity: 0.3,
               },
               events: {
-                "click": "hightlightCancel"
+                "click": "hightlight"
               }
             },
           }

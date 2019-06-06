@@ -25,7 +25,7 @@ export default {
     regionsOptions: {
       type: Object,
       default () {
-        return null;
+        return {};
       }
     }
   },
