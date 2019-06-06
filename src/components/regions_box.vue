@@ -38,6 +38,7 @@ export default {
   methods: {
     initRegionsLayer() {
       let layers = this.regionsOptions.elements;
+      // fix 用函数来代替等号后的值
       this.regionsLayerOptions = {
         "fill_layer_options": this.parseRegionsFillLayer(layers.background, this.regionsOptions.data),
         "line_layer_options": this.parseRegionsLineLayer(layers.outline, this.regionsOptions.data)
@@ -103,7 +104,8 @@ export default {
         })
       })
     },
-    hightlight (e, layerId) {
+    hightlight(e, layerId) {
+      // bbox是否必需，如果必需，5代表啥意思
       let bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
       let features = this.map.queryRenderedFeatures(bbox, { layers: [layerId] });
       let highlight_regions_geojson = _.assignIn({
@@ -113,10 +115,11 @@ export default {
       this.drawHighlightLayer(highlight_regions_geojson);
     },
     drawHighlightLayer(geojson) {
-      let layers = this.regionsOptions.elements.highlight;
+      let layer = this.regionsOptions.elements.highlight;
+      // fix 事件重复绑定
       this.highlightLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background, geojson),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline, geojson)
+        "fill_layer_options": this.parseRegionsFillLayer(layer.background, geojson),
+        "line_layer_options": this.parseRegionsLineLayer(layer.outline, geojson)
       }
     },
   }
