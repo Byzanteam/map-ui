@@ -91,7 +91,7 @@ export default {
           },
           highlight: {
             outline: {
-              name: "highlight",
+              name: "highlightLine",
               style: {
                 type: "line",
                 color: "#006d2c",

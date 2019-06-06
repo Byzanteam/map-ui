@@ -89,8 +89,15 @@ export default {
           "data": this.regionsOptions.data
         }
       }
+      this.addSource(profile.name, this.regionsOptions.data);
       this.bindEvents(profile.events, `${this.regionsOptions.name}-line`);
       return line_layer;
+    },
+    addSource(sourceId, data){
+      this.map.addSource(sourceId, {
+        type: "geojson",
+        data: data
+      })
     },
     bindEvents(events, layerId) {
       _.forOwn(events, (funcName, event) => {
