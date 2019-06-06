@@ -43,8 +43,8 @@ export default {
   },
 
   created() {
-    this.parseMaptyle()
-    this.parseRegionsLayers()
+    this.parseMaptyle();
+    this.parseRegionsLayers();
   },
 
   methods: {

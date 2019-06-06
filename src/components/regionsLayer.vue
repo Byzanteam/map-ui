@@ -32,10 +32,12 @@ export default {
   components: {
     MglGeojsonLayer,
   },
-  data () {
-    return {
-      regionsFillLayer: this.regionsOptions.fill_layer_options,
-      regionsLineLayer: this.regionsOptions.line_layer_options
+  computed: {
+    regionsFillLayer(){
+      return this.regionsOptions.fill_layer_options
+    },
+    regionsLineLayer() {
+      return this.regionsOptions.line_layer_options
     }
   }
 }
