@@ -58,7 +58,23 @@ export default {
   .container {
     width: 100%;
     height: 100%;
+    position: fixed;
+    z-index: 1;
     background-size: 100% 100%;
+  }
+
+  .container::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    background: #333;
+    opacity: .3;
+  }
+
+  .mgl-map-wrapper {
+    z-index: 4;
   }
 </style>
 
