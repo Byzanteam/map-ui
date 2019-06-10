@@ -2,8 +2,9 @@
 export default {
   parameter: {
     center: [104.0723, 30.602836],
-    style: "mapbox://styles/mapbox/streets-v8",
+    style: "mapbox://styles/bigdatacd/cjwkdexlu0a6a1cmn15f93irz/draft",
     zoom: 5,
+    background: "https://apod.nasa.gov/apod/image/1804/MilkyVlei_Liebermann_4000.jpg",
     layers: {
       marker: {
         name: "marker",

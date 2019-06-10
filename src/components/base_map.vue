@@ -1,8 +1,10 @@
 <template>
-  <div class="container">
+  <div class="container" :style="{ backgroundImage: 'url(' + profile.parameter.background + ')' }">
     <el-map
       :accessToken="accessToken"
-      :mapStyle="mapStyle"
+      :zoom="profile.parameter.zoom"
+      :center="profile.parameter.center"
+      :mapStyle="profile.parameter.style"
       @load="onMapLoaded">
       <el-regions-box
         :regionsOptions="regionsOptions"
@@ -28,22 +30,11 @@ export default {
       profile: PROFILE,
       map: null,
       accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
-      mapStyle: {
-        // mapbox样式版本号，必需的配置，值一定为8
-        "version": 8, // TODO 改成常量
-        "zoom": 10,
-        "center": [],
-        // 当使用text-field布局的必需的以PBF加载字集的url模板
-        "glyphs": "mapbox://fonts/mapbox/{fontstack}/{range}.pbf",
-        "sources": {},
-        "layers": []
-      },
       regionsOptions: null
     };
   },
 
   created() {
-    this.parseMaptyle();
     this.parseRegionsLayers();
   },
 
@@ -67,6 +58,7 @@ export default {
   .container {
     width: 100%;
     height: 100%;
+    background-size: 100% 100%;
   }
 </style>
 
