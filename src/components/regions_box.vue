@@ -33,15 +33,16 @@ export default {
     }
   },
   created() {
-    this.initRegionsLayer();
+    this.regionsLayerOptions = this.initRegionsLayer(
+      this.regionsOptions.elements,
+      this.regionsOptions.data
+    );
   },
   methods: {
-    initRegionsLayer() {
-      let layers = this.regionsOptions.elements;
-      // fix 用函数来代替等号后的值
-      this.regionsLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background, this.regionsOptions.data),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline, this.regionsOptions.data)
+    initRegionsLayer(layers, data) {
+      return {
+        "fill_layer_options": this.parseRegionsFillLayer(layers.background, data),
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline, data)
       }
     },
     parseRegionsFillLayer(profile, geojson) {
@@ -115,12 +116,11 @@ export default {
       this.drawHighlightLayer(highlight_regions_geojson);
     },
     drawHighlightLayer(geojson) {
-      let layer = this.regionsOptions.elements.highlight;
       // fix 事件重复绑定
-      this.highlightLayerOptions = {
-        "fill_layer_options": this.parseRegionsFillLayer(layer.background, geojson),
-        "line_layer_options": this.parseRegionsLineLayer(layer.outline, geojson)
-      }
+      this.highlightLayerOptions = this.initRegionsLayer(
+        this.regionsOptions.elements.highlight,
+        geojson
+      )
     },
   }
 }
