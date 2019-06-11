@@ -3,18 +3,22 @@
     <MglMarker
       v-for="(marker, index) in markers"
       :key="index"
-      :coordinates="marker.geometry.coordinates"
-      color="blue">
-      <!-- <div slot="marker">mdi-map-marker</div> -->
+      :coordinates="marker.geometry.coordinates">
+      <v-icon slot="marker"></v-icon>
+      <MglPopup :closeButton="false">
+        <div>{{ marker.properties.message }}</div>
+      </MglPopup>
     </MglMarker>
   </div>
 </template>
 
 <script>
-import { MglMarker } from "vue-mapbox";
+import { MglMarker, MglPopup } from "vue-mapbox";
+import Vicon from "./icon.vue"
 export default {
   components: {
-    MglMarker
+    MglMarker,
+    MglPopup
   },
   props: {
     map: {
