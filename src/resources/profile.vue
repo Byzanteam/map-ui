@@ -94,7 +94,7 @@ export default {
           icon: "circle",
           color: "#ce2c69",
           size: 10,
-          animation: "wave"
+          animation: "Ripples"
         }
       },
       clusters: {

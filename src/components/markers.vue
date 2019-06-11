@@ -5,7 +5,8 @@
       :key="index"
       :coordinates="marker.geometry.coordinates">
       <div slot="marker">
-        <ripples
+        <component
+          :is="markerStyle.animation"
           :color="markerStyle.color"
           :size="markerStyle.size">
           <v-icon
@@ -14,7 +15,7 @@
             :size="markerStyle.size"
             :color="markerStyle.color">
           </v-icon>
-        </ripples>
+        </component>
       </div>
       <MglPopup :closeButton="false">
         <div>{{ marker.properties.message }}</div>
@@ -26,13 +27,11 @@
 <script>
 import { MglMarker, MglPopup } from "vue-mapbox";
 import Icon from "./icon.vue"
-import Ripples from "./animation_components/ripples.vue";
 
 export default {
   components: {
     MglMarker,
     MglPopup,
-    "ripples": Ripples,
     "v-icon": Icon
   },
   props: {
