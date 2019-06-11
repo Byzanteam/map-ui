@@ -16,11 +16,11 @@
             :color="markerStyle.color">
           </v-icon>
         </component>
-        <label class="marker-text" :style="{ fontSize: markerStyle.fontSize }">
+        <label class="marker-text" :style="{ fontSize: markerStyle.fontSize }" ref="markerTextRef">
           {{ marker.properties.message }}
         </label>
       </div>
-      <MglPopup :closeButton="false" :offset="[0, -(markerStyle.fontSize/2)]">
+      <MglPopup :closeButton="false" :offset="popupOffset">
         <div>{{ marker.properties.message }}</div>
       </MglPopup>
     </MglMarker>
@@ -55,9 +55,22 @@ export default {
     return {
       markers: this.markerOptions.data,
       markerStyle: this.markerOptions.style,
-      animationType: ""
+      animationType: "",
+      popupOffset: []
     }
   },
+  mounted () {
+    this.getPopupOffset();
+  },
+  methods: {
+    getPopupOffset () {
+      if(this.markerStyle.fontSize) {
+        this.popupOffset = [0, -this.markerStyle.fontSize/2]
+      } else {
+        this.popupOffset = [0, -this.$refs.markerTextRef[0].offsetHeight/2]
+      }
+    }
+  }
 }
 </script>
 
