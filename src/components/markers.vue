@@ -4,7 +4,18 @@
       v-for="(marker, index) in markers"
       :key="index"
       :coordinates="marker.geometry.coordinates">
-      <v-icon slot="marker"></v-icon>
+      <div slot="marker">
+        <ripples
+          :color="markerStyle.color"
+          :size="markerStyle.size">
+          <v-icon
+            class="icon-image"
+            slot="svg-icon"
+            :size="markerStyle.size"
+            :color="markerStyle.color">
+          </v-icon>
+        </ripples>
+      </div>
       <MglPopup :closeButton="false">
         <div>{{ marker.properties.message }}</div>
       </MglPopup>
@@ -14,11 +25,15 @@
 
 <script>
 import { MglMarker, MglPopup } from "vue-mapbox";
-import Vicon from "./icon.vue"
+import Icon from "./icon.vue"
+import Ripples from "./animation_components/ripples.vue";
+
 export default {
   components: {
     MglMarker,
-    MglPopup
+    MglPopup,
+    "ripples": Ripples,
+    "v-icon": Icon
   },
   props: {
     map: {
@@ -36,12 +51,20 @@ export default {
   },
   data () {
     return {
-      markers: this.markerOptions.data
+      markers: this.markerOptions.data,
+      markerStyle: this.markerOptions.style,
+      animationType: ""
     }
-  }
+  },
 }
 </script>
 
 <style>
-
+  .icon-image {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+    z-index: 0;
+  }
 </style>
