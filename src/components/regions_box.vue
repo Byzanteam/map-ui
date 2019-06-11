@@ -106,9 +106,7 @@ export default {
       })
     },
     hightlight(e, layerId) {
-      // bbox是否必需，如果必需，5代表啥意思
-      let bbox = [[e.point.x - 5, e.point.y - 5], [e.point.x + 5, e.point.y + 5]];
-      let features = this.map.queryRenderedFeatures(bbox, { layers: [layerId] });
+      let features = this.map.queryRenderedFeatures([e.point.x, e.point.y], { layers: [layerId] });
       let highlight_regions_geojson = _.assignIn({
         "type":"FeatureCollection",
         "features": [_.pick(features[0], ["type", "properties", "geometry"])]
