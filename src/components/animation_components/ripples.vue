@@ -3,7 +3,7 @@
     class="animation-wrapper"
     :style="{ width: mapedSize, height: mapedSize }">
     <slot name="svg-icon"></slot>
-    <span :style="{ width: size * 2 + 'px', height: size * 2 + 'px', background: color }"></span>
+    <span :style="{ width: mapedSize, height: mapedSize, background: color }"></span>
   </div>
 </template>
 
@@ -23,6 +23,11 @@ export default {
         return 10;
       },
     },
+  },
+  computed: {
+    mapedSize () {
+      return this.size * 2 + 'px'
+    }
   }
 }
 </script>
