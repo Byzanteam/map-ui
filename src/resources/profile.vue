@@ -11,7 +11,7 @@ export default {
         data: [
           {
             properties: {
-              message: "Foo",
+              message: "北京拓维启通科技有限公司",
               iconSize: [60, 60]
             },
             geometry: {
@@ -21,7 +21,7 @@ export default {
           },
           {
             properties: {
-              message: "Bar",
+              message: "阿里巴巴有限公司",
               iconSize: [50, 50]
             },
             geometry: {
@@ -31,7 +31,7 @@ export default {
           },
           {
             properties: {
-              message: "Baz",
+              message: "腾讯大厦",
               iconSize: [40, 40]
             },
             geometry: {
@@ -41,20 +41,59 @@ export default {
           },
           {
             properties: {
-              message: "lili",
+              message: "银泰in99",
               iconSize: [40, 40]
             },
             geometry: {
               type: "Point",
               coordinates: [104.1073, 30.608766]
             }
+          },
+          {
+            properties: {
+              message: "银泰in55",
+              iconSize: [40, 40]
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [104.9973, 31.608766]
+            }
+          },
+          {
+            properties: {
+              message: "银泰in66",
+              iconSize: [40, 40]
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [117.1073, 31.808766]
+            }
+          },
+          {
+            properties: {
+              message: "银泰in77",
+              iconSize: [40, 40]
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [108.9893, 30.697766]
+            }
+          },
+          {
+            properties: {
+              message: "银泰in33",
+              iconSize: [40, 40]
+            },
+            geometry: {
+              type: "Point",
+              coordinates: [105.7673, 31.908766]
+            }
           }
         ],
         style: {
-          img: "url",
-          colors: ["#ce2c69", "#ffffff"],
-          size: 100,
-          type: "",
+          icon: "circle",
+          color: "#ce2c69",
+          size: 10,
           animation: "wave"
         }
       },
