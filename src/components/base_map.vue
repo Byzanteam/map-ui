@@ -6,18 +6,21 @@
       :center="profile.parameter.center"
       :mapStyle="profile.parameter.style"
       @load="onMapLoaded">
+      <el-markers :map="map" :markerOptions="profile.parameter.layers.marker"/>
     </el-map>
   </div>
 </template>
 
 <script>
 import { MglMap } from "vue-mapbox";
+import Markers from "./markers.vue";
 import PROFILE from '../resources/profile.vue';
 
 export default {
   name: "BaseMap",
   components: {
     "el-map": MglMap,
+    "el-markers": Markers
   },
   data() {
     return {
@@ -31,7 +34,6 @@ export default {
   created() {
     this.parseRegionsLayers();
   },
-
   methods: {
     onMapLoaded(event) {
       this.map = event.map;
