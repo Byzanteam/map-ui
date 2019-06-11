@@ -1,7 +1,7 @@
 <template>
   <div
-    class="animation-marker"
-    :style="{ width: size * 2 + 'px', height: size * 2 + 'px' }">
+    class="animation-wrapper"
+    :style="{ width: mapedSize, height: mapedSize }">
     <slot name="svg-icon"></slot>
     <span :style="{ width: size * 2 + 'px', height: size * 2 + 'px', background: color }"></span>
   </div>
@@ -50,13 +50,13 @@ export default {
       opacity: 0;
     }
   }
-	.animation-marker {
+	.animation-wrapper {
 		background-position: 0 0;
 		border-radius: 50%;
 		position: relative;
 	}
 
-  .animation-marker span {
+  .animation-wrapper span {
     position: absolute;
     left: 0;
     bottom: 0;
