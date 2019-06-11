@@ -16,8 +16,11 @@
             :color="markerStyle.color">
           </v-icon>
         </component>
+        <label class="marker-text" :style="{ fontSize: markerStyle.fontSize }">
+          {{ marker.properties.message }}
+        </label>
       </div>
-      <MglPopup :closeButton="false">
+      <MglPopup :closeButton="false" :offset="[0, -(markerStyle.fontSize/2)]">
         <div>{{ marker.properties.message }}</div>
       </MglPopup>
     </MglMarker>
@@ -59,6 +62,14 @@ export default {
 </script>
 
 <style>
+  .mapboxgl-marker {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .marker-text {
+    line-height: 1;
+  }
   .icon-image {
     position: absolute;
     transform: translate(-50%, -50%);

@@ -1,12 +1,12 @@
 <template>
-  <div class="container" :style="{ backgroundImage: 'url(' + profile.parameter.background + ')' }">
+  <div class="container" :style="{ backgroundImage: 'url(' + mapOptions.background + ')' }">
     <el-map
       :accessToken="accessToken"
-      :zoom="profile.parameter.zoom"
-      :center="profile.parameter.center"
-      :mapStyle="profile.parameter.style"
+      :zoom="mapOptions.zoom"
+      :center="mapOptions.center"
+      :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <el-markers :map="map" :markerOptions="profile.parameter.layers.marker"/>
+      <el-markers :map="map" :markerOptions="markerOptions"/>
     </el-map>
   </div>
 </template>
@@ -27,20 +27,20 @@ export default {
       profile: PROFILE,
       map: null,
       accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
-      regionsOptions: null
+      mapOptions: {
+        zoom: PROFILE.parameter.zoom,
+        center: PROFILE.parameter.center,
+        style: PROFILE.parameter.style,
+        background: PROFILE.parameter.background
+      },
+      markerOptions: PROFILE.parameter.layers.marker,
+      regionsOptions: PROFILE.parameter.layers.regions
     };
-  },
-
-  created() {
-    this.parseRegionsLayers();
   },
   methods: {
     onMapLoaded(event) {
       this.map = event.map;
     },
-    parseRegionsLayers() {
-      this.regionsOptions = this.profile.parameter.layers.regions
-    }
   }
 };
 </script>
