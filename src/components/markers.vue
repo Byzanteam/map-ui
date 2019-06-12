@@ -20,7 +20,10 @@
           {{ marker.properties.message }}
         </label>
       </div>
-      <MglPopup :closeButton="false" :offset="popupOffset">
+      <MglPopup
+        :closeButton="false"
+        :showed="popupShowed[index]"
+        :offset="popupOffset">
         <div>{{ marker.properties.message }}</div>
       </MglPopup>
     </MglMarker>
@@ -58,6 +61,8 @@ export default {
       animationType: "",
       events: this.markerOptions.events,
       popupOffset: [],
+      currentMarkerIndex: -1,
+      popupShowed: [],
     }
   },
   directives: {
@@ -76,6 +81,7 @@ export default {
   },
   mounted () {
     this.getPopupOffset();
+    this.popupShowed = new Array(this.markers.length).fill(false);
   },
   methods: {
     getPopupOffset () {
@@ -85,8 +91,13 @@ export default {
         this.popupOffset = [0, -this.$refs.markerTextRef[0].offsetHeight/2]
       }
     },
-    test (value) {
-      console.log(value)
+    popupOpen (value) {
+      this.currentMarkerIndex = value;
+      this.popupShowed.splice(this.currentMarkerIndex, 1, true);
+    },
+    popupClose () {
+      this.currentMarkerShowed = true;
+      this.popupShowed.splice(this.currentMarkerIndex, 1, false);
     }
   }
 }

@@ -97,7 +97,8 @@ export default {
           animation: "Ripples"
         },
         events: {
-          "click": "test"
+          "mouseenter": "popupOpen",
+          "mouseleave": "popupClose"
         },
       },
       clusters: {
