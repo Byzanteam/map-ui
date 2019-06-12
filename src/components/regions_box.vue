@@ -1,16 +1,21 @@
 <template>
   <div>
-    <el-regions-layer :regionsOptions="regionsLayerOptions" />
-    <el-regions-layer :regionsOptions="highlightLayerOptions" v-if="highlightLayerOptions"/>
+    <el-regions-layer
+      v-for="feature in features"
+      :key="feature.properties.id"
+      :source="feature"
+      :regionsOptions="regionsOptions"
+      :map="map" />
   </div>
 </template>
 
 <script>
-import VRegionsLayer from "./regionsLayer"
+import axios from 'axios';
+import RegionsLayer from "./regions_layer";
 
 export default {
   components: {
-    "el-regions-layer": VRegionsLayer
+    "el-regions-layer": RegionsLayer
   },
   props: {
     map: {
@@ -28,97 +33,32 @@ export default {
   },
   data () {
     return {
-      regionsLayerOptions: null,
-      highlightLayerOptions: null
+      features: [],
     }
   },
-  created() {
-    this.regionsLayerOptions = this.initRegionsLayer(
-      this.regionsOptions.elements,
-      this.regionsOptions.data
-    );
+  mounted () {
+    this.parseGeojson();
   },
   methods: {
-    initRegionsLayer(layers, data) {
-      return {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background, data),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline, data)
-      }
+    parseGeojson() {
+      axios
+      .get(this.regionsOptions.data)
+      .then(response => {
+        this.features = response.data.features;
+        this.addSource();
+      });
     },
-    parseRegionsFillLayer(profile, geojson) {
-      let fill_layer = {
-        "style": {
-          "id": `${profile.name}FillLayer`,
-          "type": "fill",
-          "paint": {
-            "fill-color": profile.style.color,
-            "fill-opacity": profile.style.opacity
-          },
-        },
-        "source": {
-          "id": profile.name,
-          "type": "geojson",
-          "data": geojson
+    addSource(){
+      _.each(this.features, (feature) => {
+        let source_id = feature.properties.id;
+        let source = this.map.getSource(source_id);
+        if(!source){
+          this.map.addSource(source_id, {
+            type: "geojson",
+            data: feature
+          })
         }
-      }
-      this.addSource(profile.name, geojson);
-      this.bindEvents(profile.events, `${profile.name}FillLayer`);
-      return fill_layer;
-    },
-    parseRegionsLineLayer(profile, geojson) {
-      let line_layer = {
-        "style": {
-          "id": `${profile.name}LineLayer`,
-          "type": "line",
-          "paint": {
-            "line-color": profile.style.color,
-            "line-width": profile.style.width,
-            "line-opacity": profile.style.opacity,
-            "line-dasharray": profile.style.dasharray
-          },
-        },
-        "source": {
-          "id": profile.name,
-          "type": "geojson",
-          "data": geojson
-        }
-      }
-      this.addSource(profile.name, geojson);
-      this.bindEvents(profile.events, `${profile.name}LineLayer`);
-      return line_layer;
-    },
-    addSource(sourceId, geojson){
-      let source = this.map.getSource(sourceId)
-      if(source){
-        source.setData(geojson)
-      } else {
-        this.map.addSource(sourceId, {
-          type: "geojson",
-          data: geojson
-        })
-      }
-    },
-    bindEvents(events, layerId) {
-      _.forOwn(events, (funcName, event) => {
-        this.map.on(event, layerId, (e) => {
-          this[funcName](e, layerId)
-        })
       })
-    },
-    hightlight(e, layerId) {
-      let features = this.map.queryRenderedFeatures([e.point.x, e.point.y], { layers: [layerId] });
-      let highlight_regions_geojson = _.assignIn({
-        "type":"FeatureCollection",
-        "features": [_.pick(features[0], ["type", "properties", "geometry"])]
-      })
-      this.drawHighlightLayer(highlight_regions_geojson);
-    },
-    drawHighlightLayer(geojson) {
-      // fix 事件重复绑定
-      this.highlightLayerOptions = this.initRegionsLayer(
-        this.regionsOptions.elements.highlight,
-        geojson
-      )
     },
   }
 }
