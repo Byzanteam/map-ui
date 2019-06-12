@@ -15,7 +15,6 @@
 
 <script>
 import { MglMap } from "vue-mapbox";
-import VRegionsLayer from "./regionsLayer";
 import RegionsBox from "./regions_box";
 import PROFILE from '../resources/profile.vue';
 
@@ -23,7 +22,7 @@ export default {
   name: "BaseMap",
   components: {
     "el-map": MglMap,
-    "el-regions-box": RegionsBox
+    "el-regions-box": RegionsBox,
   },
   data() {
     return {
