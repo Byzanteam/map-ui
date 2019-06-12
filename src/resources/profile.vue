@@ -95,7 +95,10 @@ export default {
           color: "#ce2c69",
           size: 10,
           animation: "Ripples"
-        }
+        },
+        events: {
+          "click": "test"
+        },
       },
       clusters: {
         name: "clusters",

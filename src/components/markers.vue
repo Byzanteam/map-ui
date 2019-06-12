@@ -4,7 +4,7 @@
       v-for="(marker, index) in markers"
       :key="index"
       :coordinates="marker.geometry.coordinates">
-      <div slot="marker">
+      <div slot="marker" v-bindEvents="marker.geometry.coordinates">
         <component
           :is="markerStyle.animation"
           :color="markerStyle.color"
@@ -56,7 +56,20 @@ export default {
       markers: this.markerOptions.data,
       markerStyle: this.markerOptions.style,
       animationType: "",
-      popupOffset: []
+      events: this.markerOptions.events,
+      popupOffset: [],
+    }
+  },
+  directives: {
+    bindEvents: {
+      inserted: function(el, binding, vnode) {
+        let vm = vnode.context;
+        _.forOwn(vm.events, function(func, event) {
+          el.addEventListener(event, function(){
+            vm[func](binding.value)
+          });
+        });
+      }
     }
   },
   mounted () {
@@ -69,6 +82,9 @@ export default {
       } else {
         this.popupOffset = [0, -this.$refs.markerTextRef[0].offsetHeight/2]
       }
+    },
+    test (value) {
+      console.log(value)
     }
   }
 }
