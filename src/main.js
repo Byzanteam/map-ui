@@ -1,8 +1,11 @@
 import Vue from 'vue'
+import axios from 'axios';
 import App from './App.vue';
 import Mapbox from "mapbox-gl";
 
 Vue.config.productionTip = false
+
+Vue.prototype.$http = axios;
 
 // 导入组件库
 import './styles/index.scss';
