@@ -4,7 +4,7 @@
       v-for="(marker, index) in markers"
       :key="index"
       :coordinates="marker.geometry.coordinates">
-      <div slot="marker" v-bindEvents="marker.geometry.coordinates">
+      <div slot="marker" v-bindEvents="index">
         <component
           :is="markerStyle.animation"
           :color="markerStyle.color"
@@ -66,7 +66,9 @@ export default {
         let vm = vnode.context;
         _.forOwn(vm.events, function(func, event) {
           el.addEventListener(event, function(){
-            vm[func](binding.value)
+            if(vm[func]) {
+              vm[func](binding.value);
+            }
           });
         });
       }
