@@ -102,7 +102,7 @@ export default {
         },
       },
       clusters: {
-        name: "clusters",
+        name: "earthquakes",
         data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
       },
       regions: {

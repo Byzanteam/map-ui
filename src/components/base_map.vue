@@ -6,18 +6,21 @@
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
+      <el-cluster :map="map" :clusterOptions="clusterOptions"></el-cluster>
     </el-map>
   </div>
 </template>
 
 <script>
 import { MglMap } from "vue-mapbox";
-import PROFILE from '../resources/profile.vue';
+import PROFILE from "../resources/profile.vue";
+import Cluster from "./cluster.vue";
 
 export default {
   name: "BaseMap",
   components: {
     "el-map": MglMap,
+    "el-cluster": Cluster,
   },
   data() {
     return {
@@ -30,12 +33,11 @@ export default {
         style: PROFILE.parameter.style,
         background: PROFILE.parameter.background
       },
-      markerOptions: PROFILE.parameter.layers.marker,
-      regionsOptions: PROFILE.parameter.layers.regions
+      clusterOptions: PROFILE.parameter.layers.clusters,
     };
   },
   methods: {
-    onMapLoaded(event) {
+    onMapLoaded (event) {
       this.map = event.map;
     },
   }
