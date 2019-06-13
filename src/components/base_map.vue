@@ -24,18 +24,17 @@ export default {
   },
   data() {
     return {
-      profile: PROFILE,
       map: null,
       accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
-      mapOptions: {
-        zoom: PROFILE.parameter.zoom,
-        center: PROFILE.parameter.center,
-        style: PROFILE.parameter.style,
-        background: PROFILE.parameter.background
-      },
-      markerOptions: PROFILE.parameter.layers.marker,
-      regionsOptions: PROFILE.parameter.layers.regions
+      mapOptions: {},
+      markerOptions: {},
+      regionsOptions: {},
     };
+  },
+  created() {
+    this.mapOptions = PROFILE.parameter;
+    this.markerOptions = PROFILE.parameter.layers.marker;
+    this.regionsOptions = PROFILE.parameter.layers.regions;
   },
   methods: {
     onMapLoaded(event) {
