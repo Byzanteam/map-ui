@@ -17,6 +17,7 @@
 
 <script>
 import { MglGeojsonLayer } from "vue-mapbox";
+import _ from "lodash";
 
 export default {
   name: "VCluster",
@@ -57,6 +58,9 @@ export default {
       })
     },
     drawGeoJsonlayer () {
+      let range = _.sortBy(this.clusterOptions.style.range, function(item) { item.level } );
+      let color_range = this.parsePaintOptions(range, "color");
+      let radius_range = this.parsePaintOptions(range, "size");
       this.geoJsonlayer =
       {
         id: "clusters",
@@ -66,23 +70,26 @@ export default {
           "circle-color": [
             "step",
             ["get", "point_count"],
-            "#51bbd6",
-            100,
-            "#f1f075",
-            750,
-            "#f28cb1"
+            ...color_range
           ],
           "circle-radius": [
             "step",
             ["get", "point_count"],
-            20,
-            100,
-            30,
-            750,
-            40
+            ...radius_range
           ]
         }
       }
+    },
+    parsePaintOptions (range, key) {
+      let option = _.reduce(range, function(memo, item){
+        if(item.max){
+          memo.push(item[key], item.max);
+        }else{
+          memo.push(item[key]);
+        }
+        return memo;
+      }, []);
+      return option;
     },
     drawClusterCountLayer () {
       this.clusterCountLayer = {

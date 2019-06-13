@@ -103,7 +103,30 @@ export default {
       },
       clusters: {
         name: "earthquakes",
-        data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson"
+        data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
+        style: {
+          type: "",
+          range: [
+            {
+              "level": 1,
+              "max": 100,
+              "color": "#51bbd6",
+              "size": 20
+            },
+            {
+              "level": 2,
+              "max": 750,
+              "color": "#f1f075",
+              "size": 30
+            },
+            {
+              "level": 3,
+              "max": null,
+              "color": "#f28cb1",
+              "size": 40
+            }
+          ]
+        }
       },
       regions: {
         name: "regions",
