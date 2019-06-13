@@ -13,15 +13,11 @@ export default {
   props: {
     size: {
       type: Number,
-      default () {
-        return "10px";
-      },
+      default: 10,
     },
     color: {
       type: String,
-      default () {
-        return "#fff";
-      },
+      default: "#fff",
     },
   }
 }
