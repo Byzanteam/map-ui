@@ -2,13 +2,13 @@
   <div>
     <MglGeojsonLayer
       :sourceId="source.properties.id"
-      :source.sync="source"
+      :source="source"
       :layerId="source.properties.id + 'fill'"
       :layer="regionsFillLayer.style"
     />
     <MglGeojsonLayer
       :sourceId="source.properties.id"
-      :source.sync="source"
+      :source="source"
       :layerId="source.properties.id + 'line'"
       :layer="regionsLineLayer.style"
     />
