@@ -1,7 +1,7 @@
 <template>
-  <div class="container" :style="{ backgroundImage: 'url(' + mapOptions.background + ')' }">
+  <div class="container" :style="containerStyle">
     <el-map
-      :accessToken="accessToken"
+      :accessToken="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
@@ -25,16 +25,17 @@ export default {
   data() {
     return {
       map: null,
-      accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
       mapOptions: {},
       markerOptions: {},
       regionsOptions: {},
+      containerStyle: {}
     };
   },
   created() {
     this.mapOptions = PROFILE.parameter;
     this.markerOptions = PROFILE.parameter.layers.marker;
     this.regionsOptions = PROFILE.parameter.layers.regions;
+    this.containerStyle = { backgroundImage: 'url(' + mapOptions.background + ')' }
   },
   methods: {
     onMapLoaded(event) {
