@@ -115,17 +115,17 @@ export default {
 
 <style>
   .mapboxgl-marker {
+    align-items: center;
     display: flex;
     flex-direction: column;
-    align-items: center;
   }
   .marker-text {
     line-height: 1;
   }
   .icon-image {
+    left: 50%;
     position: absolute;
     transform: translate(-50%, -50%);
-    left: 50%;
     top: 50%;
     z-index: 0;
   }

@@ -47,21 +47,21 @@ export default {
 
 <style>
   .container {
-    width: 100%;
+    background-size: 100% 100%;
     height: 100%;
     position: fixed;
+    width: 100%;
     z-index: 1;
-    background-size: 100% 100%;
   }
 
   .container::before {
+    background: "#333";
     content: "";
+    height: 100%;
+    opacity: .3;
     position: absolute;
     width: 100%;
-    height: 100%;
     z-index: 2;
-    background: "#333";
-    opacity: .3;
   }
 
   .mgl-map-wrapper {
