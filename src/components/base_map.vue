@@ -29,26 +29,13 @@ export default {
       profile: PROFILE,
       map: null,
       accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
-      regionsOptions: null
+      regionsOptions: this.profile.parameter.layers.regions
     };
   },
-
-  created() {
-    this.parseRegionsLayers();
-  },
-
   methods: {
     onMapLoaded(event) {
       this.map = event.map;
     },
-    parseMaptyle() {
-      this.mapStyle["center"] = this.profile.parameter.center;
-      this.mapStyle["zoom"] = this.profile.parameter.zoom;
-      this.mapStyle["style"] = this.profile.parameter.style;
-    },
-    parseRegionsLayers() {
-      this.regionsOptions = this.profile.parameter.layers.regions
-    }
   }
 };
 </script>
@@ -68,7 +55,7 @@ export default {
     width: 100%;
     height: 100%;
     z-index: 2;
-    background: #333;
+    background: "#333";
     opacity: .3;
   }
 
