@@ -76,6 +76,16 @@ export default {
             }
           });
         });
+      },
+      unbind: function(el, binding, vnode) {
+        let vm = vnode.context;
+        _.forOwn(vm.events, function(func, event) {
+          el.removeEventListener(event, function(){
+            if(vm[func]) {
+              vm[func](binding.value);
+            }
+          });
+        });
       }
     }
   },
