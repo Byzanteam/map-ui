@@ -1,10 +1,10 @@
 <template>
-  <div class="container" :style="{ backgroundImage: 'url(' + profile.parameter.background + ')' }">
+  <div class="container" :style="containerStyle">
     <el-map
-      :accessToken="accessToken"
-      :zoom="profile.parameter.zoom"
-      :center="profile.parameter.center"
-      :mapStyle="profile.parameter.style"
+      :accessToken="mapOptions.accessToken"
+      :zoom="mapOptions.zoom"
+      :center="mapOptions.center"
+      :mapStyle="mapOptions.style"
       @load="onMapLoaded">
       <el-regions-box
         :regionsOptions="regionsOptions"
@@ -26,11 +26,18 @@ export default {
   },
   data() {
     return {
-      profile: PROFILE,
       map: null,
-      accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
-      regionsOptions: this.profile.parameter.layers.regions
+      mapOptions: {},
+      markerOptions: {},
+      regionsOptions: {},
+      containerStyle: {},
     };
+  },
+  created() {
+    this.mapOptions = PROFILE.parameter;
+    this.markerOptions = PROFILE.parameter.layers.marker;
+    this.regionsOptions = PROFILE.parameter.layers.regions;
+    this.containerStyle = { backgroundImage: 'url(' + this.mapOptions.background + ')' }
   },
   methods: {
     onMapLoaded(event) {
@@ -42,21 +49,21 @@ export default {
 
 <style>
   .container {
-    width: 100%;
+    background-size: 100% 100%;
     height: 100%;
     position: fixed;
+    width: 100%;
     z-index: 1;
-    background-size: 100% 100%;
   }
 
   .container::before {
+    background: "#333";
     content: "";
+    height: 100%;
+    opacity: .3;
     position: absolute;
     width: 100%;
-    height: 100%;
     z-index: 2;
-    background: "#333";
-    opacity: .3;
   }
 
   .mgl-map-wrapper {

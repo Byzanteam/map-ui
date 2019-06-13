@@ -2,6 +2,7 @@
 export default {
   parameter: {
     center: [104.0723, 30.602836],
+    accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
     style: "mapbox://styles/bigdatacd/cjwkdexlu0a6a1cmn15f93irz/draft",
     zoom: 5,
     background: "https://apod.nasa.gov/apod/image/1804/MilkyVlei_Liebermann_4000.jpg",
