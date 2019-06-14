@@ -56,13 +56,13 @@ export default {
     }
   },
   created () {
-    this.regionsLayerOptions = this.initRegionsLayer(this.regionsOptions.elements);
+    this.initRegionsLayer(this.regionsOptions.elements);
     this.bindEvents(this.regionsFillLayer.events, this.source.properties.id + 'fill');
     this.bindEvents(this.regionsLineLayer.events, this.source.properties.id + 'line');
   },
   methods: {
     initRegionsLayer(layers) {
-      return {
+      this.regionsLayerOptions  = {
         "fill_layer_options": this.parseRegionsFillLayer(layers.background),
         "line_layer_options": this.parseRegionsLineLayer(layers.outline)
       }

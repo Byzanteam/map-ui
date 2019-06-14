@@ -1,6 +1,6 @@
 <template>
   <div>
-    <el-regions-layer
+    <el-regions
       v-for="feature in features"
       :key="feature.properties.id"
       :source="feature"
@@ -11,11 +11,11 @@
 
 <script>
 import axios from 'axios';
-import RegionsLayer from "./regions_layer";
+import Regions from "./regions";
 
 export default {
   components: {
-    "el-regions-layer": RegionsLayer
+    "el-regions": Regions
   },
   props: {
     mapOn: {
