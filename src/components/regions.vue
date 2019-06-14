@@ -68,7 +68,7 @@ export default {
       }
     },
     parseRegionsFillLayer(profile) {
-      let fill_layer = {
+      return {
         "style": {
           "type": "fill",
           "paint": {
@@ -78,10 +78,9 @@ export default {
         },
         "events": profile.events
       }
-      return fill_layer;
     },
     parseRegionsLineLayer(profile) {
-      let line_layer = {
+      return {
         "style": {
           "type": "line",
           "paint": {
@@ -93,7 +92,6 @@ export default {
         },
         "events": profile.events
       }
-      return line_layer;
     },
     bindEvents (events, layerId) {
       _.forOwn(events, (funcName, event) => {
