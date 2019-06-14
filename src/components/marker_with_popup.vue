@@ -7,10 +7,10 @@
         :color="markerStyle.color"
         :size="markerStyle.size">
         <v-icon
-          class="icon-image"
-          slot="svg-icon"
           :size="markerStyle.size"
-          :color="markerStyle.color">
+          :color="markerStyle.color"
+          slot="svg-icon"
+          class="icon-image">
         </v-icon>
       </component>
       <label
