@@ -31,6 +31,7 @@
 
 <script>
 import { MglMarker, MglPopup } from "vue-mapbox";
+import _ from "lodash";
 import Icon from "./icon.vue";
 
 export default {
