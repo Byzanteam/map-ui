@@ -90,11 +90,7 @@ export default {
   },
   methods: {
     getPopupOffset () {
-      if(this.markerStyle.fontSize) {
-        this.popupOffset = [0, -this.markerStyle.fontSize/2]
-      } else {
-        this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2]
-      }
+      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2]
     },
     popupOpen () {
       this.popupShowed = true;
