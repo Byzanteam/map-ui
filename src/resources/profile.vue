@@ -78,7 +78,8 @@ export default {
               dasharray: [2, 2]
             },
             events: {
-              "click": "highlight"
+              "mousemove": "highlight",
+              "mouseout": "highlightCancel",
             }
           },
           background: {
@@ -88,7 +89,8 @@ export default {
               opacity: 0.3,
             },
             events: {
-              "click": "highlight"
+              "mousemove": "highlight",
+              "mouseout": "highlightCancel",
             }
           },
           highlight: {
@@ -102,7 +104,8 @@ export default {
                 dasharray: [2, 2]
               },
               events: {
-                "click": "highlight"
+                "mousemove": "highlight",
+                "mouseout": "highlightCancel",
               }
             },
             background: {
@@ -112,7 +115,8 @@ export default {
                 opacity: 0.3,
               },
               events: {
-                "click": "highlight"
+                "mousemove": "highlight",
+                "mouseout": "highlightCancel",
               }
             },
           }

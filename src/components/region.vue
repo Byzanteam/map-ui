@@ -43,7 +43,6 @@ export default {
   data () {
     return {
       regionsLayerOptions: {},
-      highlightShowed: false,
     }
   },
   computed: {
@@ -98,13 +97,9 @@ export default {
       });
     },
     highlight() {
-      this.highlightShowed = !this.highlightShowed;
-      if(this.highlightShowed)
-        this.initRegionsLayer(this.regionsOptions.elements.highlight);
-      else
-        this.hightlightCancel();
+      this.initRegionsLayer(this.regionsOptions.elements.highlight);
     },
-    hightlightCancel () {
+    highlightCancel () {
       this.initRegionsLayer(this.regionsOptions.elements);
     }
   }
