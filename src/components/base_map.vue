@@ -6,7 +6,7 @@
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <el-markers :map="map" :markerOptions="markerOptions"/>
+      <el-markers :markerOptions="markerOptions"/>
     </el-map>
   </div>
 </template>
