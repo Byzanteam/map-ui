@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layers-wrapper">
     <MglGeojsonLayer
       :sourceId="source.properties.id"
       :source="source"

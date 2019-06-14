@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="region-wrapper">
     <region
       v-for="feature in features"
       :key="feature.properties.id"
