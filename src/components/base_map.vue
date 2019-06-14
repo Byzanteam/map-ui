@@ -25,17 +25,18 @@ export default {
   data() {
     return {
       map: null,
-      mapOptions: {},
-      markerOptions: {},
-      regionsOptions: {},
+      mapOptions: PROFILE.parameter,
+      markerOptions: PROFILE.parameter.layers.marker,
+      regionsOptions: PROFILE.parameter.layers.regions,
       containerStyle: {}
     };
   },
-  created() {
-    this.mapOptions = PROFILE.parameter;
-    this.markerOptions = PROFILE.parameter.layers.marker;
-    this.regionsOptions = PROFILE.parameter.layers.regions;
-    this.containerStyle = { backgroundImage: 'url(' + this.mapOptions.background + ')' }
+  computed: {
+    containerStyle () {
+      return {
+        backgroundImage: 'url(' + this.mapOptions.background + ')'
+      }
+    }
   },
   methods: {
     onMapLoaded(event) {
