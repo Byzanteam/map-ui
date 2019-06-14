@@ -1,6 +1,5 @@
 <template>
-  <MglMarker
-    :coordinates="marker.geometry.coordinates">
+  <MglMarker :coordinates="marker.geometry.coordinates">
     <div slot="marker" v-bindEvents>
       <component
         :is="markerStyle.animation"
