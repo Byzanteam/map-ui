@@ -8,6 +8,7 @@
       @load="onMapLoaded">
       <el-regions-box
         :regionsOptions="regionsOptions"
+        :mapOn="mapOn"
         :map="map" />
     </el-map>
   </div>
@@ -43,6 +44,11 @@ export default {
     onMapLoaded(event) {
       this.map = event.map;
     },
+    mapOn (event, layer_id, func) {
+      this.map.on(event, layer_id, (e) => {
+        func();
+      })
+    }
   }
 };
 </script>

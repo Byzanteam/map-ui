@@ -5,7 +5,7 @@
       :key="feature.properties.id"
       :source="feature"
       :regionsOptions="regionsOptions"
-      :map="map" />
+      :mapOn="mapOn" />
   </div>
 </template>
 
@@ -23,6 +23,10 @@ export default {
       default () {
         return null;
       }
+    },
+    mapOn: {
+      type: Function,
+      required: true,
     },
     regionsOptions: {
       type: Object,

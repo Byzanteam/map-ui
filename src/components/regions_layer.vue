@@ -25,11 +25,9 @@ export default {
     MglGeojsonLayer,
   },
   props: {
-    map: {
-      type: Object,
-      default () {
-        return null;
-      }
+    mapOn: {
+      type: Function,
+      required: true,
     },
     regionsOptions: {
       type: Object,
