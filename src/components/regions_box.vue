@@ -1,6 +1,6 @@
 <template>
   <div class="region-wrapper">
-    <region
+    <Region
       v-for="feature in features"
       :key="feature.properties.id"
       :source="feature"

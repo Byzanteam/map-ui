@@ -2,12 +2,10 @@
   <div class="layers-wrapper">
     <MglGeojsonLayer
       :sourceId="source.properties.id"
-      :source="source"
       :layerId="source.properties.id + 'fill'"
       :layer="regionsFillLayer.style" />
     <MglGeojsonLayer
       :sourceId="source.properties.id"
-      :source="source"
       :layerId="source.properties.id + 'line'"
       :layer="regionsLineLayer.style" />
   </div>
@@ -46,10 +44,10 @@ export default {
     };
   },
   computed: {
-    regionsFillLayer(){
+    regionsFillLayer () {
       return this.regionsLayerOptions.fill_layer_options;
     },
-    regionsLineLayer() {
+    regionsLineLayer () {
       return this.regionsLayerOptions.line_layer_options;
     },
   },
@@ -59,7 +57,7 @@ export default {
     this.bindEvents(this.regionsLineLayer.events, this.source.properties.id + 'line');
   },
   methods: {
-    initRegionsLayer(layers) {
+    initRegionsLayer (layers) {
       this.regionsLayerOptions  = {
         "fill_layer_options": this.parseRegionsFillLayer(layers.background),
         "line_layer_options": this.parseRegionsLineLayer(layers.outline),
@@ -96,7 +94,7 @@ export default {
         this.mapOn(event, layerId, this[funcName]);
       });
     },
-    highlight() {
+    highlight () {
       this.initRegionsLayer(this.regionsOptions.elements.highlight);
     },
     highlightCancel () {

@@ -30,7 +30,6 @@ export default {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
-      markerOptions: PROFILE.parameter.layers.marker,
       regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
@@ -46,9 +45,7 @@ export default {
       this.map = event.map;
     },
     mapOn (event, layer_id, func) {
-      this.map.on(event, layer_id, function() {
-        func();
-      });
+      this.map.on(event, layer_id, func);
     },
     getSource (id) {
       this.map.getSource(id);
