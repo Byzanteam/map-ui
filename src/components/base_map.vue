@@ -1,32 +1,32 @@
 <template>
   <div class="container" :style="containerStyle">
-    <el-map
+    <MglMap
       :accessToken="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <el-regions-box
+      <RegionsBox
         :regionsOptions="regionsOptions"
         :mapOn="mapOn"
         :mapGetSource="getSource"
         :mapAddSource="addSource" />
-    </el-map>
+    </MglMap>
   </div>
 </template>
 
 <script>
 import { MglMap } from "vue-mapbox";
-import RegionsBox from "./regions_box";
+import RegionsBox from "./regions_box.vue";
 import PROFILE from '../resources/profile.vue';
 
 export default {
   name: "BaseMap",
   components: {
-    "el-map": MglMap,
-    "el-regions-box": RegionsBox,
+    MglMap,
+    RegionsBox,
   },
-  data() {
+  data () {
     return {
       map: null,
       mapOptions: {},
@@ -35,14 +35,14 @@ export default {
       containerStyle: {},
     };
   },
-  created() {
+  created () {
     this.mapOptions = PROFILE.parameter;
     this.markerOptions = PROFILE.parameter.layers.marker;
     this.regionsOptions = PROFILE.parameter.layers.regions;
     this.containerStyle = { backgroundImage: 'url(' + this.mapOptions.background + ')' }
   },
   methods: {
-    onMapLoaded(event) {
+    onMapLoaded (event) {
       this.map = event.map;
     },
     mapOn (event, layer_id, func) {

@@ -4,14 +4,12 @@
       :sourceId="source.properties.id"
       :source="source"
       :layerId="source.properties.id + 'fill'"
-      :layer="regionsFillLayer.style"
-    />
+      :layer="regionsFillLayer.style" />
     <MglGeojsonLayer
       :sourceId="source.properties.id"
       :source="source"
       :layerId="source.properties.id + 'line'"
-      :layer="regionsLineLayer.style"
-    />
+      :layer="regionsLineLayer.style" />
   </div>
 </template>
 
@@ -67,7 +65,7 @@ export default {
         "line_layer_options": this.parseRegionsLineLayer(layers.outline)
       }
     },
-    parseRegionsFillLayer(profile) {
+    parseRegionsFillLayer (profile) {
       return {
         "style": {
           "type": "fill",
@@ -79,7 +77,7 @@ export default {
         "events": profile.events
       }
     },
-    parseRegionsLineLayer(profile) {
+    parseRegionsLineLayer (profile) {
       return {
         "style": {
           "type": "line",

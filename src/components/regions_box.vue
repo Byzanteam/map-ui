@@ -42,11 +42,11 @@ export default {
       features: [],
     }
   },
-  mounted () {
+  created () {
     this.parseGeojson();
   },
   methods: {
-    parseGeojson() {
+    parseGeojson () {
       axios
       .get(this.regionsOptions.data)
       .then(response => {
@@ -54,14 +54,13 @@ export default {
         this.addSource();
       });
     },
-    addSource(){
+    addSource () {
       _.each(this.features, (feature) => {
         let source_id = feature.properties.id;
-        let source = this.mapGetSource(source_id);
-        if(!source){
+        if(!this.mapGetSource(source_id)){
           this.mapAddSource(source_id, {
             type: "geojson",
-            data: feature
+            data: feature,
           })
         }
       })
