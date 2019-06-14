@@ -1,10 +1,7 @@
-import Vue from 'vue'
-import axios from 'axios';
+import Vue from 'vue';
 import App from './App.vue';
 
 Vue.config.productionTip = false
-
-Vue.prototype.$http = axios;
 
 // 导入组件库
 import './styles/index.scss';
