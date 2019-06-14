@@ -63,14 +63,16 @@ export default {
 <style>
   .container {
     background-size: 100% 100%;
-    height: 100%;
-    position: fixed;
-    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    top: 0;
+    position: absolute;
     z-index: 1;
   }
 
   .container::before {
-    background: "#333";
+    background: #333;
     content: "";
     height: 100%;
     opacity: .3;
