@@ -74,7 +74,7 @@ export default {
           el.addEventListener(event, function() {
             if(vm[func]) {
               vm[func]();
-            };
+            }
           });
         });
       },
