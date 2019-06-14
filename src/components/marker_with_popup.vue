@@ -59,7 +59,7 @@ export default {
       events: this.markerOptions.events,
       popupOffset: [],
       popupShowed: false,
-    }
+    };
   },
   directives: {
     bindEvents: {
@@ -69,11 +69,11 @@ export default {
           el.addEventListener(event, function() {
             if(vm[func]) {
               vm[func]();
-            }
+            };
           });
         });
       },
-    }
+    },
   },
   mounted () {
     this.getPopupOffset();
@@ -87,8 +87,8 @@ export default {
     },
     popupClose () {
       this.popupShowed = false;
-    }
-  }
+    },
+  },
 }
 </script>
 

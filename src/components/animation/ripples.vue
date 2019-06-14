@@ -22,9 +22,9 @@ export default {
   },
   computed: {
     mapedSize () {
-      return this.size * 2 + 'px'
-    }
-  }
+      return this.size * 2 + 'px';
+    },
+  },
 }
 </script>
 
