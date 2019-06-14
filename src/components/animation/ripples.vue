@@ -59,9 +59,9 @@ export default {
 
   .animation-wrapper span {
     animation: ripples 2s linear infinite;
-    left: 0;
     bottom: 0;
     border-radius: 50%;
+    left: 0;
     opacity: .1;
     position: absolute;
     z-index: -1;
