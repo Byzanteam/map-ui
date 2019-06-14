@@ -78,7 +78,7 @@ export default {
               dasharray: [2, 2]
             },
             events: {
-              "click": "hightlight"
+              "click": "highlight"
             }
           },
           background: {
@@ -88,7 +88,7 @@ export default {
               opacity: 0.3,
             },
             events: {
-              "click": "hightlight"
+              "click": "highlight"
             }
           },
           highlight: {
@@ -102,7 +102,7 @@ export default {
                 dasharray: [2, 2]
               },
               events: {
-                "click": "hightlight"
+                "click": "highlight"
               }
             },
             background: {
@@ -112,7 +112,7 @@ export default {
                 opacity: 0.3,
               },
               events: {
-                "click": "hightlight"
+                "click": "highlight"
               }
             },
           }

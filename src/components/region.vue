@@ -43,6 +43,7 @@ export default {
   data () {
     return {
       regionsLayerOptions: {},
+      highlightShowed: false,
     }
   },
   computed: {
@@ -96,9 +97,16 @@ export default {
         this.mapOn(event, layerId, this[funcName]);
       });
     },
-    hightlight() {
-      this.initRegionsLayer(this.regionsOptions.elements.highlight);
+    highlight() {
+      this.highlightShowed = !this.highlightShowed;
+      if(this.highlightShowed)
+        this.initRegionsLayer(this.regionsOptions.elements.highlight);
+      else
+        this.hightlightCancel();
     },
+    hightlightCancel () {
+      this.initRegionsLayer(this.regionsOptions.elements);
+    }
   }
 }
 </script>
