@@ -66,17 +66,7 @@ export default {
       inserted: function(el, binding, vnode) {
         let vm = vnode.context;
         _.forOwn(vm.events, function(func, event) {
-          el.addEventListener(event, function(){
-            if(vm[func]) {
-              vm[func]();
-            }
-          });
-        });
-      },
-      unbind: function(el, binding, vnode) {
-        let vm = vnode.context;
-        _.forOwn(vm.events, function(func, event) {
-          el.removeEventListener(event, function(){
+          el.addEventListener(event, function() {
             if(vm[func]) {
               vm[func]();
             }
@@ -108,9 +98,11 @@ export default {
     display: flex;
     flex-direction: column;
   }
+
   .marker-text {
     line-height: 1;
   }
+
   .icon-image {
     left: 50%;
     position: absolute;
