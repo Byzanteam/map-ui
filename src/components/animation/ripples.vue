@@ -51,6 +51,7 @@ export default {
       transform: scale(2);
     }
   }
+
 	.animation-wrapper {
 		background-position: 0 0;
 		border-radius: 50%;

@@ -31,7 +31,7 @@
 
 <script>
 import { MglMarker, MglPopup } from "vue-mapbox";
-import Icon from "./icon.vue"
+import Icon from "./icon.vue";
 
 export default {
   components: {
@@ -82,7 +82,7 @@ export default {
             }
           });
         });
-      }
+      },
     }
   },
   mounted () {
@@ -90,7 +90,7 @@ export default {
   },
   methods: {
     getPopupOffset () {
-      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2]
+      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2];
     },
     popupOpen () {
       this.popupShowed = true;

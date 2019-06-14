@@ -41,7 +41,7 @@ export default {
     onMapLoaded(event) {
       this.map = event.map;
     },
-  }
+  },
 };
 </script>
 

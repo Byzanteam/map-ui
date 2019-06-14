@@ -4,7 +4,7 @@ import Ripples from "./ripples.vue";
 
 const components = {
   Ripples,
-}
+};
 
 export default {
   init () {
