@@ -1,7 +1,6 @@
 import Vue from 'vue'
 import axios from 'axios';
 import App from './App.vue';
-import Mapbox from "mapbox-gl";
 
 Vue.config.productionTip = false
 

@@ -11,6 +11,7 @@
 
 <script>
 import axios from 'axios';
+import _ from "lodash";
 import Region from "./region";
 
 export default {
@@ -60,7 +61,7 @@ export default {
             type: "geojson",
             data: feature,
           });
-        };
+        }
       });
     },
   },
