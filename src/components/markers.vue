@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="markers-wrapper">
     <MarkerWithPopup
       v-for="(marker, index) in markers"
       :key="index"
