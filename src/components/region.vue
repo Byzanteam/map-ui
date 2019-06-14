@@ -31,27 +31,27 @@ export default {
       type: Object,
       default () {
         return {};
-      }
+      },
     },
     source: {
       type: Object,
       default () {
         return {};
-      }
+      },
     },
   },
   data () {
     return {
       regionsLayerOptions: {},
-    }
+    };
   },
   computed: {
     regionsFillLayer(){
-      return this.regionsLayerOptions.fill_layer_options
+      return this.regionsLayerOptions.fill_layer_options;
     },
     regionsLineLayer() {
-      return this.regionsLayerOptions.line_layer_options
-    }
+      return this.regionsLayerOptions.line_layer_options;
+    },
   },
   created () {
     this.initRegionsLayer(this.regionsOptions.elements);
@@ -62,8 +62,8 @@ export default {
     initRegionsLayer(layers) {
       this.regionsLayerOptions  = {
         "fill_layer_options": this.parseRegionsFillLayer(layers.background),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline)
-      }
+        "line_layer_options": this.parseRegionsLineLayer(layers.outline),
+      };
     },
     parseRegionsFillLayer (profile) {
       return {
@@ -74,8 +74,8 @@ export default {
             "fill-opacity": profile.style.opacity
           },
         },
-        "events": profile.events
-      }
+        "events": profile.events,
+      };
     },
     parseRegionsLineLayer (profile) {
       return {
@@ -88,8 +88,8 @@ export default {
             "line-dasharray": profile.style.dasharray
           },
         },
-        "events": profile.events
-      }
+        "events": profile.events,
+      };
     },
     bindEvents (events, layerId) {
       _.forOwn(events, (funcName, event) => {
@@ -101,7 +101,7 @@ export default {
     },
     highlightCancel () {
       this.initRegionsLayer(this.regionsOptions.elements);
-    }
-  }
+    },
+  },
 }
 </script>

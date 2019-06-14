@@ -29,34 +29,34 @@ export default {
   data () {
     return {
       map: null,
-      mapOptions: {},
-      markerOptions: {},
-      regionsOptions: {},
-      containerStyle: {},
+      mapOptions: PROFILE.parameter,
+      markerOptions: PROFILE.parameter.layers.marker,
+      regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
-  created () {
-    this.mapOptions = PROFILE.parameter;
-    this.markerOptions = PROFILE.parameter.layers.marker;
-    this.regionsOptions = PROFILE.parameter.layers.regions;
-    this.containerStyle = { backgroundImage: 'url(' + this.mapOptions.background + ')' }
+  computed: {
+    containerStyle () {
+      return {
+        backgroundImage: 'url(' + this.mapOptions.background + ')',
+      };
+    },
   },
   methods: {
     onMapLoaded (event) {
       this.map = event.map;
     },
     mapOn (event, layer_id, func) {
-      this.map.on(event, layer_id, (e) => {
+      this.map.on(event, layer_id, function() {
         func();
-      })
+      });
     },
     getSource (id) {
-      this.map.getSource(id)
+      this.map.getSource(id);
     },
     addSource (id, options) {
-      this.map.addSource(id, options)
-    }
-  }
+      this.map.addSource(id, options);
+    },
+  },
 };
 </script>
 

@@ -32,15 +32,13 @@ export default {
     },
     regionsOptions: {
       type: Object,
-      default () {
-        return null;
-      }
-    }
+      default: null,
+    },
   },
   data () {
     return {
       features: [],
-    }
+    };
   },
   created () {
     this.parseGeojson();
@@ -57,18 +55,14 @@ export default {
     addSource () {
       _.each(this.features, (feature) => {
         let source_id = feature.properties.id;
-        if(!this.mapGetSource(source_id)){
+        if(!this.mapGetSource(source_id)) {
           this.mapAddSource(source_id, {
             type: "geojson",
             data: feature,
-          })
-        }
-      })
+          });
+        };
+      });
     },
-  }
+  },
 }
 </script>
-
-<style>
-
-</style>
