@@ -3,7 +3,7 @@
     class="animation-wrapper"
     :style="{ width: mapedSize, height: mapedSize }">
     <slot name="svg-icon"></slot>
-    <span :style="{ background: color }"></span>
+    <span :style="{ width: mapedSize, height: mapedSize, background: color }"></span>
   </div>
 </template>
 
