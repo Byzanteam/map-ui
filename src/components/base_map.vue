@@ -9,7 +9,8 @@
       <el-regions-box
         :regionsOptions="regionsOptions"
         :mapOn="mapOn"
-        :map="map" />
+        :mapGetSource="getSource"
+        :mapAddSource="addSource" />
     </el-map>
   </div>
 </template>
@@ -48,6 +49,12 @@ export default {
       this.map.on(event, layer_id, (e) => {
         func();
       })
+    },
+    getSource (id) {
+      this.map.getSource(id)
+    },
+    addSource (id, options) {
+      this.map.addSource(id, options)
     }
   }
 };

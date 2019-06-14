@@ -28,6 +28,14 @@ export default {
       type: Function,
       required: true,
     },
+    mapGetSource: {
+      type: Function,
+      required: true,
+    },
+    mapAddSource:  {
+      type: Function,
+      required: true,
+    },
     regionsOptions: {
       type: Object,
       default () {
@@ -55,9 +63,9 @@ export default {
     addSource(){
       _.each(this.features, (feature) => {
         let source_id = feature.properties.id;
-        let source = this.map.getSource(source_id);
+        let source = this.mapGetSource(source_id);
         if(!source){
-          this.map.addSource(source_id, {
+          this.mapAddSource(source_id, {
             type: "geojson",
             data: feature
           })
