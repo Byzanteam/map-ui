@@ -9,7 +9,7 @@
 
 <script>
 export default {
-  name: "Icon",
+  name: 'Icon',
   props: {
     size: {
       type: Number,
@@ -17,7 +17,7 @@ export default {
     },
     color: {
       type: String,
-      default: "#fff",
+      default: '#fff',
     },
   },
 }

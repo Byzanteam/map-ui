@@ -12,12 +12,12 @@
 </template>
 
 <script>
-import { MglMap } from "vue-mapbox";
-import Markers from "./markers.vue";
+import { MglMap } from 'vue-mapbox';
+import Markers from './markers.vue';
 import PROFILE from '../resources/profile.vue';
 
 export default {
-  name: "BaseMap",
+  name: 'BaseMap',
   components: {
     MglMap,
     Markers,

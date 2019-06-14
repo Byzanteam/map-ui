@@ -30,15 +30,15 @@
 </template>
 
 <script>
-import { MglMarker, MglPopup } from "vue-mapbox";
-import _ from "lodash";
-import Icon from "./icon.vue";
+import { MglMarker, MglPopup } from 'vue-mapbox';
+import _ from 'lodash';
+import Icon from './icon.vue';
 
 export default {
   components: {
     MglMarker,
     MglPopup,
-    "v-icon": Icon
+    'v-icon': Icon,
   },
   props: {
     marker:  {

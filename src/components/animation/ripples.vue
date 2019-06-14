@@ -9,11 +9,11 @@
 
 <script>
 export default {
-  name: "Ripples",
+  name: 'Ripples',
   props: {
     color: {
       type: String,
-      default: "#fff",
+      default: '#fff',
     },
     size: {
       type: Number,
