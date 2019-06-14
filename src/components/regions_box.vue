@@ -18,12 +18,6 @@ export default {
     "el-regions-layer": RegionsLayer
   },
   props: {
-    map: {
-      type: Object,
-      default () {
-        return null;
-      }
-    },
     mapOn: {
       type: Function,
       required: true,

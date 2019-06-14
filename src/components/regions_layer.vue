@@ -97,13 +97,11 @@ export default {
     },
     bindEvents (events, layerId) {
       _.forOwn(events, (funcName, event) => {
-        this.map.on(event, layerId, (e) => {
-          this[funcName](e, layerId)
-        });
+        this.mapOn(event, layerId, this[funcName]);
       });
     },
-    hightlight(e, layerId) {
-      this.regionsLayerOptions = this.initRegionsLayer(this.regionsOptions.elements.highlight);
+    hightlight() {
+      this.initRegionsLayer(this.regionsOptions.elements.highlight);
     },
   }
 }
