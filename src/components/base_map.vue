@@ -1,13 +1,13 @@
 <template>
   <div class="container" :style="containerStyle">
-    <el-map
+    <MglMap
       :accessToken="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <el-markers :markerOptions="markerOptions"/>
-    </el-map>
+      <Markers :markerOptions="markerOptions"/>
+    </MglMap>
   </div>
 </template>
 
@@ -19,8 +19,8 @@ import PROFILE from '../resources/profile.vue';
 export default {
   name: "BaseMap",
   components: {
-    "el-map": MglMap,
-    "el-markers": Markers
+    MglMap,
+    Markers,
   },
   data() {
     return {
@@ -35,8 +35,8 @@ export default {
     containerStyle () {
       return {
         backgroundImage: 'url(' + this.mapOptions.background + ')'
-      }
-    }
+      };
+    },
   },
   methods: {
     onMapLoaded(event) {

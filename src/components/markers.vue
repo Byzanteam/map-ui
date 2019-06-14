@@ -10,7 +10,7 @@
 </template>
 
 <script>
-import MarkerWithPopup from "./marker_with_popup.vue"
+import MarkerWithPopup from "./marker_with_popup.vue";
 
 export default {
   components: {
