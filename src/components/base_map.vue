@@ -6,7 +6,7 @@
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <Markers :markerOptions="markerOptions"/>
+      <Markers :markerOptions="markerOptions" />
     </MglMap>
   </div>
 </template>
@@ -28,13 +28,12 @@ export default {
       mapOptions: PROFILE.parameter,
       markerOptions: PROFILE.parameter.layers.marker,
       regionsOptions: PROFILE.parameter.layers.regions,
-      containerStyle: {}
     };
   },
   computed: {
     containerStyle () {
       return {
-        backgroundImage: 'url(' + this.mapOptions.background + ')'
+        backgroundImage: `url(${ this.mapOptions.background })`
       };
     },
   },

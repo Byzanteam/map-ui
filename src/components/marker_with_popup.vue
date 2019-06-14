@@ -46,7 +46,13 @@ export default {
         return {};
       },
     },
-    markerOptions: {
+    markerStyle: {
+      type: Object,
+      default () {
+        return {};
+      },
+    },
+    events: {
       type: Object,
       default () {
         return {};
@@ -55,8 +61,6 @@ export default {
   },
   data () {
     return {
-      markerStyle: this.markerOptions.style,
-      events: this.markerOptions.events,
       popupOffset: [],
       popupShowed: false,
     };
