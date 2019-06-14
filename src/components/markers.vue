@@ -1,7 +1,7 @@
 <template>
   <div class="markers-wrapper">
     <MarkerWithPopup
-      v-for="(marker, index) in markers"
+      v-for="(marker, index) in this.markerOptions.data"
       :key="index"
       :marker="marker"
       :markerOptions="markerOptions">
@@ -23,11 +23,6 @@ export default {
         return {};
       },
     },
-  },
-  data () {
-    return {
-      markers: this.markerOptions.data,
-    }
   },
 }
 </script>
