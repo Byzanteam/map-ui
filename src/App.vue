@@ -1,5 +1,5 @@
 <template>
-  <base-map />
+  <BaseMap />
 </template>
 
 <script>
@@ -8,7 +8,7 @@ import BaseMap from "./components/base_map.vue"
 export default {
   name: "app",
   components: {
-    "base-map": BaseMap
+    BaseMap
   }
 };
 </script>
