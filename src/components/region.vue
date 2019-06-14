@@ -1,12 +1,12 @@
 <template>
   <div class="layers-wrapper">
     <MglGeojsonLayer
-      :sourceId="source.properties.id"
-      :layerId="source.properties.id + 'fill'"
+      :sourceId="sourceId"
+      :layerId="sourceId + 'fill'"
       :layer="regionsFillLayer.style" />
     <MglGeojsonLayer
-      :sourceId="source.properties.id"
-      :layerId="source.properties.id + 'line'"
+      :sourceId="sourceId"
+      :layerId="sourceId + 'line'"
       :layer="regionsLineLayer.style" />
   </div>
 </template>
@@ -50,11 +50,14 @@ export default {
     regionsLineLayer () {
       return this.regionsLayerOptions.line_layer_options;
     },
+    sourceId () {
+      return this.source.properties.id;
+    }
   },
   created () {
     this.initRegionsLayer(this.regionsOptions.elements);
-    this.bindEvents(this.regionsFillLayer.events, this.source.properties.id + 'fill');
-    this.bindEvents(this.regionsLineLayer.events, this.source.properties.id + 'line');
+    this.bindEvents(this.regionsFillLayer.events, this.sourceId + 'fill');
+    this.bindEvents(this.regionsLineLayer.events, this.sourceId + 'line');
   },
   methods: {
     initRegionsLayer (layers) {
