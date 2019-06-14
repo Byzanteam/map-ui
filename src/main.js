@@ -5,9 +5,9 @@ Vue.config.productionTip = false
 
 // 导入组件库
 import './styles/index.scss';
-import AnimationComponents from "./components/animation_components";
+import Animation from "./components/animation";
 
-AnimationComponents.init();
+Animation.init();
 
 new Vue({
   render: h => h(App),

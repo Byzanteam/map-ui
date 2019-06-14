@@ -35,7 +35,7 @@ export default {
     this.mapOptions = PROFILE.parameter;
     this.markerOptions = PROFILE.parameter.layers.marker;
     this.regionsOptions = PROFILE.parameter.layers.regions;
-    this.containerStyle = { backgroundImage: 'url(' + mapOptions.background + ')' }
+    this.containerStyle = { backgroundImage: 'url(' + this.mapOptions.background + ')' }
   },
   methods: {
     onMapLoaded(event) {
