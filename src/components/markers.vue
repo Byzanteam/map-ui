@@ -29,9 +29,6 @@ export default {
       markers: this.markerOptions.data,
     }
   },
-  methods: {
-
-  }
 }
 </script>
 
