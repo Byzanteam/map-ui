@@ -12,11 +12,11 @@
 </template>
 
 <script>
-import { MglGeojsonLayer } from "vue-mapbox";
+import { MglGeojsonLayer } from 'vue-mapbox';
 import _ from 'lodash';
 
 export default {
-  name: "RegionsLayer",
+  name: 'RegionsLayer',
   components: {
     MglGeojsonLayer,
   },
@@ -59,34 +59,34 @@ export default {
   methods: {
     initRegionsLayer (layers) {
       this.regionsLayerOptions  = {
-        "fill_layer_options": this.parseRegionsFillLayer(layers.background),
-        "line_layer_options": this.parseRegionsLineLayer(layers.outline),
+        'fill_layer_options': this.parseRegionsFillLayer(layers.background),
+        'line_layer_options': this.parseRegionsLineLayer(layers.outline),
       };
     },
     parseRegionsFillLayer (profile) {
       return {
-        "style": {
-          "type": "fill",
-          "paint": {
-            "fill-color": profile.style.color,
-            "fill-opacity": profile.style.opacity
+        'style': {
+          'type': 'fill',
+          'paint': {
+            'fill-color': profile.style.color,
+            'fill-opacity': profile.style.opacity,
           },
         },
-        "events": profile.events,
+        'events': profile.events,
       };
     },
     parseRegionsLineLayer (profile) {
       return {
-        "style": {
-          "type": "line",
-          "paint": {
-            "line-color": profile.style.color,
-            "line-width": profile.style.width,
-            "line-opacity": profile.style.opacity,
-            "line-dasharray": profile.style.dasharray
+        'style': {
+          'type': 'line',
+          'paint': {
+            'line-color': profile.style.color,
+            'line-width': profile.style.width,
+            'line-opacity': profile.style.opacity,
+            'line-dasharray': profile.style.dasharray,
           },
         },
-        "events": profile.events,
+        'events': profile.events,
       };
     },
     bindEvents (events, layerId) {

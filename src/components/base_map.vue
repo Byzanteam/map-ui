@@ -16,12 +16,12 @@
 </template>
 
 <script>
-import { MglMap } from "vue-mapbox";
-import RegionsBox from "./regions_box.vue";
+import { MglMap } from 'vue-mapbox';
+import RegionsBox from './regions_box.vue';
 import PROFILE from '../resources/profile.vue';
 
 export default {
-  name: "BaseMap",
+  name: 'BaseMap',
   components: {
     MglMap,
     RegionsBox,
@@ -36,7 +36,7 @@ export default {
   computed: {
     containerStyle () {
       return {
-        backgroundImage: 'url(' + this.mapOptions.background + ')',
+        backgroundImage: `url(${this.mapOptions.background})`,
       };
     },
   },

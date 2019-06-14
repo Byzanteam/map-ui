@@ -11,8 +11,8 @@
 
 <script>
 import axios from 'axios';
-import _ from "lodash";
-import Region from "./region";
+import _ from 'lodash';
+import Region from './region';
 
 export default {
   components: {
@@ -58,7 +58,7 @@ export default {
         let source_id = feature.properties.id;
         if(!this.mapGetSource(source_id)) {
           this.mapAddSource(source_id, {
-            type: "geojson",
+            type: 'geojson',
             data: feature,
           });
         }

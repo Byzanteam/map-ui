@@ -3,10 +3,10 @@
 </template>
 
 <script>
-import BaseMap from "./components/base_map.vue";
+import BaseMap from './components/base_map.vue';
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
     BaseMap,
   },
