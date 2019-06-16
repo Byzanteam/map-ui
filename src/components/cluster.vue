@@ -16,10 +16,6 @@ export default {
     MglGeojsonLayer
   },
   props: {
-    map: {
-      type: Object,
-      default: null
-    },
     mapApi: {
       type: Function,
       required: true,
@@ -84,7 +80,7 @@ export default {
         newMarkers[id] = marker;
 
         if (!this.markersOnScreen[id])
-          marker.addTo(this.map);
+          this.$emit('addMarker', marker);
       });
       _.each(this.markersOnScreen, (item, id) => {
         if (!newMarkers[id])

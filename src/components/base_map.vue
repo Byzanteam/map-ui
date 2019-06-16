@@ -11,7 +11,8 @@
       <Cluster
         :map="map"
         :clusterOptions="clusterOptions"
-        :mapApi="mapApi" />
+        :mapApi="mapApi"
+        @addMarker="addMarkerFunc" />
     </MglMap>
   </div>
 </template>
@@ -50,6 +51,9 @@ export default {
     mapApi (apiName, options) {
       return this.map[apiName](...options)
     },
+    addMarkerFunc(marker) {
+      marker.addTo(this.map);
+    }
   }
 };
 </script>
