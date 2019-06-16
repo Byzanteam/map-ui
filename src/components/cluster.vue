@@ -49,7 +49,6 @@ export default {
         }]
       );
       this.drawGeoJsonlayer();
-      this.bindEvents();
     },
     drawGeoJsonlayer () {
       let point = _.find(this.clusterOptions.style.range, function(item) { return item.level == 1 });
@@ -61,7 +60,8 @@ export default {
           'circle-color': point.color,
           'circle-radius': point.size,
         }
-      }
+      };
+      this.bindEvents();
     },
     updateMarkers() {
       let newMarkers = {};
@@ -82,9 +82,9 @@ export default {
         if (!this.markersOnScreen[id])
           this.$emit('addMarker', marker);
       });
-      _.each(this.markersOnScreen, (item, id) => {
-        if (!newMarkers[id])
-          this.markersOnScreen[id].remove();
+      _.each(this.markersOnScreen, (marker, marker_id) => {
+        if (!newMarkers[marker_id])
+          this.markersOnScreen[marker_id].remove();
       })
       this.markersOnScreen = newMarkers;
     },
@@ -107,7 +107,6 @@ export default {
         e.point,
         { layers: [this.geoJsonlayer.id] }
       ]);
-      let clusterId = features[0].properties.cluster_id;
       return (e, features);
     },
     createClusterCircle(props) {

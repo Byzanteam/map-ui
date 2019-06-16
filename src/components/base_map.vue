@@ -49,7 +49,7 @@ export default {
       this.map = event.map;
     },
     mapApi (apiName, options) {
-      return this.map[apiName](...options)
+      return this.map[apiName](...options);
     },
     addMarkerFunc(marker) {
       marker.addTo(this.map);
