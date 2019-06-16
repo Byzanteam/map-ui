@@ -11,8 +11,7 @@
       <Cluster
         :map="map"
         :clusterOptions="clusterOptions"
-        :mapApi="mapApi"
-        :mapTrigger="mapTrigger" />
+        :mapApi="mapApi" />
     </MglMap>
   </div>
 </template>
@@ -48,11 +47,8 @@ export default {
     onMapLoaded (event) {
       this.map = event.map;
     },
-    mapApi (apiName, trigger, options) {
-      return this.map[apiName](trigger, options)
-    },
-    mapTrigger (event, layer_id, func) {
-      this.map.on(event, layer_id, func)
+    mapApi (apiName, options) {
+      return this.map[apiName](...options)
     },
   }
 };

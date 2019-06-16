@@ -24,10 +24,6 @@ export default {
       type: Function,
       required: true,
     },
-    mapTrigger: {
-      type: Function,
-      required: true,
-    },
     clusterOptions: {
       type: Object,
       default: null
@@ -47,12 +43,15 @@ export default {
   methods: {
     addSource () {
       this.sourceId = this.clusterOptions.name;
-      this.mapApi('addSource', this.sourceId, {
-        type: 'geojson',
-        cluster: true,
-        data: this.clusterOptions.data,
-        clusterRadius: this.clusterOptions.clusterRadius,
-      });
+      this.mapApi('addSource', [
+        this.sourceId,
+        {
+          type: 'geojson',
+          cluster: true,
+          data: this.clusterOptions.data,
+          clusterRadius: this.clusterOptions.clusterRadius,
+        }]
+      );
       this.drawGeoJsonlayer();
       this.bindEvents();
     },
@@ -70,7 +69,7 @@ export default {
     },
     updateMarkers() {
       let newMarkers = {};
-      let features = this.mapApi('querySourceFeatures', this.sourceId);
+      let features = this.mapApi('querySourceFeatures', [this.sourceId]);
       _.each(features, (feature) => {
         let coords = feature.geometry.coordinates;
         let props = feature.properties;
@@ -94,18 +93,24 @@ export default {
       this.markersOnScreen = newMarkers;
     },
     bindEvents () {
-      this.mapApi('on', 'data', (e) => {
-        if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
-        this.mapApi('on', 'move', this.updateMarkers);
-        this.mapApi('on', 'moveend', this.updateMarkers);
-        this.updateMarkers();
-      });
+      this.mapApi('on', [
+        'data',
+        (e) => {
+          if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
+          this.mapApi('on', ['move', this.updateMarkers]);
+          this.mapApi('on', ['moveend', this.updateMarkers]);
+          this.updateMarkers();
+        }
+      ]);
       _.forOwn(this.clusterOptions.events, (funcName, event) => {
-        this.mapTrigger(event, this.geoJsonlayer.id, this[funcName]);
+        this.mapApi("on", [event, this.geoJsonlayer.id, this[funcName]]);
       });
     },
     ClusterClick (e) {
-      let features = this.mapApi('queryRenderedFeatures', e.point, { layers: [this.geoJsonlayer.id] });
+      let features = this.mapApi('queryRenderedFeatures', [
+        e.point,
+        { layers: [this.geoJsonlayer.id] }
+      ]);
       let clusterId = features[0].properties.cluster_id;
       return (e, features);
     },
