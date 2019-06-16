@@ -51,7 +51,7 @@ export default {
       this.drawGeoJsonlayer();
     },
     drawGeoJsonlayer () {
-      let point = _.find(this.clusterOptions.style.range, function(item) { return item.level == 1 });
+      let point = _.find(this.clusterOptions.style.range, (item) => { return item.level == 1 });
       this.geoJsonlayer = {
         'id': `${this.sourceId}_circle`,
         'type': 'circle',
@@ -111,10 +111,8 @@ export default {
     },
     createClusterCircle(props) {
       let total = props.point_count;
-      let range = _.sortBy(this.clusterOptions.style.range, function(item) {
-        return item.level
-      });
-      let option = _.find(range, function(item, index) {
+      let range = _.sortBy(this.clusterOptions.style.range, (item) => { return item.level });
+      let option = _.find(range, (item, index) => {
         switch(index) {
           case 0:
             return;
