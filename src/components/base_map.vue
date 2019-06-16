@@ -18,7 +18,7 @@
 
 <script>
 import { MglMap } from 'vue-mapbox';
-import PROFILE from '../resources/profile.vue';
+import PROFILE from '../resources/profile';
 import Cluster from './cluster.vue';
 
 export default {

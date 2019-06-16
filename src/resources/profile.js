@@ -1,5 +1,5 @@
-<script>
-export default {
+
+let PROFILE =  {
   parameter: {
     center: [104.0723, 30.602836],
     accessToken: "pk.eyJ1IjoiYmlnZGF0YWNkIiwiYSI6ImNqbjFkcW00ZTI4cGszd3J1Njk2aDg5Z2gifQ.0WBA8a87guYK9b4Tf3je5A",
@@ -195,4 +195,5 @@ export default {
   },
   out_variable: ["_$currentMarker", "_$currentCluster"]
 };
-</script>
+
+export default PROFILE;
