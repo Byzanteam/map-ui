@@ -49,14 +49,13 @@ export default {
         type: "geojson",
         cluster: true,
         data: this.clusterOptions.data,
-        clusterMaxZoom: 14,
-        clusterRadius: 50,
+        clusterRadius: this.clusterOptions.clusterRadius,
       });
     },
     drawGeoJsonlayer () {
       let point = _.find(this.clusterOptions.style.range, function(item) { return item.level == 1 });
       this.geoJsonlayer = {
-        'id': `${this.clusterOptions.name}_circle`,
+        'id': `${this.sourceId}_circle`,
         'type': 'circle',
         'source': this.sourceId,
         'filter': ['!=', 'cluster', true],
@@ -69,13 +68,12 @@ export default {
     updateMarkers() {
       let newMarkers = {};
       let features = this.mapApi("querySourceFeatures", this.sourceId);
-
       _.each(features, (feature) =>{
         let coords = feature.geometry.coordinates;
         let props = feature.properties;
         if (!props.cluster) return;
-          let id = props.cluster_id;
 
+        let id = props.cluster_id;
         let marker = this.markers[id];
         if (!marker) {
           let el = this.createClusterCircle(props);

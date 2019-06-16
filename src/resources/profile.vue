@@ -104,6 +104,7 @@ export default {
       clusters: {
         name: "earthquakes",
         data: "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
+        clusterRadius: 50,
         style: {
           type: "",
           range: [
@@ -131,7 +132,7 @@ export default {
               "color": "#f28cb1",
               "size": 40
             }
-          ]
+          ],
         }
       },
       regions: {
