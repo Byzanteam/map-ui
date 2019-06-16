@@ -1,6 +1,6 @@
 <template>
   <MglGeojsonLayer
-    :sourceId="clusterOptions.name"
+    :sourceId="sourceId"
     :layerId="geoJsonlayer.id"
     :layer="geoJsonlayer" />
 </template>
