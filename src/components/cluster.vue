@@ -36,16 +36,6 @@ export default {
   created () {
     this.addSource();
     this.drawGeoJsonlayer();
-    this.map.addLayer({
-      "id": "earthquake_circle",
-      "type": "circle",
-      "source": this.sourceId,
-      "filter": ["!=", "cluster", true],
-      "paint": {
-        "circle-color": "#55d2e1",
-        "circle-radius": 8,
-      }
-    });
     this.updateMarkers();
   },
   methods: {
@@ -84,8 +74,8 @@ export default {
 
         let marker = this.markers[id];
         if (!marker) {
-          let el = this.createDonutChart(props);
-          marker = this.markers[id] = new mapboxgl.Marker({element: el}).setLngLat(coords);
+          let el = this.createClusterCircle(props);
+          marker = this.markers[id] = new mapboxgl.Marker({ element: el }).setLngLat(coords);
         }
         newMarkers[id] = marker;
 
@@ -104,11 +94,29 @@ export default {
         this.updateMarkers();
       });
     },
-    createDonutChart(props) {
+    createClusterCircle(props) {
       let total = props.point_count;
-      let fontSize = total >= 1000 ? 22 : total >= 100 ? 20 : total >= 10 ? 18 : 16;
-      let w = total >= 1000 ? 100 : total >= 100 ? 64 : total >= 10 ? 48 : 36;
-      let html = `<div class="animation-wrapper"><div class="circle" style="font-size: ${fontSize}; width: ${w}px; height: ${w}px; background: #55d2e1"">${total.toLocaleString()}</div><span style="width: ${w}px; height: ${w}px; background: #55d2e1;"></span></div>`;
+      let range = _.sortBy(this.clusterOptions.style.range, function(item) {
+        return item.level
+      });
+      let option = _.find(range, function(item, index) {
+        switch(index) {
+          case 0:
+            return;
+          case range.length - 1:
+            return item;
+          default:
+            return total >= range[index - 1].max && total < item.max;
+        }
+      });
+      let size = option.size
+      let color = option.color;
+      let html = `<div class="animation-wrapper">
+                    <div class="circle" style="width: ${size}px; height: ${size}px; background: ${color}">
+                      ${total.toLocaleString()}
+                    </div>
+                    <span style="width: ${size}px; height: ${size}px; background: ${color};"></span>
+                  </div>`;
       let el = document.createElement('div');
       el.innerHTML = html;
       return el.firstChild;
