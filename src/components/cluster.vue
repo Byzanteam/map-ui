@@ -20,6 +20,10 @@ export default {
       type: Object,
       default: null
     },
+    mapApi: {
+      type: Function,
+      required: true,
+    },
     clusterOptions: {
       type: Object,
       default: null
@@ -36,12 +40,12 @@ export default {
   created () {
     this.addSource();
     this.drawGeoJsonlayer();
-    this.updateMarkers();
+    this.bindEvents();
   },
   methods: {
     addSource () {
       this.sourceId = this.clusterOptions.name
-      this.map.addSource(this.sourceId, {
+      this.mapApi('addSource', this.sourceId, {
         type: "geojson",
         cluster: true,
         data: this.clusterOptions.data,
@@ -64,12 +68,12 @@ export default {
     },
     updateMarkers() {
       let newMarkers = {};
-      let features = this.map.querySourceFeatures(this.sourceId);
+      let features = this.mapApi("querySourceFeatures", this.sourceId);
 
-      for (let i = 0; i < features.length; i++) {
-        let coords = features[i].geometry.coordinates;
-        let props = features[i].properties;
-        if (!props.cluster) continue;
+      _.each(features, (feature) =>{
+        let coords = feature.geometry.coordinates;
+        let props = feature.properties;
+        if (!props.cluster) return;
           let id = props.cluster_id;
 
         let marker = this.markers[id];
@@ -81,18 +85,20 @@ export default {
 
         if (!this.markersOnScreen[id])
           marker.addTo(this.map);
-      }
+      });
       _.each(this.markersOnScreen, (item, id) => {
         if (!newMarkers[id])
           this.markersOnScreen[id].remove();
       })
       this.markersOnScreen = newMarkers;
-      this.map.on('data', (e) => {
+    },
+    bindEvents () {
+      this.mapApi('on', 'data', (e) => {
         if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
-        this.map.on('move', this.updateMarkers);
-        this.map.on('moveend', this.updateMarkers);
+        this.mapApi('on', 'move', this.updateMarkers);
+        this.mapApi('on', 'moveend', this.updateMarkers);
         this.updateMarkers();
-      });
+      })
     },
     createClusterCircle(props) {
       let total = props.point_count;

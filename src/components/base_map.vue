@@ -6,7 +6,11 @@
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-      <el-cluster :map="map" :clusterOptions="clusterOptions"></el-cluster>
+      <el-cluster
+        :map="map"
+        :clusterOptions="clusterOptions"
+        :mapApi="mapApi">
+      </el-cluster>
     </el-map>
   </div>
 </template>
@@ -40,6 +44,9 @@ export default {
     onMapLoaded (event) {
       this.map = event.map;
     },
+    mapApi (apiName, trigger, options) {
+      return this.map[apiName](trigger, options)
+    }
   }
 };
 </script>
