@@ -6,12 +6,12 @@
 </template>
 
 <script>
-import { MglGeojsonLayer } from "vue-mapbox";
-import mapboxgl from "mapbox-gl";
-import _ from "lodash";
+import { MglGeojsonLayer } from 'vue-mapbox';
+import mapboxgl from 'mapbox-gl';
+import _ from 'lodash';
 
 export default {
-  name: "Cluster",
+  name: 'Cluster',
   components: {
     MglGeojsonLayer
   },
@@ -31,7 +31,7 @@ export default {
   },
   data () {
     return {
-      sourceId: "",
+      sourceId: '',
       geoJsonlayer: null,
       markers: {},
       markersOnScreen: {},
@@ -39,18 +39,18 @@ export default {
   },
   created () {
     this.addSource();
-    this.drawGeoJsonlayer();
-    this.bindEvents();
   },
   methods: {
     addSource () {
-      this.sourceId = this.clusterOptions.name
+      this.sourceId = this.clusterOptions.name;
       this.mapApi('addSource', this.sourceId, {
-        type: "geojson",
+        type: 'geojson',
         cluster: true,
         data: this.clusterOptions.data,
         clusterRadius: this.clusterOptions.clusterRadius,
       });
+      this.drawGeoJsonlayer();
+      this.bindEvents();
     },
     drawGeoJsonlayer () {
       let point = _.find(this.clusterOptions.style.range, function(item) { return item.level == 1 });
@@ -67,8 +67,8 @@ export default {
     },
     updateMarkers() {
       let newMarkers = {};
-      let features = this.mapApi("querySourceFeatures", this.sourceId);
-      _.each(features, (feature) =>{
+      let features = this.mapApi('querySourceFeatures', this.sourceId);
+      _.each(features, (feature) => {
         let coords = feature.geometry.coordinates;
         let props = feature.properties;
         if (!props.cluster) return;
@@ -115,17 +115,17 @@ export default {
       });
       let size = option.size
       let color = option.color;
-      let html = `<div class="animation-wrapper">
-                    <div class="circle" style="width: ${size}px; height: ${size}px; background: ${color}">
+      let html = `<div class='animation-wrapper'>
+                    <div class='circle' style='width: ${size}px; height: ${size}px; background: ${color}'>
                       ${total.toLocaleString()}
                     </div>
-                    <span style="width: ${size}px; height: ${size}px; background: ${color};"></span>
+                    <span style='width: ${size}px; height: ${size}px; background: ${color};'></span>
                   </div>`;
       let el = document.createElement('div');
       el.innerHTML = html;
       return el.firstChild;
-    }
-  }
+    },
+  },
 }
 </script>
 
