@@ -109,18 +109,24 @@ export default {
           range: [
             {
               "level": 1,
+              "max": 1,
+              "color": "#55d2e1",
+              "size": 10,
+            },
+            {
+              "level": 2,
               "max": 100,
               "color": "#51bbd6",
               "size": 20
             },
             {
-              "level": 2,
+              "level": 3,
               "max": 750,
               "color": "#f1f075",
               "size": 30
             },
             {
-              "level": 3,
+              "level": 4,
               "max": null,
               "color": "#f28cb1",
               "size": 40

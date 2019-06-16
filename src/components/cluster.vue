@@ -1,5 +1,8 @@
 <template>
-  <MglGeojsonLayer />
+  <MglGeojsonLayer
+    :sourceId="clusterOptions.name"
+    :layerId="geoJsonlayer.id"
+    :layer="geoJsonlayer" />
 </template>
 
 <script>
@@ -8,7 +11,7 @@ import mapboxgl from "mapbox-gl";
 import _ from "lodash";
 
 export default {
-  name: "HtmlCluster",
+  name: "Cluster",
   components: {
     MglGeojsonLayer
   },
@@ -25,12 +28,14 @@ export default {
   data () {
     return {
       sourceId: "",
+      geoJsonlayer: null,
       markers: {},
       markersOnScreen: {},
     }
   },
   created () {
     this.addSource();
+    this.drawGeoJsonlayer();
     this.map.addLayer({
       "id": "earthquake_circle",
       "type": "circle",
@@ -53,6 +58,19 @@ export default {
         clusterMaxZoom: 14,
         clusterRadius: 50,
       });
+    },
+    drawGeoJsonlayer () {
+      let point = _.find(this.clusterOptions.style.range, function(item) { return item.level == 1 });
+      this.geoJsonlayer = {
+        'id': `${this.clusterOptions.name}_circle`,
+        'type': 'circle',
+        'source': this.sourceId,
+        'filter': ['!=', 'cluster', true],
+        'paint': {
+          'circle-color': point.color,
+          'circle-radius': point.size,
+        }
+      }
     },
     updateMarkers() {
       let newMarkers = {};
