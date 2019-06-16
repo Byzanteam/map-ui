@@ -32,8 +32,6 @@ export default {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
-      markerOptions: PROFILE.parameter.layers.marker,
-      regionsOptions: PROFILE.parameter.layers.regions,
       clusterOptions: PROFILE.parameter.layers.clusters,
     };
   },
