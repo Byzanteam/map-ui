@@ -102,12 +102,12 @@ export default {
         this.mapApi("on", [event, this.geoJsonlayer.id, this[funcName]]);
       });
     },
-    ClusterClick (e) {
+    clusterClick (e) {
       let features = this.mapApi('queryRenderedFeatures', [
         e.point,
         { layers: [this.geoJsonlayer.id] }
       ]);
-      return (e, features);
+      return features;
     },
     createClusterCircle(props) {
       let total = props.point_count;

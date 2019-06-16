@@ -136,7 +136,7 @@ let PROFILE =  {
           ],
         },
         events: {
-          "click": "ClusterClick"
+          "click": "clusterClick"
         }
       },
       regions: {
