@@ -134,6 +134,9 @@ let PROFILE =  {
               "size": 40
             }
           ],
+        },
+        events: {
+          "click": "ClusterClick"
         }
       },
       regions: {

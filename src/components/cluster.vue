@@ -24,6 +24,10 @@ export default {
       type: Function,
       required: true,
     },
+    mapOn: {
+      type: Function,
+      required: true,
+    },
     clusterOptions: {
       type: Object,
       default: null
@@ -91,12 +95,18 @@ export default {
       this.markersOnScreen = newMarkers;
     },
     bindEvents () {
-      this.mapApi('on', 'data', (e) => {
+      this.mapOn('data', (e) => {
         if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
-        this.mapApi('on', 'move', this.updateMarkers);
-        this.mapApi('on', 'moveend', this.updateMarkers);
+        this.mapOn('move', this.updateMarkers);
+        this.mapOn('moveend', this.updateMarkers);
         this.updateMarkers();
-      })
+      });
+      _.forOwn(this.clusterOptions.events, (funcName, event) => {
+        this.mapOn(event, this.geoJsonlayer.id, this[funcName]);
+      });
+    },
+    ClusterClick (e) {
+      return e;
     },
     createClusterCircle(props) {
       let total = props.point_count;

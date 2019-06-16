@@ -11,7 +11,8 @@
       <Cluster
         :map="map"
         :clusterOptions="clusterOptions"
-        :mapApi="mapApi" />
+        :mapApi="mapApi"
+        :mapOn="mapOn" />
     </MglMap>
   </div>
 </template>
@@ -49,7 +50,12 @@ export default {
     },
     mapApi (apiName, trigger, options) {
       return this.map[apiName](trigger, options)
-    }
+    },
+    mapOn (event, layer_id, func) {
+      this.map.on(event, layer_id, function(e){
+        func(e)
+      });
+    },
   }
 };
 </script>
