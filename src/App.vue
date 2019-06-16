@@ -1,26 +1,14 @@
 <template>
-  <div id="app">
-    <base-map />
-  </div>
+  <BaseMap />
 </template>
 
 <script>
-import BaseMap from "./components/base_map.vue"
+import BaseMap from './components/base_map.vue'
 
 export default {
-  name: "app",
+  name: 'app',
   components: {
-    "base-map": BaseMap
+    BaseMap
   }
 };
 </script>
-
-<style>
-#app {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-}
-</style>
