@@ -24,7 +24,7 @@ export default {
       type: Function,
       required: true,
     },
-    mapOn: {
+    mapTrigger: {
       type: Function,
       required: true,
     },
@@ -62,7 +62,6 @@ export default {
         'id': `${this.sourceId}_circle`,
         'type': 'circle',
         'source': this.sourceId,
-        'filter': ['!=', 'cluster', true],
         'paint': {
           'circle-color': point.color,
           'circle-radius': point.size,
@@ -95,18 +94,20 @@ export default {
       this.markersOnScreen = newMarkers;
     },
     bindEvents () {
-      this.mapOn('data', (e) => {
+      this.mapApi('on', 'data', (e) => {
         if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
-        this.mapOn('move', this.updateMarkers);
-        this.mapOn('moveend', this.updateMarkers);
+        this.mapApi('on', 'move', this.updateMarkers);
+        this.mapApi('on', 'moveend', this.updateMarkers);
         this.updateMarkers();
       });
       _.forOwn(this.clusterOptions.events, (funcName, event) => {
-        this.mapOn(event, this.geoJsonlayer.id, this[funcName]);
+        this.mapTrigger(event, this.geoJsonlayer.id, this[funcName]);
       });
     },
     ClusterClick (e) {
-      return e;
+      let features = this.mapApi('queryRenderedFeatures', e.point, { layers: [this.geoJsonlayer.id] });
+      let clusterId = features[0].properties.cluster_id;
+      return (e, features);
     },
     createClusterCircle(props) {
       let total = props.point_count;
