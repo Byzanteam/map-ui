@@ -24,21 +24,17 @@ export default {
   },
   data () {
     return {
+      sourceId: "",
       markers: {},
       markersOnScreen: {},
     }
   },
   created () {
-    this.map.addSource('earthquakes', {
-      "type": "geojson",
-      "data": "https://docs.mapbox.com/mapbox-gl-js/assets/earthquakes.geojson",
-      "cluster": true,
-      "clusterRadius": 80,
-    });
+    this.addSource();
     this.map.addLayer({
       "id": "earthquake_circle",
       "type": "circle",
-      "source": "earthquakes",
+      "source": this.sourceId,
       "filter": ["!=", "cluster", true],
       "paint": {
         "circle-color": "#55d2e1",
@@ -49,7 +45,8 @@ export default {
   },
   methods: {
     addSource () {
-      this.map.addSource(this.clusterOptions.name, {
+      this.sourceId = this.clusterOptions.name
+      this.map.addSource(this.sourceId, {
         type: "geojson",
         cluster: true,
         data: this.clusterOptions.data,
@@ -59,7 +56,7 @@ export default {
     },
     updateMarkers() {
       let newMarkers = {};
-      let features = this.map.querySourceFeatures('earthquakes');
+      let features = this.map.querySourceFeatures(this.sourceId);
 
       for (let i = 0; i < features.length; i++) {
         let coords = features[i].geometry.coordinates;
@@ -83,7 +80,7 @@ export default {
       })
       this.markersOnScreen = newMarkers;
       this.map.on('data', (e) => {
-        if (e.sourceId !== 'earthquakes' || !e.isSourceLoaded) return;
+        if (e.sourceId !== this.sourceId || !e.isSourceLoaded) return;
         this.map.on('move', this.updateMarkers);
         this.map.on('moveend', this.updateMarkers);
         this.updateMarkers();
