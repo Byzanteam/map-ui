@@ -106,5 +106,5 @@ export default {
       this.initRegionsLayer(this.regionsOptions.elements);
     },
   },
-}
+};
 </script>
