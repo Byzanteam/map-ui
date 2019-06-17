@@ -31,7 +31,7 @@ export default {
       geoJsonlayer: null,
       markers: {},
       markersOnScreen: {},
-    }
+    };
   },
   created () {
     this.addSource();
@@ -87,7 +87,7 @@ export default {
       _.each(this.markersOnScreen, (marker, marker_id) => {
         if (!newMarkers[marker_id])
           this.markersOnScreen[marker_id].remove();
-      })
+      });
       this.markersOnScreen = newMarkers;
     },
     bindEvents () {
