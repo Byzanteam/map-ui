@@ -52,7 +52,7 @@ export default {
     },
     sourceId () {
       return this.source.properties.id;
-    }
+    },
   },
   created () {
     this.initRegionsLayer(this.regionsOptions.elements);
@@ -106,5 +106,5 @@ export default {
       this.initRegionsLayer(this.regionsOptions.elements);
     },
   },
-}
+};
 </script>
