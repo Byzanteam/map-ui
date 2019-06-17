@@ -38,7 +38,7 @@ export default {
   },
   methods: {
     addSource () {
-      const {name, data, clusterRadius} = this.clusterOptions;
+      const { name, data, clusterRadius } = this.clusterOptions;
       this.sourceId = name;
       this.mapApi('addSource', [
         this.sourceId,
@@ -53,13 +53,15 @@ export default {
     },
     drawGeoJsonlayer () {
       const point = _.find(this.clusterOptions.style.range, (item) => item.level == 1);
+
+      const { color, size } = point;
       this.geoJsonlayer = {
         'id': `${this.sourceId}_circle`,
         'type': 'circle',
         'source': this.sourceId,
         'paint': {
-          'circle-color': point.color,
-          'circle-radius': point.size,
+          'circle-color': color,
+          'circle-radius': size,
         }
       };
       this.bindEvents();
@@ -98,6 +100,7 @@ export default {
           this.updateMarkers();
         }
       ]);
+
       _.forOwn(this.clusterOptions.events, (funcName, event) => {
         this.mapApi("on", [event, this.geoJsonlayer.id, this[funcName]]);
       });
@@ -112,6 +115,7 @@ export default {
     createClusterCircle(props) {
       const total = props.point_count;
       const range = _.sortBy(this.clusterOptions.style.range, (item) => item.level);
+
       const option = _.find(range, (item, index) => {
         switch(index) {
           case 0:
