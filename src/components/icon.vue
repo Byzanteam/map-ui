@@ -3,7 +3,10 @@
     :width="size + 'px'"
     :height="size + 'px'"
     :fill="color">
-    <circle :cx="size/2" :cy="size/2" :r="size/2"/>
+    <circle
+      :cx="size/2"
+      :cy="size/2"
+      :r="size/2" />
   </svg>
 </template>
 
@@ -20,5 +23,5 @@ export default {
       default: '#fff',
     },
   },
-}
+};
 </script>

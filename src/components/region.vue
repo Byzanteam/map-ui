@@ -61,7 +61,7 @@ export default {
   },
   methods: {
     initRegionsLayer (layers) {
-      this.regionsLayerOptions  = {
+      this.regionsLayerOptions = {
         'fill_layer_options': this.parseRegionsFillLayer(layers.background),
         'line_layer_options': this.parseRegionsLineLayer(layers.outline),
       };

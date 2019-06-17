@@ -1,6 +1,8 @@
 <template>
   <mgl-marker :coordinates="marker.geometry.coordinates">
-    <div slot="marker" v-bindEvents>
+    <div
+      v-bindEvents
+      slot="marker">
       <component
         :is="markerStyle.animation"
         :color="markerStyle.color"
@@ -9,8 +11,7 @@
           slot="svg-icon"
           :size="markerStyle.size"
           :color="markerStyle.color"
-          class="icon-image">
-        </icon>
+          class="icon-image" />
       </component>
       <label
         ref="markerTextRef"
@@ -20,7 +21,7 @@
       </label>
     </div>
     <mgl-popup
-      :closeButton="false"
+      :close-button="false"
       :showed="popupShowed"
       :offset="popupOffset">
       <div>{{ marker.properties.message }}</div>
@@ -39,8 +40,22 @@ export default {
     MglPopup,
     Icon,
   },
+  directives: {
+    bindEvents: {
+      inserted (el, binding, vnode) {
+        const vm = vnode.context;
+        _.forOwn (vm.events, (func, event) => {
+          el.addEventListener (event, () => {
+            if (vm[func]) {
+              vm[func]();
+            }
+          });
+        });
+      },
+    },
+  },
   props: {
-    marker:  {
+    marker: {
       type: Object,
       default () {
         return {};
@@ -65,26 +80,12 @@ export default {
       popupShowed: false,
     };
   },
-  directives: {
-    bindEvents: {
-      inserted: function(el, binding, vnode) {
-        let vm = vnode.context;
-        _.forOwn(vm.events, function(func, event) {
-          el.addEventListener(event, function() {
-            if(vm[func]) {
-              vm[func]();
-            }
-          });
-        });
-      },
-    },
-  },
   mounted () {
     this.getPopupOffset();
   },
   methods: {
     getPopupOffset () {
-      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2];
+      this.popupOffset = [ 0, -this.$refs.markerTextRef.offsetHeight/2 ];
     },
     popupOpen () {
       this.popupShowed = true;
@@ -93,7 +94,7 @@ export default {
       this.popupShowed = false;
     },
   },
-}
+};
 </script>
 
 <style lang="scss">

@@ -13,7 +13,7 @@ import _ from 'lodash';
 export default {
   name: 'Cluster',
   components: {
-    MglGeojsonLayer
+    MglGeojsonLayer,
   },
   props: {
     mapApi: {
@@ -22,7 +22,7 @@ export default {
     },
     clusterOptions: {
       type: Object,
-      default: null
+      default: null,
     },
   },
   data () {
@@ -47,12 +47,14 @@ export default {
           cluster: true,
           data,
           clusterRadius,
-        }]
-      );
+        }
+      ]);
       this.drawGeoJsonlayer();
     },
     drawGeoJsonlayer () {
-      const point = _.find(this.clusterOptions.style.range, (item) => item.level == 1);
+      const point = _.minBy(this.clusterOptions.style.range, (item) => {
+        return item.level;
+      });
 
       const { color, size } = point;
       this.geoJsonlayer = {
@@ -62,12 +64,12 @@ export default {
         'paint': {
           'circle-color': color,
           'circle-radius': size,
-        }
+        },
       };
       this.bindEvents();
     },
-    updateMarkers() {
-      let newMarkers = {};
+    updateMarkers () {
+      const newMarkers = {};
       const features = this.mapApi('querySourceFeatures', [this.sourceId]);
       _.each(features, (feature) => {
         const props = feature.properties;
@@ -77,16 +79,20 @@ export default {
         let marker = this.markers[id];
         if (!marker) {
           const el = this.createClusterCircle(props);
-          marker = this.markers[id] = new mapboxgl.Marker({ element: el }).setLngLat(feature.geometry.coordinates);
+          const new_marker = new mapboxgl.Marker({ element: el });
+          this.markers[id] = new_marker.setLngLat(feature.geometry.coordinates);
+          marker = this.markers[id];
         }
         newMarkers[id] = marker;
 
-        if (!this.markersOnScreen[id])
+        if (!this.markersOnScreen[id]) {
           this.$emit('addMarker', marker);
+        }
       });
       _.each(this.markersOnScreen, (marker, marker_id) => {
-        if (!newMarkers[marker_id])
+        if (!newMarkers[marker_id]) {
           this.markersOnScreen[marker_id].remove();
+        }
       });
       this.markersOnScreen = newMarkers;
     },
@@ -98,26 +104,28 @@ export default {
           this.mapApi('on', ['move', this.updateMarkers]);
           this.mapApi('on', ['moveend', this.updateMarkers]);
           this.updateMarkers();
-        }
+        },
       ]);
 
       _.forOwn(this.clusterOptions.events, (funcName, event) => {
-        this.mapApi("on", [event, this.geoJsonlayer.id, this[funcName]]);
+        this.mapApi('on', [event, this.geoJsonlayer.id, this[funcName]]);
       });
     },
     clusterClick (e) {
       const features = this.mapApi('queryRenderedFeatures', [
         e.point,
-        { layers: [this.geoJsonlayer.id] }
+        { layers: [this.geoJsonlayer.id] },
       ]);
       return features;
     },
-    createClusterCircle(props) {
+    createClusterCircle (props) {
       const total = props.point_count;
-      const range = _.sortBy(this.clusterOptions.style.range, (item) => item.level);
+      const range = _.sortBy(this.clusterOptions.style.range, (item) => {
+        item.level;
+      });
 
       const option = _.find(range, (item, index) => {
-        switch(index) {
+        switch (index) {
           case 0:
             return;
           case range.length - 1:
@@ -126,17 +134,17 @@ export default {
             return total >= range[index - 1].max && total < item.max;
         }
       });
-      const {size, color} = option;
+      const { size, color } = option;
       const html = `<div class='animation-wrapper'>
                     <div class='circle' style='width: ${size}px; height: ${size}px; background: ${color}'>
                       ${total.toLocaleString()}
                     </div>
                     <span class="animation-ripples" style='width: ${size}px; height: ${size}px; background: ${color};'></span>
                   </div>`;
-      let el = document.createElement('div');
+      const el = document.createElement('div');
       el.innerHTML = html;
       return el;
     },
   },
-}
+};
 </script>

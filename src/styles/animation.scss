@@ -1,24 +1,29 @@
 @keyframes ripples {
-  0%{
+  0% {
     opacity: .2;
     transform: scale(1);
   }
-  40%{
+
+  40% {
     opacity: .3;
     transform: scale(1.4);
   }
-  60%{
+
+  60% {
     opacity: .2;
     transform: scale(1.6);
   }
-  80%{
+
+  80% {
     opacity: .1;
     transform: scale(1.8);
   }
-  100%{
+
+  100% {
     opacity: 0;
     transform: scale(2);
   }
+
 }
 
 .animation-wrapper {
@@ -27,10 +32,10 @@
   position: relative;
 
   .circle {
+    align-items: center;
     border-radius: 50%;
     display: flex;
     justify-content: center;
-    align-items: center;
   }
 
   .animation-ripples {

@@ -1,9 +1,12 @@
 <template>
   <div
-    class="animation-wrapper"
-    :style="{ width: mapedSize, height: mapedSize }">
-    <slot name="svg-icon"></slot>
-    <span class="animation-ripples" :style="{ width: mapedSize, height: mapedSize, background: color }"></span>
+    :style="{ width: mapedSize, height: mapedSize }"
+    class="animation-wrapper">
+    <slot name="svg-icon" />
+    <span
+      :style="{ width: mapedSize, height: mapedSize, background: color }"
+      class="animation-ripples">
+    </span>
   </div>
 </template>
 
@@ -22,8 +25,8 @@ export default {
   },
   computed: {
     mapedSize () {
-      return this.size * 2 + 'px';
+      return `${this.size * 2}px`;
     },
   },
-}
+};
 </script>

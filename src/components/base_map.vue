@@ -11,8 +11,8 @@
       <markers :markerOptions="markerOptions" />
       <cluster
         :map="map"
-        :clusterOptions="clusterOptions"
-        :mapApi="mapApi"
+        :cluster-options="clusterOptions"
+        :map-api="mapApi"
         @addMarker="addMarkerFunc" />
       <regions-box
         :regions-options="regionsOptions"
@@ -36,7 +36,7 @@ export default {
     Cluster,
     RegionsBox,
   },
-  data() {
+  data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
@@ -59,7 +59,7 @@ export default {
     mapApi (apiName, options) {
       return this.map[apiName](...options);
     },
-    addMarkerFunc(marker) {
+    addMarkerFunc (marker) {
       marker.addTo(this.map);
     },
   },

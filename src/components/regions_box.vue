@@ -39,26 +39,26 @@ export default {
   methods: {
     parseGeojson () {
       axios
-      .get(this.regionsOptions.data)
-      .then(response => {
-        this.features = response.data.features;
-        this.addSource();
-      });
+        .get(this.regionsOptions.data)
+        .then(response => {
+          this.features = response.data.features;
+          this.addSource();
+        });
     },
     addSource () {
       _.each(this.features, (feature) => {
-        let source_id = feature.properties.id;
-        if(!this.mapApi('getSource', [source_id])) {
+        const source_id = feature.properties.id;
+        if (!this.mapApi('getSource', [source_id])) {
           this.mapApi('addSource', [
             source_id,
             {
               type: 'geojson',
               data: feature,
-            }
+            },
           ]);
         }
       });
     },
   },
-}
+};
 </script>
