@@ -7,35 +7,53 @@
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :map-style="mapOptions.style"
-      @load="onMapLoaded" />
+      @load="onMapLoaded">
+      <regions-box
+        :regions-options="regionsOptions"
+        :map-on="mapOn"
+        :map-get-source="getSource"
+        :map-add-source="addSource" />
+    </mgl-map>
   </div>
 </template>
 
 <script>
 import { MglMap } from 'vue-mapbox';
+import RegionsBox from './regions_box.vue';
 import PROFILE from '../resources/profile';
 
 export default {
   name: 'BaseMap',
   components: {
     MglMap,
+    RegionsBox,
   },
   data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
+      regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${this.mapOptions.background})`,
+        backgroundImage: `url(${this.mapOptions.background_image})`,
       };
     },
   },
   methods: {
     onMapLoaded (event) {
       this.map = event.map;
+    },
+    mapOn (event, layer_id, func) {
+      this.map.on(event, layer_id, func);
+    },
+    getSource (id) {
+      this.map.getSource(id);
+    },
+    addSource (id, options) {
+      this.map.addSource(id, options);
     },
   },
 };
