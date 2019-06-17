@@ -13,7 +13,7 @@ const PROFILE =  {
           {
             properties: {
               message: '北京拓维启通科技有限公司',
-              iconSize: [60, 60]
+              iconSize: [60, 60],
             },
             geometry: {
               type: 'Point',
@@ -95,7 +95,7 @@ const PROFILE =  {
           icon: 'circle',
           color: '#ce2c69',
           size: 10,
-          animation: 'Ripples'
+          animation: 'Ripples',
         },
         events: {
           'mouseenter': 'popupOpen',
@@ -119,24 +119,24 @@ const PROFILE =  {
               'level': 2,
               'max': 100,
               'color': '#51bbd6',
-              'size': 20
+              'size': 20,
             },
             {
               'level': 3,
               'max': 750,
               'color': '#f1f075',
-              'size': 30
+              'size': 30,
             },
             {
               'level': 4,
               'max': null,
               'color': '#f28cb1',
-              'size': 40
+              'size': 40,
             },
           ],
         },
         events: {
-          'click': 'clusterClick'
+          'click': 'clusterClick',
         },
       },
       regions: {
@@ -150,10 +150,10 @@ const PROFILE =  {
               color: '#006d2c',
               width: 2,
               opacity: 1,
-              dasharray: [2, 2]
+              dasharray: [2, 2],
             },
             events: {
-              'click': 'hightlight'
+              'click': 'hightlight',
             },
           },
           background: {
@@ -163,7 +163,7 @@ const PROFILE =  {
               opacity: 0.3,
             },
             events: {
-              'click': 'hightlight'
+              'click': 'hightlight',
             },
           },
           highlight: {
@@ -174,10 +174,10 @@ const PROFILE =  {
                 color: 'burlywood',
                 width: 2,
                 opacity: 1,
-                dasharray: [2, 2]
+                dasharray: [2, 2],
               },
               events: {
-                'click': 'hightlight'
+                'click': 'hightlight',
               },
             },
             background: {
@@ -187,7 +187,7 @@ const PROFILE =  {
                 opacity: 0.3,
               },
               events: {
-                'click': 'hightlight'
+                'click': 'hightlight',
               },
             },
           },
