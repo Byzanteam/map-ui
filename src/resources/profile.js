@@ -152,7 +152,7 @@ const PROFILE =  {
               dasharray: [2, 2],
             },
             events: {
-              'mouseover': 'highlight',
+              'mousemove': 'highlight',
               'mouseout': 'highlightCancel'
             },
           },
@@ -178,8 +178,6 @@ const PROFILE =  {
                 dasharray: [2, 2],
               },
               events: {
-                'mouseover': 'highlight',
-                'mouseout': 'highlightCancel'
               },
             },
             background: {
@@ -189,8 +187,6 @@ const PROFILE =  {
                 opacity: 0.3,
               },
               events: {
-                'mouseover': 'highlight',
-                'mouseout': 'highlightCancel'
               },
             },
           },

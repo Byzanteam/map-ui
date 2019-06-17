@@ -135,7 +135,7 @@ export default {
                   </div>`;
       let el = document.createElement('div');
       el.innerHTML = html;
-      return el.firstChild;
+      return el;
     },
   },
 }

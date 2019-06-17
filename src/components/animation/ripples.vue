@@ -3,7 +3,7 @@
     class="animation-wrapper"
     :style="{ width: mapedSize, height: mapedSize }">
     <slot name="svg-icon"></slot>
-    <span :style="{ width: mapedSize, height: mapedSize, background: color }"></span>
+    <span class="animation-ripples" :style="{ width: mapedSize, height: mapedSize, background: color }"></span>
   </div>
 </template>
 
@@ -27,44 +27,3 @@ export default {
   },
 }
 </script>
-
-<style>
-  @keyframes ripples {
-    0%{
-      opacity: .2;
-      transform: scale(1);
-    }
-    40%{
-      opacity: .3;
-      transform: scale(1.4);
-    }
-    60%{
-      opacity: .2;
-      transform: scale(1.6);
-    }
-    80%{
-      opacity: .1;
-      transform: scale(1.8);
-    }
-    100%{
-      opacity: 0;
-      transform: scale(2);
-    }
-  }
-
-	.animation-wrapper {
-		background-position: 0 0;
-		border-radius: 50%;
-		position: relative;
-	}
-
-  .animation-wrapper span {
-    animation: ripples 2s linear infinite;
-    bottom: 0;
-    border-radius: 50%;
-    left: 0;
-    opacity: .1;
-    position: absolute;
-    z-index: -1;
-  }
-</style>

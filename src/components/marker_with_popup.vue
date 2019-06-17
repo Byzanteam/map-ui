@@ -96,7 +96,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   .mapboxgl-marker {
     align-items: center;
     display: flex;
@@ -113,5 +113,9 @@ export default {
     transform: translate(-50%, -50%);
     top: 50%;
     z-index: 0;
+  }
+
+  .animation-wrapper {
+    position: relative;
   }
 </style>
