@@ -68,7 +68,6 @@ export default {
       let newMarkers = {};
       const features = this.mapApi('querySourceFeatures', [this.sourceId]);
       _.each(features, (feature) => {
-        const coords = feature.geometry.coordinates;
         const props = feature.properties;
         if (!props.cluster) return;
 
@@ -76,7 +75,7 @@ export default {
         let marker = this.markers[id];
         if (!marker) {
           const el = this.createClusterCircle(props);
-          marker = this.markers[id] = new mapboxgl.Marker({ element: el }).setLngLat(coords);
+          marker = this.markers[id] = new mapboxgl.Marker({ element: el }).setLngLat(feature.geometry.coordinates);
         }
         newMarkers[id] = marker;
 
@@ -111,8 +110,8 @@ export default {
       return features;
     },
     createClusterCircle(props) {
-      let total = props.point_count;
-      let range = _.sortBy(this.clusterOptions.style.range, (item) => item.level);
+      const total = props.point_count;
+      const range = _.sortBy(this.clusterOptions.style.range, (item) => item.level);
       const option = _.find(range, (item, index) => {
         switch(index) {
           case 0:
