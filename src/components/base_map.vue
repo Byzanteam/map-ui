@@ -8,7 +8,7 @@
       :center="mapOptions.center"
       :map-style="mapOptions.style"
       @load="onMapLoaded">
-      <Markers :markerOptions="markerOptions" />
+      <markers :markerOptions="markerOptions" />
     </mgl-map>
   </div>
 </template>
@@ -34,7 +34,7 @@ export default {
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${this.mapOptions.background})`,
+        backgroundImage: `url(${this.mapOptions.background_image})`,
       };
     },
   },

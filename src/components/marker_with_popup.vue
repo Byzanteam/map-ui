@@ -1,16 +1,16 @@
 <template>
-  <MglMarker :coordinates="marker.geometry.coordinates">
+  <mgl-marker :coordinates="marker.geometry.coordinates">
     <div slot="marker" v-bindEvents>
       <component
         :is="markerStyle.animation"
         :color="markerStyle.color"
         :size="markerStyle.size">
-        <v-icon
+        <icon
           slot="svg-icon"
           :size="markerStyle.size"
           :color="markerStyle.color"
           class="icon-image">
-        </v-icon>
+        </icon>
       </component>
       <label
         ref="markerTextRef"
@@ -19,13 +19,13 @@
         {{ marker.properties.message }}
       </label>
     </div>
-    <MglPopup
+    <mgl-popup
       :closeButton="false"
       :showed="popupShowed"
       :offset="popupOffset">
       <div>{{ marker.properties.message }}</div>
-    </MglPopup>
-  </MglMarker>
+    </mgl-popup>
+  </mgl-marker>
 </template>
 
 <script>
@@ -37,7 +37,7 @@ export default {
   components: {
     MglMarker,
     MglPopup,
-    'v-icon': Icon,
+    Icon,
   },
   props: {
     marker:  {
