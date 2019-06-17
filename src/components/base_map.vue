@@ -8,6 +8,7 @@
       :center="mapOptions.center"
       :map-style="mapOptions.style"
       @load="onMapLoaded">
+      <markers :markerOptions="markerOptions" />
       <cluster
         :map="map"
         :clusterOptions="clusterOptions"
@@ -22,6 +23,7 @@
 
 <script>
 import { MglMap } from 'vue-mapbox';
+import Markers from './markers.vue';
 import RegionsBox from './regions_box.vue';
 import Cluster from './cluster.vue';
 import PROFILE from '../resources/profile';
@@ -30,13 +32,15 @@ export default {
   name: 'BaseMap',
   components: {
     MglMap,
+    Markers,
     Cluster,
     RegionsBox,
   },
-  data () {
+  data() {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
+      markerOptions: PROFILE.parameter.layers.marker,
       clusterOptions: PROFILE.parameter.layers.clusters,
       regionsOptions: PROFILE.parameter.layers.regions,
     };
