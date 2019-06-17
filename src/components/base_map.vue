@@ -38,7 +38,7 @@ export default {
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${this.mapOptions.background})`,
+        backgroundImage: `url(${this.mapOptions.background_image})`,
       };
     },
   },

@@ -1,10 +1,10 @@
 <template>
   <div class="layers-wrapper">
-    <MglGeojsonLayer
+    <mgl-geojson-layer
       :sourceId="sourceId"
       :layerId="sourceId + 'fill'"
       :layer="regionsFillLayer.style" />
-    <MglGeojsonLayer
+    <mgl-geojson-layer
       :sourceId="sourceId"
       :layerId="sourceId + 'line'"
       :layer="regionsLineLayer.style" />
