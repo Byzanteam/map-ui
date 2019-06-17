@@ -16,7 +16,7 @@
 <script>
 import { MglMap } from 'vue-mapbox';
 import Markers from './markers.vue';
-import PROFILE from '../resources/profile.vue';
+import PROFILE from '../resources/profile';
 
 export default {
   name: 'BaseMap',
