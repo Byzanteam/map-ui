@@ -2,13 +2,13 @@
   <div
     :style="containerStyle"
     class="container">
-    <MglMap
+    <mgl-map
       :accessToken="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :mapStyle="mapOptions.style"
       @load="onMapLoaded">
-    </MglMap>
+    </mgl-map>
   </div>
 </template>
 
