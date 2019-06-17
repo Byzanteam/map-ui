@@ -1,4 +1,3 @@
-
 const PROFILE =  {
   parameter: {
     center: [104.0723, 30.602836],
