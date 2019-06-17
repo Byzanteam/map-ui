@@ -138,7 +138,7 @@ export default {
 }
 </script>
 
-<style>
+<style lang="scss">
   @keyframes ripples {
     0%{
       opacity: .2;
@@ -162,27 +162,26 @@ export default {
     }
   }
 
-	.animation-wrapper {
-		background-position: 0 0;
-		border-radius: 50%;
-		position: relative;
-  }
-
-  .animation-wrapper .circle {
+  .animation-wrapper {
+    background-position: 0 0;
     border-radius: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
+    position: relative;
 
-  .animation-wrapper span {
-    animation: ripples 2s linear infinite;
-    border-radius: 50%;
-    bottom: 0;
-    left: 0;
-    opacity: .1;
-    position: absolute;
-    z-index: -1;
-  }
+    .circle {
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
 
+    span {
+      animation: ripples 2s linear infinite;
+      border-radius: 50%;
+      bottom: 0;
+      left: 0;
+      opacity: .1;
+      position: absolute;
+      z-index: -1;
+    }
+  }
 </style>
