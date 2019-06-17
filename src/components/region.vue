@@ -56,8 +56,8 @@ export default {
   },
   created () {
     this.initRegionsLayer(this.regionsOptions.elements);
-    this.bindEvents(this.regionsFillLayer.events, this.sourceId + 'fill');
-    this.bindEvents(this.regionsLineLayer.events, this.sourceId + 'line');
+    this.bindEvents(this.regionsFillLayer.events, `${this.sourceId}fill`);
+    this.bindEvents(this.regionsLineLayer.events, `${this.sourceId}line`);
   },
   methods: {
     initRegionsLayer (layers) {
