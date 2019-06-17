@@ -38,20 +38,21 @@ export default {
   },
   methods: {
     addSource () {
-      this.sourceId = this.clusterOptions.name;
+      const {name, data, clusterRadius} = this.clusterOptions;
+      this.sourceId = name;
       this.mapApi('addSource', [
         this.sourceId,
         {
           type: 'geojson',
           cluster: true,
-          data: this.clusterOptions.data,
-          clusterRadius: this.clusterOptions.clusterRadius,
+          data,
+          clusterRadius,
         }]
       );
       this.drawGeoJsonlayer();
     },
     drawGeoJsonlayer () {
-      let point = _.find(this.clusterOptions.style.range, (item) => { return item.level == 1 });
+      const point = _.find(this.clusterOptions.style.range, (item) => item.level == 1);
       this.geoJsonlayer = {
         'id': `${this.sourceId}_circle`,
         'type': 'circle',
@@ -65,16 +66,16 @@ export default {
     },
     updateMarkers() {
       let newMarkers = {};
-      let features = this.mapApi('querySourceFeatures', [this.sourceId]);
+      const features = this.mapApi('querySourceFeatures', [this.sourceId]);
       _.each(features, (feature) => {
-        let coords = feature.geometry.coordinates;
-        let props = feature.properties;
+        const coords = feature.geometry.coordinates;
+        const props = feature.properties;
         if (!props.cluster) return;
 
-        let id = props.cluster_id;
+        const id = props.cluster_id;
         let marker = this.markers[id];
         if (!marker) {
-          let el = this.createClusterCircle(props);
+          const el = this.createClusterCircle(props);
           marker = this.markers[id] = new mapboxgl.Marker({ element: el }).setLngLat(coords);
         }
         newMarkers[id] = marker;
@@ -103,7 +104,7 @@ export default {
       });
     },
     clusterClick (e) {
-      let features = this.mapApi('queryRenderedFeatures', [
+      const features = this.mapApi('queryRenderedFeatures', [
         e.point,
         { layers: [this.geoJsonlayer.id] }
       ]);
@@ -111,8 +112,8 @@ export default {
     },
     createClusterCircle(props) {
       let total = props.point_count;
-      let range = _.sortBy(this.clusterOptions.style.range, (item) => { return item.level });
-      let option = _.find(range, (item, index) => {
+      let range = _.sortBy(this.clusterOptions.style.range, (item) => item.level);
+      const option = _.find(range, (item, index) => {
         switch(index) {
           case 0:
             return;
@@ -122,9 +123,8 @@ export default {
             return total >= range[index - 1].max && total < item.max;
         }
       });
-      let size = option.size
-      let color = option.color;
-      let html = `<div class='animation-wrapper'>
+      const {size, color} = option;
+      const html = `<div class='animation-wrapper'>
                     <div class='circle' style='width: ${size}px; height: ${size}px; background: ${color}'>
                       ${total.toLocaleString()}
                     </div>
