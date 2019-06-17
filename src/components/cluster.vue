@@ -131,7 +131,7 @@ export default {
                     <div class='circle' style='width: ${size}px; height: ${size}px; background: ${color}'>
                       ${total.toLocaleString()}
                     </div>
-                    <span style='width: ${size}px; height: ${size}px; background: ${color};'></span>
+                    <span class="animation-ripples" style='width: ${size}px; height: ${size}px; background: ${color};'></span>
                   </div>`;
       let el = document.createElement('div');
       el.innerHTML = html;
