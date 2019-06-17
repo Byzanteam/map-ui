@@ -13,26 +13,32 @@
         :clusterOptions="clusterOptions"
         :mapApi="mapApi"
         @addMarker="addMarkerFunc" />
+      <regions-box
+        :regions-options="regionsOptions"
+        :map-api="mapApi" />
     </mgl-map>
   </div>
 </template>
 
 <script>
 import { MglMap } from 'vue-mapbox';
-import PROFILE from '../resources/profile';
+import RegionsBox from './regions_box.vue';
 import Cluster from './cluster.vue';
+import PROFILE from '../resources/profile';
 
 export default {
   name: 'BaseMap',
   components: {
     MglMap,
     Cluster,
+    RegionsBox,
   },
-  data() {
+  data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
       clusterOptions: PROFILE.parameter.layers.clusters,
+      regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
   computed: {
