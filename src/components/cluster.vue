@@ -1,7 +1,7 @@
 <template>
-  <MglGeojsonLayer
-    :sourceId="sourceId"
-    :layerId="geoJsonlayer.id"
+  <mgl-geojson-layer
+    :source-id="sourceId"
+    :layer-id="geoJsonlayer.id"
     :layer="geoJsonlayer" />
 </template>
 
