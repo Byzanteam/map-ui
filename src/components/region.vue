@@ -21,7 +21,7 @@ export default {
     MglGeojsonLayer,
   },
   props: {
-    mapOn: {
+    mapApi: {
       type: Function,
       required: true,
     },
@@ -96,7 +96,7 @@ export default {
     },
     bindEvents (events, layerId) {
       _.forOwn(events, (funcName, event) => {
-        this.mapOn(event, layerId, this[funcName]);
+        this.mapApi('on', [event, layerId, this[funcName]]);
       });
     },
     highlight () {

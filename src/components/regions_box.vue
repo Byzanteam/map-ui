@@ -5,7 +5,7 @@
       :key="feature.properties.id"
       :source="feature"
       :regions-options="regionsOptions"
-      :map-on="mapOn" />
+      :map-api="mapApi" />
   </div>
 </template>
 
@@ -19,15 +19,7 @@ export default {
     Region,
   },
   props: {
-    mapOn: {
-      type: Function,
-      required: true,
-    },
-    mapGetSource: {
-      type: Function,
-      required: true,
-    },
-    mapAddSource:  {
+    mapApi: {
       type: Function,
       required: true,
     },
@@ -56,11 +48,14 @@ export default {
     addSource () {
       _.each(this.features, (feature) => {
         let source_id = feature.properties.id;
-        if(!this.mapGetSource(source_id)) {
-          this.mapAddSource(source_id, {
-            type: 'geojson',
-            data: feature,
-          });
+        if(!this.mapApi('getSource', [source_id])) {
+          this.mapApi('addSource', [
+            source_id,
+            {
+              type: 'geojson',
+              data: feature,
+            }
+          ]);
         }
       });
     },

@@ -8,11 +8,14 @@
       :center="mapOptions.center"
       :map-style="mapOptions.style"
       @load="onMapLoaded">
+      <cluster
+        :map="map"
+        :clusterOptions="clusterOptions"
+        :mapApi="mapApi"
+        @addMarker="addMarkerFunc" />
       <regions-box
         :regions-options="regionsOptions"
-        :map-on="mapOn"
-        :map-get-source="getSource"
-        :map-add-source="addSource" />
+        :map-api="mapApi" />
     </mgl-map>
   </div>
 </template>
@@ -20,18 +23,21 @@
 <script>
 import { MglMap } from 'vue-mapbox';
 import RegionsBox from './regions_box.vue';
+import Cluster from './cluster.vue';
 import PROFILE from '../resources/profile';
 
 export default {
   name: 'BaseMap',
   components: {
     MglMap,
+    Cluster,
     RegionsBox,
   },
   data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
+      clusterOptions: PROFILE.parameter.layers.clusters,
       regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
@@ -46,14 +52,11 @@ export default {
     onMapLoaded (event) {
       this.map = event.map;
     },
-    mapOn (event, layer_id, func) {
-      this.map.on(event, layer_id, func);
+    mapApi (apiName, options) {
+      return this.map[apiName](...options);
     },
-    getSource (id) {
-      this.map.getSource(id);
-    },
-    addSource (id, options) {
-      this.map.addSource(id, options);
+    addMarkerFunc(marker) {
+      marker.addTo(this.map);
     },
   },
 };
