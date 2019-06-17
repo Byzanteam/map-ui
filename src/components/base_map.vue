@@ -7,8 +7,8 @@
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :map-style="mapOptions.style"
-      @load="onMapLoaded" />
-      <regionsBox
+      @load="onMapLoaded">
+      <regions-box
         :regionsOptions="regionsOptions"
         :mapOn="mapOn"
         :mapGetSource="getSource"

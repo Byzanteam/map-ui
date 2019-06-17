@@ -152,7 +152,8 @@ const PROFILE =  {
               dasharray: [2, 2],
             },
             events: {
-              'click': 'hightlight',
+              'mouseover': 'highlight',
+              'mouseout': 'highlightCancel'
             },
           },
           background: {
@@ -162,7 +163,8 @@ const PROFILE =  {
               opacity: 0.3,
             },
             events: {
-              'click': 'hightlight',
+              'mousemove': 'highlight',
+              'mouseout': 'highlightCancel'
             },
           },
           highlight: {
@@ -176,7 +178,8 @@ const PROFILE =  {
                 dasharray: [2, 2],
               },
               events: {
-                'click': 'hightlight',
+                'mouseover': 'highlight',
+                'mouseout': 'highlightCancel'
               },
             },
             background: {
@@ -186,7 +189,8 @@ const PROFILE =  {
                 opacity: 0.3,
               },
               events: {
-                'click': 'hightlight',
+                'mouseover': 'highlight',
+                'mouseout': 'highlightCancel'
               },
             },
           },
