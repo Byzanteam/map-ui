@@ -3,12 +3,11 @@
 </template>
 
 <script>
-import BaseMap from './components/base_map.vue'
+import BaseMap from './components/base_map.vue';
 
 export default {
-  name: 'app',
   components: {
-    BaseMap
-  }
+    BaseMap,
+  },
 };
 </script>

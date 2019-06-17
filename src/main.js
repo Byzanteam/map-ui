@@ -1,11 +1,9 @@
-import Vue from 'vue'
-import App from './App.vue'
-
-Vue.config.productionTip = false
-
-// 导入组件库
+import Vue from 'vue';
+import App from './App.vue';
 import './styles/index.scss';
+
+Vue.config.productionTip = false;
 
 new Vue({
   render: h => h(App),
-}).$mount('#app')
+}).$mount('#app');

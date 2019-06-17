@@ -2,18 +2,18 @@
   <div
     :style="containerStyle"
     class="container">
-    <MglMap
-      :accessToken="mapOptions.accessToken"
+    <mgl-map
+      :access-token="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
-      :mapStyle="mapOptions.style"
+      :map-style="mapOptions.style"
       @load="onMapLoaded">
-      <Cluster
+      <cluster
         :map="map"
         :clusterOptions="clusterOptions"
         :mapApi="mapApi"
         @addMarker="addMarkerFunc" />
-    </MglMap>
+    </mgl-map>
   </div>
 </template>
 
@@ -38,7 +38,7 @@ export default {
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${ this.mapOptions.background })`
+        backgroundImage: `url(${this.mapOptions.background})`,
       };
     },
   },
@@ -51,8 +51,8 @@ export default {
     },
     addMarkerFunc(marker) {
       marker.addTo(this.map);
-    }
-  }
+    },
+  },
 };
 </script>
 
