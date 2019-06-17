@@ -3,12 +3,11 @@
     :style="containerStyle"
     class="container">
     <mgl-map
-      :accessToken="mapOptions.accessToken"
+      :access-token="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
-      :mapStyle="mapOptions.style"
-      @load="onMapLoaded">
-    </mgl-map>
+      :map-style="mapOptions.style"
+      @load="onMapLoaded" />
   </div>
 </template>
 
@@ -21,7 +20,7 @@ export default {
   components: {
     MglMap,
   },
-  data() {
+  data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
@@ -30,7 +29,7 @@ export default {
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${ this.mapOptions.background })`
+        backgroundImage: `url(${this.mapOptions.background})`,
       };
     },
   },
@@ -38,7 +37,7 @@ export default {
     onMapLoaded (event) {
       this.map = event.map;
     },
-  }
+  },
 };
 </script>
 
