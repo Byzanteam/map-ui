@@ -1,15 +1,15 @@
 <template>
   <div
-    class="container"
-    :style="containerStyle">
-    <MglMap
-      :accessToken="mapOptions.accessToken"
+    :style="containerStyle"
+    class="container">
+    <mgl-map
+      :access-token="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
-      :mapStyle="mapOptions.style"
+      :map-style="mapOptions.style"
       @load="onMapLoaded">
       <Markers :markerOptions="markerOptions" />
-    </MglMap>
+    </mgl-map>
   </div>
 </template>
 
@@ -29,25 +29,24 @@ export default {
       map: null,
       mapOptions: PROFILE.parameter,
       markerOptions: PROFILE.parameter.layers.marker,
-      regionsOptions: PROFILE.parameter.layers.regions,
     };
   },
   computed: {
     containerStyle () {
       return {
-        backgroundImage: `url(${ this.mapOptions.background })`
+        backgroundImage: `url(${this.mapOptions.background})`,
       };
     },
   },
   methods: {
-    onMapLoaded(event) {
+    onMapLoaded (event) {
       this.map = event.map;
     },
   },
 };
 </script>
 
-<style>
+<style lang="scss">
   .container {
     background-size: 100% 100%;
     bottom: 0;
@@ -56,16 +55,16 @@ export default {
     top: 0;
     position: absolute;
     z-index: 1;
-  }
 
-  .container::before {
-    background: #333;
-    content: "";
-    height: 100%;
-    opacity: .3;
-    position: absolute;
-    width: 100%;
-    z-index: 2;
+    &::before {
+      background: #333;
+      content: "";
+      height: 100%;
+      opacity: .3;
+      position: absolute;
+      width: 100%;
+      z-index: 2;
+    }
   }
 
   .mgl-map-wrapper {
