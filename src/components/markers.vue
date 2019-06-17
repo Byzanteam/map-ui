@@ -1,12 +1,12 @@
 <template>
   <div class="markers-wrapper">
-    <marke-with-popup
+    <marker-with-popup
       v-for="(marker, index) in markerOptions.data"
       :key="index"
       :marker="marker"
       :markerStyle="markerOptions.style"
       :events="markerOptions.events">
-    </marke-with-popup>
+    </marker-with-popup>
   </div>
 </template>
 
