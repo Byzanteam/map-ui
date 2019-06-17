@@ -56,7 +56,7 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
   .container {
     background-size: 100% 100%;
     bottom: 0;
@@ -65,16 +65,16 @@ export default {
     top: 0;
     position: absolute;
     z-index: 1;
-  }
 
-  .container::before {
-    background: #333;
-    content: "";
-    height: 100%;
-    opacity: .3;
-    position: absolute;
-    width: 100%;
-    z-index: 2;
+    &::before {
+      background: #333;
+      content: "";
+      height: 100%;
+      opacity: .3;
+      position: absolute;
+      width: 100%;
+      z-index: 2;
+    }
   }
 
   .mgl-map-wrapper {
