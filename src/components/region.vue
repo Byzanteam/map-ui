@@ -67,26 +67,28 @@ export default {
       };
     },
     parseRegionsFillLayer (profile) {
+      const { color, opacity } = profile.style;
       return {
         'style': {
           'type': 'fill',
           'paint': {
-            'fill-color': profile.style.color,
-            'fill-opacity': profile.style.opacity,
+            'fill-color': color,
+            'fill-opacity': opacity,
           },
         },
         'events': profile.events,
       };
     },
     parseRegionsLineLayer (profile) {
+      const { color, width, opacity, dasharray } = profile.style;
       return {
         'style': {
           'type': 'line',
           'paint': {
-            'line-color': profile.style.color,
-            'line-width': profile.style.width,
-            'line-opacity': profile.style.opacity,
-            'line-dasharray': profile.style.dasharray,
+            'line-color': color,
+            'line-width': width,
+            'line-opacity': opacity,
+            'line-dasharray': dasharray,
           },
         },
         'events': profile.events,
