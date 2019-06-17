@@ -4,8 +4,8 @@
       v-for="feature in features"
       :key="feature.properties.id"
       :source="feature"
-      :regionsOptions="regionsOptions"
-      :mapOn="mapOn" />
+      :regions-options="regionsOptions"
+      :map-on="mapOn" />
   </div>
 </template>
 

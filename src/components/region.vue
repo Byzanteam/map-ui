@@ -1,12 +1,12 @@
 <template>
   <div class="layers-wrapper">
     <mgl-geojson-layer
-      :sourceId="sourceId"
-      :layerId="sourceId + 'fill'"
+      :source-id="sourceId"
+      :layer-id="`${sourceId}fill`"
       :layer="regionsFillLayer.style" />
     <mgl-geojson-layer
-      :sourceId="sourceId"
-      :layerId="sourceId + 'line'"
+      :source-id="sourceId"
+      :layer-id="`${sourceId}line`"
       :layer="regionsLineLayer.style" />
   </div>
 </template>

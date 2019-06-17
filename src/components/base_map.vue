@@ -9,10 +9,10 @@
       :map-style="mapOptions.style"
       @load="onMapLoaded">
       <regions-box
-        :regionsOptions="regionsOptions"
-        :mapOn="mapOn"
-        :mapGetSource="getSource"
-        :mapAddSource="addSource" />
+        :regions-options="regionsOptions"
+        :map-on="mapOn"
+        :map-get-source="getSource"
+        :map-add-source="addSource" />
     </mgl-map>
   </div>
 </template>
