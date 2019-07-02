@@ -97,8 +97,8 @@ const PROFILE =  {
           animation: 'Ripples',
         },
         events: {
-          'mouseenter': 'popupOpen',
-          'mouseleave': 'popupClose'
+          mouseenter: 'popupOpen',
+          mouseleave: 'popupClose',
         },
       },
       clusters: {
@@ -109,33 +109,33 @@ const PROFILE =  {
           type: '',
           range: [
             {
-              'level': 1,
-              'max': 1,
-              'color': '#55d2e1',
-              'size': 10,
+              level: 1,
+              max: 1,
+              color: '#55d2e1',
+              size: 10,
             },
             {
-              'level': 2,
-              'max': 100,
-              'color': '#51bbd6',
-              'size': 20,
+              level: 2,
+              max: 100,
+              color: '#51bbd6',
+              size: 20,
             },
             {
-              'level': 3,
-              'max': 750,
-              'color': '#f1f075',
-              'size': 30,
+              level: 3,
+              max: 750,
+              color: '#f1f075',
+              size: 30,
             },
             {
-              'level': 4,
-              'max': null,
-              'color': '#f28cb1',
-              'size': 40,
+              level: 4,
+              max: null,
+              color: '#f28cb1',
+              size: 40,
             },
           ],
         },
         events: {
-          'click': 'clusterClick',
+          click: 'clusterClick',
         },
       },
       regions: {
@@ -152,8 +152,8 @@ const PROFILE =  {
               dasharray: [2, 2],
             },
             events: {
-              'mousemove': 'highlight',
-              'mouseout': 'highlightCancel'
+              mousemove: 'highlight',
+              mouseout: 'highlightCancel',
             },
           },
           background: {
@@ -163,8 +163,8 @@ const PROFILE =  {
               opacity: 0.3,
             },
             events: {
-              'mousemove': 'highlight',
-              'mouseout': 'highlightCancel'
+              mousemove: 'highlight',
+              mouseout: 'highlightCancel',
             },
           },
           highlight: {
