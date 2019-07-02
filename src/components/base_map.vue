@@ -1,22 +1,26 @@
 <template>
   <div
     :style="containerStyle"
-    class="container">
+    class="container"
+  >
     <mgl-map
       :access-token="mapOptions.accessToken"
       :zoom="mapOptions.zoom"
       :center="mapOptions.center"
       :map-style="mapOptions.style"
-      @load="onMapLoaded">
-      <markers :markerOptions="markerOptions" />
+      @load="onMapLoaded"
+    >
+      <markers :marker-options="markerOptions" />
       <cluster
         :map="map"
-        :clusterOptions="clusterOptions"
-        :mapApi="mapApi"
-        @addMarker="addMarkerFunc" />
+        :cluster-options="clusterOptions"
+        :map-api="mapApi"
+        @addMarker="addMarkerFunc"
+      />
       <regions-box
         :regions-options="regionsOptions"
-        :map-api="mapApi" />
+        :map-api="mapApi"
+      />
     </mgl-map>
   </div>
 </template>
@@ -36,7 +40,7 @@ export default {
     Cluster,
     RegionsBox,
   },
-  data() {
+  data () {
     return {
       map: null,
       mapOptions: PROFILE.parameter,
@@ -59,7 +63,7 @@ export default {
     mapApi (apiName, options) {
       return this.map[apiName](...options);
     },
-    addMarkerFunc(marker) {
+    addMarkerFunc (marker) {
       marker.addTo(this.map);
     },
   },
@@ -67,28 +71,27 @@ export default {
 </script>
 
 <style lang="scss">
-  .container {
-    background-size: 100% 100%;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    top: 0;
+.container {
+  background-size: 100% 100%;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  top: 0;
+  position: absolute;
+  z-index: 1;
+
+  &::before {
+    background: #333;
+    content: "";
+    height: 100%;
+    opacity: 0.3;
     position: absolute;
-    z-index: 1;
-
-    &::before {
-      background: #333;
-      content: "";
-      height: 100%;
-      opacity: .3;
-      position: absolute;
-      width: 100%;
-      z-index: 2;
-    }
+    width: 100%;
+    z-index: 2;
   }
+}
 
-  .mgl-map-wrapper {
-    z-index: 4;
-  }
+.mgl-map-wrapper {
+  z-index: 4;
+}
 </style>
-

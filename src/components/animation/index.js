@@ -1,6 +1,6 @@
-import Vue from "vue";
-import _ from "lodash";
-import Ripples from "./ripples.vue";
+import Vue from 'vue';
+import _ from 'lodash';
+import Ripples from './ripples.vue';
 
 const components = {
   Ripples,

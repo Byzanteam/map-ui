@@ -1,28 +1,32 @@
 <template>
   <mgl-marker :coordinates="marker.geometry.coordinates">
-    <div slot="marker" v-bindEvents>
+    <div
+      slot="marker"
+      v-bindEvents
+    >
       <component
         :is="markerStyle.animation"
         :color="markerStyle.color"
-        :size="markerStyle.size">
+        :size="markerStyle.size"
+      >
         <icon
           slot="svg-icon"
           :size="markerStyle.size"
           :color="markerStyle.color"
-          class="icon-image">
-        </icon>
+          class="icon-image"
+        />
       </component>
       <label
         ref="markerTextRef"
         :style="{ fontSize: markerStyle.fontSize }"
-        class="marker-text">
-        {{ marker.properties.message }}
-      </label>
+        class="marker-text"
+      >{{ marker.properties.message }}</label>
     </div>
     <mgl-popup
-      :closeButton="false"
+      :close-button="false"
       :showed="popupShowed"
-      :offset="popupOffset">
+      :offset="popupOffset"
+    >
       <div>{{ marker.properties.message }}</div>
     </mgl-popup>
   </mgl-marker>
@@ -39,8 +43,22 @@ export default {
     MglPopup,
     Icon,
   },
+  directives: {
+    bindEvents: {
+      inserted (el, binding, vnode) {
+        const vm = vnode.context;
+        _.forOwn(vm.events, (func, event) => {
+          el.addEventListener(event, () => {
+            if (vm[func]) {
+              vm[func]();
+            }
+          });
+        });
+      },
+    },
+  },
   props: {
-    marker:  {
+    marker: {
       type: Object,
       default () {
         return {};
@@ -65,26 +83,12 @@ export default {
       popupShowed: false,
     };
   },
-  directives: {
-    bindEvents: {
-      inserted: function(el, binding, vnode) {
-        let vm = vnode.context;
-        _.forOwn(vm.events, function(func, event) {
-          el.addEventListener(event, function() {
-            if(vm[func]) {
-              vm[func]();
-            }
-          });
-        });
-      },
-    },
-  },
   mounted () {
     this.getPopupOffset();
   },
   methods: {
     getPopupOffset () {
-      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight/2];
+      this.popupOffset = [0, -this.$refs.markerTextRef.offsetHeight / 2];
     },
     popupOpen () {
       this.popupShowed = true;
@@ -93,29 +97,29 @@ export default {
       this.popupShowed = false;
     },
   },
-}
+};
 </script>
 
 <style lang="scss">
-  .mapboxgl-marker {
-    align-items: center;
-    display: flex;
-    flex-direction: column;
-  }
+.mapboxgl-marker {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+}
 
-  .marker-text {
-    line-height: 1;
-  }
+.marker-text {
+  line-height: 1;
+}
 
-  .icon-image {
-    left: 50%;
-    position: absolute;
-    transform: translate(-50%, -50%);
-    top: 50%;
-    z-index: 0;
-  }
+.icon-image {
+  left: 50%;
+  position: absolute;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  z-index: 0;
+}
 
-  .animation-wrapper {
-    position: relative;
-  }
+.animation-wrapper {
+  position: relative;
+}
 </style>

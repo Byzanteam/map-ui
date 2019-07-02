@@ -4,9 +4,9 @@
       v-for="(marker, index) in markerOptions.data"
       :key="index"
       :marker="marker"
-      :markerStyle="markerOptions.style"
-      :events="markerOptions.events">
-    </marker-with-popup>
+      :marker-style="markerOptions.style"
+      :events="markerOptions.events"
+    />
   </div>
 </template>
 
@@ -25,5 +25,5 @@ export default {
       },
     },
   },
-}
+};
 </script>
