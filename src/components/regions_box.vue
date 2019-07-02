@@ -5,7 +5,8 @@
       :key="feature.properties.id"
       :source="feature"
       :regions-options="regionsOptions"
-      :map-api="mapApi" />
+      :map-api="mapApi"
+    />
   </div>
 </template>
 
@@ -38,12 +39,10 @@ export default {
   },
   methods: {
     parseGeojson () {
-      axios
-        .get(this.regionsOptions.data)
-        .then(response => {
-          this.features = response.data.features;
-          this.addSource();
-        });
+      axios.get(this.regionsOptions.data).then((response) => {
+        this.features = response.data.features;
+        this.addSource();
+      });
     },
     addSource () {
       _.each(this.features, (feature) => {

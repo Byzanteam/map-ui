@@ -1,12 +1,13 @@
 <template>
   <div
     :style="{ width: mapedSize, height: mapedSize }"
-    class="animation-wrapper">
+    class="animation-wrapper"
+  >
     <slot name="svg-icon" />
     <span
       :style="{ width: mapedSize, height: mapedSize, background: color }"
-      class="animation-ripples">
-    </span>
+      class="animation-ripples"
+    />
   </div>
 </template>
 

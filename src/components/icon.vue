@@ -2,11 +2,13 @@
   <svg
     :width="size + 'px'"
     :height="size + 'px'"
-    :fill="color">
+    :fill="color"
+  >
     <circle
       :cx="size/2"
       :cy="size/2"
-      :r="size/2" />
+      :r="size/2"
+    />
   </svg>
 </template>
 

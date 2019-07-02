@@ -5,7 +5,8 @@
       :key="index"
       :marker="marker"
       :marker-style="markerOptions.style"
-      :events="markerOptions.events" />
+      :events="markerOptions.events"
+    />
   </div>
 </template>
 

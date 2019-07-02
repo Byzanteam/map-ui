@@ -3,11 +3,13 @@
     <mgl-geojson-layer
       :source-id="sourceId"
       :layer-id="`${sourceId}fill`"
-      :layer="regionsFillLayer.style" />
+      :layer="regionsFillLayer.style"
+    />
     <mgl-geojson-layer
       :source-id="sourceId"
       :layer-id="`${sourceId}line`"
-      :layer="regionsLineLayer.style" />
+      :layer="regionsLineLayer.style"
+    />
   </div>
 </template>
 
@@ -62,36 +64,41 @@ export default {
   methods: {
     initRegionsLayer (layers) {
       this.regionsLayerOptions = {
-        'fill_layer_options': this.parseRegionsFillLayer(layers.background),
-        'line_layer_options': this.parseRegionsLineLayer(layers.outline),
+        fill_layer_options: this.parseRegionsFillLayer(layers.background),
+        line_layer_options: this.parseRegionsLineLayer(layers.outline),
       };
     },
     parseRegionsFillLayer (profile) {
       const { color, opacity } = profile.style;
       return {
-        'style': {
-          'type': 'fill',
-          'paint': {
+        style: {
+          type: 'fill',
+          paint: {
             'fill-color': color,
             'fill-opacity': opacity,
           },
         },
-        'events': profile.events,
+        events: profile.events,
       };
     },
     parseRegionsLineLayer (profile) {
-      const { color, width, opacity, dasharray } = profile.style;
+      const {
+        color,
+        width,
+        opacity,
+        dasharray,
+      } = profile.style;
       return {
-        'style': {
-          'type': 'line',
-          'paint': {
+        style: {
+          type: 'line',
+          paint: {
             'line-color': color,
             'line-width': width,
             'line-opacity': opacity,
             'line-dasharray': dasharray,
           },
         },
-        'events': profile.events,
+        events: profile.events,
       };
     },
     bindEvents (events, layerId) {

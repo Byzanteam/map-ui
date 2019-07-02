@@ -2,7 +2,8 @@
   <mgl-geojson-layer
     :source-id="sourceId"
     :layer-id="geoJsonlayer.id"
-    :layer="geoJsonlayer" />
+    :layer="geoJsonlayer"
+  />
 </template>
 
 <script>
@@ -47,21 +48,21 @@ export default {
           cluster: true,
           data,
           clusterRadius,
-        }
+        },
       ]);
       this.drawGeoJsonlayer();
     },
     drawGeoJsonlayer () {
-      const point = _.minBy(this.clusterOptions.style.range, (item) => {
-        return item.level;
-      });
+      const point = _.minBy(
+        this.clusterOptions.style.range, item => item.level
+      );
 
       const { color, size } = point;
       this.geoJsonlayer = {
-        'id': `${this.sourceId}_circle`,
-        'type': 'circle',
-        'source': this.sourceId,
-        'paint': {
+        id: `${this.sourceId}_circle`,
+        type: 'circle',
+        source: this.sourceId,
+        paint: {
           'circle-color': color,
           'circle-radius': size,
         },
@@ -120,9 +121,9 @@ export default {
     },
     createClusterCircle (props) {
       const total = props.point_count;
-      const range = _.sortBy(this.clusterOptions.style.range, (item) => {
-        item.level;
-      });
+      const range = _.sortBy(
+        this.clusterOptions.style.range, item => item.level
+      );
 
       const option = _.find(range, (item, index) => {
         switch (index) {
