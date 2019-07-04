@@ -1,9 +1,5 @@
 import Vue from 'vue';
 import App from './App.vue';
-import './styles/index.scss';
-import Animation from './components/animation';
-
-Animation.init();
 
 Vue.config.productionTip = false;
 

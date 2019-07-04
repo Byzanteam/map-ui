@@ -6,8 +6,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
-
 // move key to config
 const KEY = 'd1d5c1dd836024b07017d5c639705937';
 
