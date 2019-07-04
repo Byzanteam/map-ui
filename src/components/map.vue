@@ -19,7 +19,13 @@ export const BaseMap = {
     },
     mapStyle: {
       type: String,
-      default: '',
+      default: amap.style || '',
+    },
+    mapOptions: {
+      type: Object,
+      default () {
+        return {};
+      },
     },
   },
 
@@ -45,7 +51,7 @@ export const BaseMap = {
     initialize () {
       const features = this.transparent ? [] : ['bg', 'road', 'building', 'point'];
       this.instance.map = new AMap.Map(this.$el, {
-        zoom: 12,
+        ...this.mapOptions,
         features,
         mapStyle: this.mapStyle,
       });
