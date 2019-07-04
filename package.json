@@ -8,8 +8,8 @@
   "repository": "https://github.com/Byzanteam/map-ui",
   "description": "map component for byzanteam",
   "scripts": {
-    "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
+    "serve": "vue-cli-service serve example/index.js",
+    "build": "vue-cli-service build --target lib --name map-ui src/index.js",
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
