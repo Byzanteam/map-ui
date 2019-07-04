@@ -1,13 +1,17 @@
 <template>
-  <base-map />
+  <base-map>
+    <test />
+  </base-map>
 </template>
 
 <script>
 import BaseMap from '../src/components/map.vue';
+import test from '../src/components/test.vue';
 
 export default {
   components: {
     BaseMap,
+    test,
   },
 };
 </script>

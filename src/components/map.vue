@@ -7,10 +7,10 @@
 
 <script>
 // move key to config
-const KEY = 'd1d5c1dd836024b07017d5c639705937';
+const { amap } = require('../../config.json');
 
-export const Map = {
-  name: 'Map',
+export const BaseMap = {
+  name: 'BaseMap',
 
   props: {
     transparent: {
@@ -20,10 +20,6 @@ export const Map = {
     mapStyle: {
       type: String,
       default: '',
-    },
-    version: {
-      type: String,
-      default: '1.4.15',
     },
   },
 
@@ -49,7 +45,7 @@ export const Map = {
     initialize () {
       const features = this.transparent ? [] : ['bg', 'road', 'building', 'point'];
       this.instance.map = new AMap.Map(this.$el, {
-        zoom: '12',
+        zoom: 12,
         features,
         mapStyle: this.mapStyle,
       });
@@ -59,7 +55,7 @@ export const Map = {
       if ((typeof AMap) === 'undefined') {
         const script = document.createElement('script');
         script.charset = 'utf-8';
-        script.src = `https://webapi.amap.com/maps?v=${this.version}&key=${KEY}`;
+        script.src = `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`;
         script.onload = () => {
           this.$emit('AMapLoaded');
           this.initialize();
@@ -72,7 +68,7 @@ export const Map = {
   },
 };
 
-export default Map;
+export default BaseMap;
 </script>
 
 <style lang="scss" scoped>
