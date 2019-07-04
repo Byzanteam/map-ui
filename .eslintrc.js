@@ -8,6 +8,9 @@ module.exports = {
     "plugin:vue/recommended",
     "airbnb-base", // introduce airbnb lint
   ],
+  "globals": {
+    "AMap": true
+  },
   "plugins": ["vue"],
   "parserOptions": {
     "parser": "babel-eslint",
