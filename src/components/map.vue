@@ -61,7 +61,7 @@ export const BaseMap = {
       if ((typeof AMap) === 'undefined') {
         const script = document.createElement('script');
         script.charset = 'utf-8';
-        script.src = `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`;
+        script.src = `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}&plugin=${amap.plugin}`;
         script.onload = () => {
           this.$emit('AMapLoaded');
           this.initialize();
