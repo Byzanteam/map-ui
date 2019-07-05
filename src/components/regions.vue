@@ -6,6 +6,25 @@
 import _ from 'lodash';
 import axios from 'axios';
 
+const SIDE_OPTIONS = {
+  strokeColor: '#5fd0dc',
+  strokeWeight: 3,
+  strokeOpacity: 0.9,
+};
+
+const POLYGON_OPTIONS = {
+  strokeColor: 'white',
+  strokeDasharray: [5, 10],
+  fillColor: '#5fd0dc',
+  fillOpacity: 0.9,
+  strokeWeight: 1,
+};
+
+const POLYGONLINE_OPTIONS = {
+  strokeColor: '#5fd0dc',
+  strokeWeight: 1,
+};
+
 export default {
   inject: ['instance'],
 
@@ -21,31 +40,19 @@ export default {
     sideOptions: {
       type: Object,
       default () {
-        return {
-          strokeColor: '#5fd0dc',
-          strokeWeight: 3,
-        };
+        return {};
       },
     },
     polygonOptions: {
       type: Object,
       default () {
-        return {
-          strokeColor: 'white',
-          strokeStyle: 'dashed',
-          strokeDasharray: [5, 10],
-          fillColor: '#5fd0dc',
-          strokeWeight: 1,
-        };
+        return {};
       },
     },
     polylineOptions: {
       type: Object,
       default () {
-        return {
-          strokeColor: '#5fd0dc',
-          strokeWeight: 1,
-        };
+        return {};
       },
     },
   },
@@ -89,7 +96,7 @@ export default {
       return new AMap.Polyline({
         path: bound,
         map: this.map,
-        ...this.sideOptions,
+        ...(_.assign(SIDE_OPTIONS, this.sideOptions)),
       });
     },
 
@@ -97,15 +104,16 @@ export default {
       axios
         .get(this.regionsUrl)
         .then(({ data }) => {
+          console.log(data);
           const geojson = new AMap.GeoJSON({
             geoJSON: data.features,
             getPolygon: (json, lnglats) => new AMap.Polygon({
               path: lnglats,
-              ...this.polygonOptions,
+              ...(_.assign(POLYGON_OPTIONS, this.polygonOptions)),
             }),
             getPolyline: (json, lnglats) => new AMap.Polyline({
               path: lnglats,
-              ...this.polylineOptions,
+              ...(_.assign(POLYGONLINE_OPTIONS, this.polylineOptions)),
             }),
           });
           geojson.setMap(this.map);
