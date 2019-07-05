@@ -28,6 +28,7 @@ export default {
         extensions: 'all',
         level: 'city',
       };
+      this.renderGeojson();
       const district = new AMap.DistrictSearch(opts);
       district.search('中国', (status, result) => {
         const bounds = result.districtList[0].boundaries;
@@ -49,6 +50,23 @@ export default {
         strokeWeight: 4,
         map: this.map,
       });
+    },
+    renderGeojson () {
+      axios
+        .get('https://vanppo.me/trash/coods.geojson')
+        .then(({ data }) => {
+          const geojson = new AMap.GeoJSON({
+            geoJSON: data.features,
+            getPolygon: (json, lnglats) => new AMap.Polygon({
+              path: lnglats,
+              strokeColor: 'white',
+              strokeStyle: 'dashed',
+              strokeDasharray: [5, 10],
+              strokeWeight: 2,
+            }),
+          });
+          geojson.setMap(this.map);
+        });
     },
   },
 };
