@@ -58,18 +58,17 @@ export default {
 
   watch: {
     map () {
-      this.creatRegion();
+      this.renderMask();
     },
   },
 
   methods: {
-    creatRegion () {
+    renderMask () {
       const opts = {
         subdistrict: 0,
         extensions: 'all',
         level: 'country',
       };
-      this.renderGeojson();
       const district = new AMap.DistrictSearch(opts);
       district.search(this.maskArea, (status, result) => {
         const bounds = result.districtList[0].boundaries;
@@ -83,6 +82,7 @@ export default {
           this.creatPolyline(bound);
         });
       });
+      this.renderGeojson();
     },
 
     creatPolyline (bound) {
