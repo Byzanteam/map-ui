@@ -80,14 +80,12 @@ export default {
       district.search(this.maskArea, (status, result) => {
         const bounds = result.districtList[0].boundaries;
         const mask = [];
-        for (let i = 0; i < bounds.length; i += 1) {
-          mask.push([bounds[i]]);
-        }
-        this.map.setMask(mask);
-        // 描边
         _.each(bounds, (bound) => {
+          mask.push([bound]);
+          // 描边
           this.creatPolyline(bound);
         });
+        this.map.setMask(mask);
       });
       this.renderGeojson();
     },
@@ -104,7 +102,6 @@ export default {
       axios
         .get(this.regionsUrl)
         .then(({ data }) => {
-          console.log(data);
           const geojson = new AMap.GeoJSON({
             geoJSON: data.features,
             getPolygon: (json, lnglats) => new AMap.Polygon({
