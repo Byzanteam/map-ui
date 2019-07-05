@@ -43,6 +43,7 @@ export default {
         });
       });
     },
+
     creatPolyline (bound) {
       return new AMap.Polyline({
         path: bound,
@@ -51,6 +52,7 @@ export default {
         map: this.map,
       });
     },
+
     renderGeojson () {
       axios
         .get('https://vanppo.me/trash/coods.geojson')
