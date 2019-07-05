@@ -9,6 +9,47 @@ import axios from 'axios';
 export default {
   inject: ['instance'],
 
+  props: {
+    regionsUrl: {
+      type: String,
+      default: '',
+    },
+    maskArea: {
+      type: String,
+      default: '中国',
+    },
+    sideOptions: {
+      type: Object,
+      default () {
+        return {
+          strokeColor: '#5fd0dc',
+          strokeWeight: 3,
+        };
+      },
+    },
+    polygonOptions: {
+      type: Object,
+      default () {
+        return {
+          strokeColor: 'white',
+          strokeStyle: 'dashed',
+          strokeDasharray: [5, 10],
+          fillColor: '#5fd0dc',
+          strokeWeight: 1,
+        };
+      },
+    },
+    polylineOptions: {
+      type: Object,
+      default () {
+        return {
+          strokeColor: '#5fd0dc',
+          strokeWeight: 1,
+        };
+      },
+    },
+  },
+
   computed: {
     map () {
       return this.instance.map;
@@ -26,11 +67,11 @@ export default {
       const opts = {
         subdistrict: 0,
         extensions: 'all',
-        level: 'city',
+        level: 'country',
       };
       this.renderGeojson();
       const district = new AMap.DistrictSearch(opts);
-      district.search('中国', (status, result) => {
+      district.search(this.maskArea, (status, result) => {
         const bounds = result.districtList[0].boundaries;
         const mask = [];
         for (let i = 0; i < bounds.length; i += 1) {
@@ -47,15 +88,14 @@ export default {
     creatPolyline (bound) {
       return new AMap.Polyline({
         path: bound,
-        strokeColor: '#99ffff',
-        strokeWeight: 4,
         map: this.map,
+        ...this.sideOptions,
       });
     },
 
     renderGeojson () {
       axios
-        .get('https://vanppo.me/trash/coods.geojson')
+        .get(this.regionsUrl)
         .then(({ data }) => {
           const geojson = new AMap.GeoJSON({
             geoJSON: data.features,
@@ -73,7 +113,3 @@ export default {
   },
 };
 </script>
-
-<style>
-
-</style>
