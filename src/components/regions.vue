@@ -101,10 +101,11 @@ export default {
             geoJSON: data.features,
             getPolygon: (json, lnglats) => new AMap.Polygon({
               path: lnglats,
-              strokeColor: 'white',
-              strokeStyle: 'dashed',
-              strokeDasharray: [5, 10],
-              strokeWeight: 2,
+              ...this.polygonOptions,
+            }),
+            getPolyline: (json, lnglats) => new AMap.Polyline({
+              path: lnglats,
+              ...this.polylineOptions,
             }),
           });
           geojson.setMap(this.map);
