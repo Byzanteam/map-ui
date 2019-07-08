@@ -1,6 +1,5 @@
 <template>
   <base-map>
-    <test />
     <map-point
       :datas="pointDatas"
     />
@@ -9,13 +8,11 @@
 
 <script>
 import BaseMap from '../src/components/map.vue';
-import test from '../src/components/test.vue';
 import MapPoint from '../src/components/map_point.vue';
 
 export default {
   components: {
     BaseMap,
-    test,
     MapPoint,
   },
 
