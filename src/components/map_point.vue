@@ -1,3 +1,6 @@
+<template>
+  <div />
+</template>
 <script>
 import _ from 'lodash';
 
@@ -22,10 +25,6 @@ export const MapPoint = {
       type: Boolean,
       default: true,
     },
-    positionKey: {
-      type: String,
-      default: 'lnglat',
-    },
     descriptionKey: {
       type: String,
       default: 'description',
@@ -46,7 +45,11 @@ export const MapPoint = {
     },
 
     markerResult () {
-      return _.assign({}, DEFAULT_MAERKER, this.markerStyle);
+      return _.assign(
+        {},
+        DEFAULT_MAERKER,
+        this.markerStyle,
+      );
     },
   },
 
@@ -81,9 +84,10 @@ export const MapPoint = {
     generateMakers () {
       this.generateMarkers = this.data.map((itme) => {
         const marker = new AMap.Marker({
-          position: itme[this.positionKey],
+          position: itme.lnglat,
           content: this.getGraphics(),
           anchor: 'bottom-center',
+          extData: itme,
         });
         marker.on('mouseout', this.hiddenInfo);
         marker.on('mouseover', this.showInfo);
@@ -117,9 +121,10 @@ export const MapPoint = {
     },
 
     showInfo (e) {
-      e.target.setLabel({
+      const { target } = e;
+      target.setLabel({
         offset: new AMap.Pixel(0, -this.markerResult.radius),
-        content: '我是 marker 的 label 标签',
+        content: target.B.extData[this.descriptionKey],
         direction: 'center',
       });
     },
