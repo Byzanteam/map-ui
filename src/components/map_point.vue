@@ -1,7 +1,7 @@
 <script>
 import _ from 'lodash';
 
-const defaultMarker = {
+const DEFAULT_MAERKER = {
   radius: 20,
   strokeColor: '#767676',
   strokeWeight: 2,
@@ -14,7 +14,7 @@ export const MapPoint = {
       type: Array,
       default: () => [],
     },
-    marker: {
+    markerStyle: {
       type: Object,
       default: () => ({}),
     },
@@ -36,7 +36,7 @@ export const MapPoint = {
 
   data () {
     return {
-      markers: [],
+      generateMarkers: [],
     };
   },
 
@@ -46,7 +46,7 @@ export const MapPoint = {
     },
 
     markerResult () {
-      return _.assign({}, defaultMarker, this.marker);
+      return _.assign({}, DEFAULT_MAERKER, this.markerStyle);
     },
   },
 
@@ -75,11 +75,11 @@ export const MapPoint = {
         offset: new AMap.Pixel(-16, -16),
       }];
 
-      map.plugin(['AMap.MarkerClusterer'], () => new AMap.MarkerClusterer(map, this.markers, { styles }));
+      map.plugin(['AMap.MarkerClusterer'], () => new AMap.MarkerClusterer(map, this.generateMarkers, { styles }));
     },
 
     generateMakers () {
-      this.markers = this.data.map((itme) => {
+      this.generateMarkers = this.data.map((itme) => {
         const marker = new AMap.Marker({
           position: itme[this.positionKey],
           content: this.getGraphics(),
@@ -92,7 +92,7 @@ export const MapPoint = {
     },
 
     buildMakers (map) {
-      _(this.markers).forEach((value) => {
+      _(this.generateMarkers).forEach((value) => {
         value.setMap(map);
       });
     },
