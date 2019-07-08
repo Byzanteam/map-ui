@@ -88,7 +88,7 @@ export const MapPoint = {
           content: this.getGraphics(),
           anchor: 'bottom-center',
           extData: itme,
-          offset: new AMap.Pixel(0, 0)
+          offset: new AMap.Pixel(0, 0),
         });
         marker.on('mouseout', this.hiddenInfo);
         marker.on('mouseover', this.showInfo);
