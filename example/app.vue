@@ -1,7 +1,7 @@
 <template>
   <base-map>
     <map-point
-      :datas="pointDatas"
+      :data="pointData"
     />
   </base-map>
 </template>
@@ -18,7 +18,7 @@ export default {
 
   data () {
     return {
-      pointDatas: [
+      pointData: [
         { lnglat: [116.258446, 37.686622], name: '景县' },
         { lnglat: [113.559954, 22.124049], name: '圣方济各堂区' },
         { lnglat: [116.366794, 39.915309], name: '西城区' },

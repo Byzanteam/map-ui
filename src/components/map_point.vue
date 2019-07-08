@@ -10,7 +10,7 @@ const defaultMarker = {
 
 export const MapPoint = {
   props: {
-    datas: {
+    data: {
       type: Array,
       default: () => [],
     },
@@ -79,7 +79,7 @@ export const MapPoint = {
     },
 
     generateMakers () {
-      this.markers = this.datas.map((itme) => {
+      this.markers = this.data.map((itme) => {
         const marker = new AMap.Marker({
           position: itme[this.positionKey],
           content: this.getGraphics(),
