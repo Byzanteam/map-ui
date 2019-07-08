@@ -45,11 +45,10 @@ export const MapPoint = {
     },
 
     markerResult () {
-      return _.assign(
-        {},
-        DEFAULT_MAERKER,
-        this.markerStyle,
-      );
+      return {
+        ...DEFAULT_MAERKER,
+        ...this.markerStyle,
+      };
     },
   },
 

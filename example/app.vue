@@ -1,8 +1,8 @@
 <template>
   <base-map>
     <map-point
-      description-key="name"
       :data="pointData"
+      description-key="name"
     />
   </base-map>
 </template>
