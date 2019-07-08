@@ -47,10 +47,7 @@ export default {
     hoveredPolygonOptions: {
       type: Object,
       default () {
-        return {
-          fillColor: 'blue',
-          strokeColor: 'red',
-        };
+        return {};
       },
     },
   },
