@@ -55,6 +55,12 @@ export default {
         return {};
       },
     },
+    hoveredPolygonOptions: {
+      type: Object,
+      default () {
+        return {};
+      },
+    },
   },
 
   computed: {
@@ -104,10 +110,20 @@ export default {
         .then(({ data }) => {
           const geojson = new AMap.GeoJSON({
             geoJSON: data.features,
-            getPolygon: (json, lnglats) => new AMap.Polygon({
-              path: lnglats,
-              ...(_.assign(POLYGON_OPTIONS, this.polygonOptions)),
-            }),
+            getPolygon: (json, lnglats) => {
+              const options = _.assign(POLYGON_OPTIONS, this.polygonOptions);
+              const polygon =  new AMap.Polygon({
+                path: lnglats,
+                ...options,
+              });
+              polygon.on('mouseover', () => {
+                polygon.setOptions(this.hoveredPolygonOptions);
+              });
+              polygon.on('mouseout', () => {
+                polygon.setOptions(options);
+              });
+              return polygon;
+            },
             getPolyline: (json, lnglats) => new AMap.Polyline({
               path: lnglats,
               ...(_.assign(POLYGONLINE_OPTIONS, this.polylineOptions)),
