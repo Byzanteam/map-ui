@@ -77,7 +77,7 @@ export default {
         const mask = [];
         _.each(bounds, (bound) => {
           mask.push([bound]);
-          // 描边
+          // 第一级区域描边
           this.creatPolyline(bound);
         });
         this.map.setMask(mask);
