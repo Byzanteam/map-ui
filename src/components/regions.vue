@@ -6,6 +6,8 @@
 import _ from 'lodash';
 import axios from 'axios';
 
+const LABEL_DATA = require('../../source/label.json');
+
 const SIDE_OPTIONS = {
   strokeColor: '#5fd0dc',
   strokeWeight: 3,
@@ -25,6 +27,10 @@ export default {
 
   props: {
     regionsUrl: {
+      type: String,
+      default: '',
+    },
+    labelDataUrl: {
       type: String,
       default: '',
     },
@@ -62,6 +68,14 @@ export default {
     map () {
       this.renderMask();
     },
+
+    regionsUrl () {
+      this.renderGeojson();
+    },
+
+    labelDataUrl () {
+      this.renderLabel();
+    },
   },
 
   methods: {
@@ -82,7 +96,6 @@ export default {
         });
         this.map.setMask(mask);
       });
-      this.renderGeojson();
     },
 
     creatPolyline (bound) {
@@ -107,6 +120,7 @@ export default {
               };
               const polygon =  new AMap.Polygon({
                 path: lnglats,
+                zIndex: 100,
                 ...options,
               });
               polygon.on('mouseover', () => {
@@ -120,6 +134,16 @@ export default {
           });
           geojson.setMap(this.map);
         });
+    },
+    renderLabel () {
+      const layer = new AMap.LabelsLayer({
+        zIndex: 200,
+      });
+      this.map.add(layer);
+      _.each(LABEL_DATA, (label) => {
+        const labelsMarker = new AMap.LabelMarker(label);
+        layer.add(labelsMarker);
+      });
     },
   },
 };
