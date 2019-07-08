@@ -89,7 +89,8 @@ export default {
       return new AMap.Polyline({
         path: bound,
         map: this.map,
-        ...(_.assign(SIDE_OPTIONS, this.sideOptions)),
+        ...SIDE_OPTIONS,
+        ...this.sideOptions,
       });
     },
 
@@ -100,7 +101,10 @@ export default {
           const geojson = new AMap.GeoJSON({
             geoJSON: data.features,
             getPolygon: (json, lnglats) => {
-              const options = _.assign(POLYGON_OPTIONS, this.polygonOptions);
+              const options = {
+                ...POLYGON_OPTIONS,
+                ...this.polygonOptions,
+              };
               const polygon =  new AMap.Polygon({
                 path: lnglats,
                 ...options,
