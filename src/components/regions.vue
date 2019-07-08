@@ -20,11 +20,6 @@ const POLYGON_OPTIONS = {
   strokeWeight: 1,
 };
 
-const POLYGONLINE_OPTIONS = {
-  strokeColor: '#5fd0dc',
-  strokeWeight: 1,
-};
-
 export default {
   inject: ['instance'],
 
@@ -49,16 +44,13 @@ export default {
         return {};
       },
     },
-    polylineOptions: {
-      type: Object,
-      default () {
-        return {};
-      },
-    },
     hoveredPolygonOptions: {
       type: Object,
       default () {
-        return {};
+        return {
+          fillColor: 'blue',
+          strokeColor: 'red',
+        };
       },
     },
   },
@@ -124,10 +116,6 @@ export default {
               });
               return polygon;
             },
-            getPolyline: (json, lnglats) => new AMap.Polyline({
-              path: lnglats,
-              ...(_.assign(POLYGONLINE_OPTIONS, this.polylineOptions)),
-            }),
           });
           geojson.setMap(this.map);
         });
