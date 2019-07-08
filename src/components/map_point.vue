@@ -53,16 +53,14 @@ export const MapPoint = {
   },
 
   watch: {
-    map (newValue, oldValue) {
-      if (newValue && _.isEqual(newValue, oldValue)) return;
-      this.initMakers(newValue);
+    map (current) {
+      this.initMakers(current);
     },
   },
 
   methods: {
     initMakers (map) {
       this.generateMakers();
-
       if (this.cluster) {
         this.buildClusterMakers(map);
       } else {
