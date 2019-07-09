@@ -132,17 +132,20 @@ export default {
     },
 
     classifyArea (area, options, lnglats) {
-      const polygon = new AMap.Polygon({
-        path: lnglats,
+      const custom_area_options = {
         zIndex: 100,
         ...options,
         ...area.options,
+      };
+      const polygon = new AMap.Polygon({
+        path: lnglats,
+        ...custom_area_options,
       });
       polygon.on('mouseover', () => {
         polygon.setOptions(this.hoveredPolygonOptions);
       });
       polygon.on('mouseout', () => {
-        polygon.setOptions(options);
+        polygon.setOptions(custom_area_options);
       });
       return polygon;
     },
