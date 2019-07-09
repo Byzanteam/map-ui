@@ -74,14 +74,6 @@ export default {
     map () {
       this.renderMask();
     },
-
-    regionsUrl () {
-      this.renderGeojson();
-    },
-
-    labelDataUrl () {
-      this.renderLabel();
-    },
   },
 
   methods: {
@@ -102,6 +94,8 @@ export default {
         });
         this.map.setMask(mask);
       });
+      this.renderGeojson();
+      this.renderLabel();
     },
 
     creatPolyline (bound) {
