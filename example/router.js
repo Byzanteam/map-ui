@@ -12,6 +12,7 @@ const router = new VueRouter({
       redirect: '/map-point',
     },
     { path: '/map-point', component: () => import('./components/map_point') },
+    { path: '/regions', component: () => import('./components/regions') },
   ],
 });
 
