@@ -64,6 +64,12 @@ export default {
     },
   },
 
+  data () {
+    return {
+      polygons: {},
+    };
+  },
+
   computed: {
     map () {
       return this.instance.map;
@@ -132,6 +138,11 @@ export default {
     },
 
     classifyArea (area, options, lnglats) {
+      let current_polygons = this.polygons[area.name];
+      // 初始化自定义区块划分多边形数组
+      if (!current_polygons) {
+        current_polygons = [];
+      }
       const custom_area_options = {
         zIndex: 100,
         ...options,
@@ -141,11 +152,19 @@ export default {
         path: lnglats,
         ...custom_area_options,
       });
+      current_polygons.push(polygon);
+      this.polygons[area.name] = current_polygons;
+
       polygon.on('mouseover', () => {
-        polygon.setOptions(this.hoveredPolygonOptions);
+        // 多边形hover时找到与它同组的所有多边形
+        _.each(current_polygons, (item) => {
+          item.setOptions(this.hoveredPolygonOptions);
+        });
       });
       polygon.on('mouseout', () => {
-        polygon.setOptions(custom_area_options);
+        _.each(current_polygons, (item) => {
+          item.setOptions(custom_area_options);
+        });
       });
       return polygon;
     },
