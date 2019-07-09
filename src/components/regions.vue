@@ -58,6 +58,10 @@ export default {
         return {};
       },
     },
+    customArea: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   computed: {
@@ -110,33 +114,56 @@ export default {
     },
 
     renderGeojson () {
-      axios
-        .get(this.regionsUrl)
-        .then(({ data }) => {
-          const geojson = new AMap.GeoJSON({
-            geoJSON: data.features,
-            getPolygon: (json, lnglats) => {
-              const options = {
-                ...POLYGON_OPTIONS,
-                ...this.polygonOptions,
-              };
-              const polygon =  new AMap.Polygon({
-                path: lnglats,
-                zIndex: 100,
-                ...options,
-              });
-              polygon.on('mouseover', () => {
-                polygon.setOptions(this.hoveredPolygonOptions);
-              });
-              polygon.on('mouseout', () => {
-                polygon.setOptions(options);
-              });
-              return polygon;
-            },
-          });
-          geojson.setMap(this.map);
-        });
+      const options = {
+        ...POLYGON_OPTIONS,
+        ...this.polygonOptions,
+      };
+      const geojson = new AMap.GeoJSON({
+        geoJSON: GEOJSON,
+        getPolygon: (json, lnglats) => {
+          if (this.customArea) {
+            const area = _.find(
+              CUSTOM_AREA, item => _.includes(item.codes, json.properties.code)
+            );
+            return this.classifyArea(area, options, lnglats);
+          }
+          return this.generatePolygon(json, options, lnglats);
+        },
+      });
+      geojson.setMap(this.map);
     },
+
+    classifyArea (area, options, lnglats) {
+      const polygon = new AMap.Polygon({
+        path: lnglats,
+        zIndex: 100,
+        ...options,
+        ...area.options,
+      });
+      polygon.on('mouseover', () => {
+        polygon.setOptions(this.hoveredPolygonOptions);
+      });
+      polygon.on('mouseout', () => {
+        polygon.setOptions(options);
+      });
+      return polygon;
+    },
+
+    generatePolygon (json, options, lnglats) {
+      const polygon = new AMap.Polygon({
+        path: lnglats,
+        zIndex: 100,
+        ...options,
+      });
+      polygon.on('mouseover', () => {
+        polygon.setOptions(this.hoveredPolygonOptions);
+      });
+      polygon.on('mouseout', () => {
+        polygon.setOptions(options);
+      });
+      return polygon;
+    },
+
     renderLabel () {
       const layer = new AMap.LabelsLayer({
         zIndex: 200,
