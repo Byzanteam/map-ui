@@ -1,7 +1,3 @@
-<template>
-  <div />
-</template>
-
 <script>
 import _ from 'lodash';
 
@@ -194,6 +190,10 @@ export default {
         layer.add(labelsMarker);
       });
     },
+  },
+
+  render () {
+    return null;
   },
 };
 </script>
