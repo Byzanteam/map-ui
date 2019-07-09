@@ -108,6 +108,7 @@ export default {
     },
 
     renderGeojson () {
+      // 配置的多边形样式和默认的多边形样式合并
       const options = {
         ...POLYGON_OPTIONS,
         ...this.polygonOptions,
@@ -117,7 +118,10 @@ export default {
         getPolygon: (json, lnglats) => {
           if (this.customArea) {
             const area = _.find(
-              CUSTOM_AREA, item => _.includes(item.codes, json.properties.code)
+              CUSTOM_AREA, item => _.includes(
+                item.codes,
+                json.properties.adcode
+              )
             );
             return this.classifyArea(area, options, lnglats);
           }
