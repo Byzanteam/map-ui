@@ -4,12 +4,14 @@
 
 <script>
 import _ from 'lodash';
-import axios from 'axios';
 
 const LABEL_DATA = require('../../source/label.json');
+const GEOJSON = require('../../source/regions.json');
+const CUSTOM_AREA = require('../../source/custom_area.json');
 
 const SIDE_OPTIONS = {
   strokeColor: '#5fd0dc',
+  fillColor: '#5fd0dc',
   strokeWeight: 3,
   strokeOpacity: 0.9,
 };
