@@ -94,9 +94,7 @@ export const MapPoint = {
     },
 
     buildMakers (map) {
-      _(this.generateMarkers).forEach((value) => {
-        value.setMap(map);
-      });
+      _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
     getGraphics (type) {
