@@ -99,7 +99,7 @@ export default {
     },
 
     creatPolyline (bound) {
-      return new AMap.Polyline({
+      return new AMap.Polygon({
         path: bound,
         map: this.map,
         ...SIDE_OPTIONS,
