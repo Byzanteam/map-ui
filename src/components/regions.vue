@@ -95,7 +95,7 @@ export default {
         const mask = [];
         _.each(bounds, (bound) => {
           mask.push([bound]);
-          // 第一级区域描边
+          // 底图描边
           this.creatPolyline(bound);
         });
         this.map.setMask(mask);
@@ -139,7 +139,7 @@ export default {
 
     classifyArea (area, options, lnglats) {
       let current_polygons = this.polygons[area.name];
-      // 初始化自定义区块划分多边形数组
+      // 初始化自定义区块多边形数组
       if (!current_polygons) {
         current_polygons = [];
       }
@@ -155,8 +155,8 @@ export default {
       current_polygons.push(polygon);
       this.polygons[area.name] = current_polygons;
 
+      // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
       polygon.on('mouseover', () => {
-        // 多边形hover时找到与它同组的所有多边形
         _.each(current_polygons, (item) => {
           item.setOptions(this.hoveredPolygonOptions);
         });
