@@ -1,6 +1,3 @@
-<template>
-  <div />
-</template>
 <script>
 import _ from 'lodash';
 
@@ -130,6 +127,10 @@ export const MapPoint = {
         content: '',
       });
     },
+  },
+
+  render () {
+    return null;
   },
 };
 
