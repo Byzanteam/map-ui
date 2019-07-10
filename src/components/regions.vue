@@ -8,15 +8,15 @@ const CUSTOM_AREA = require('../../source/custom_area.json');
 const SIDE_OPTIONS = {
   strokeColor: '#5fd0dc',
   fillColor: '#5fd0dc',
-  strokeWeight: 3,
-  strokeOpacity: 0.9,
+  strokeWeight: 1,
+  strokeOpacity: 0.2,
 };
 
 const POLYGON_OPTIONS = {
   strokeColor: 'white',
   strokeDasharray: [5, 10],
   fillColor: '#5fd0dc',
-  fillOpacity: 0.9,
+  fillOpacity: 0.7,
   strokeWeight: 1,
 };
 
@@ -43,7 +43,10 @@ export default {
     hoveredPolygonOptions: {
       type: Object,
       default () {
-        return {};
+        return {
+          fillColor: '#ffffff',
+          fillOpacity: 0.3,
+        };
       },
     },
     customArea: {
