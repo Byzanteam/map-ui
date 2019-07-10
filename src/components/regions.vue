@@ -1,10 +1,6 @@
 <script>
 import _ from 'lodash';
 
-const LABEL_DATA = require('../../source/label.json');
-const GEOJSON = require('../../source/regions.json');
-const CUSTOM_AREA = require('../../source/custom_area.json');
-
 const SIDE_OPTIONS = {
   strokeColor: '#5fd0dc',
   fillColor: '#5fd0dc',
@@ -27,6 +23,21 @@ export default {
     maskArea: {
       type: String,
       default: '中国',
+    },
+    labelData: {
+      type: Array,
+      default: () => ([]),
+    },
+    geoJson: {
+      type: Object,
+      default: () => ({
+        type: 'FeatureCollection',
+        features: [],
+      }),
+    },
+    customArea: {
+      type: Array,
+      default: () => ([]),
     },
     sideOptions: {
       type: Object,
@@ -102,9 +113,9 @@ export default {
         ...this.polygonOptions,
       };
       const geojson = new AMap.GeoJSON({
-        geoJSON: GEOJSON,
+        geoJSON: this.geoJson,
         getPolygon: (json, lnglats) => {
-          const area = _.find(CUSTOM_AREA, item => _.includes(
+          const area = _.find(this.customArea, item => _.includes(
             item.codes,
             json.properties.adcode
           ));
@@ -165,7 +176,7 @@ export default {
         zIndex: 200,
       });
       this.map.add(layer);
-      _.each(LABEL_DATA, (label) => {
+      _.each(this.labelData, (label) => {
         const labelsMarker = new AMap.LabelMarker(label);
         layer.add(labelsMarker);
       });
