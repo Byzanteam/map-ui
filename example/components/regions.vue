@@ -17,14 +17,9 @@ import Regions from '../../src/components/regions.vue';
 const LABEL_DATA = [
   {
     position: ['113.280637', '23.125178'],
-    zooms: [5, 13],
-    zIndex: 1,
-    opacity: 1,
     text: {
       content: '广东',
       direction: 'center',
-      offset: [0, 0],
-      zooms: [3, 20],
       style: {
         fontSize: 15,
         fontWeight: 'normal',
@@ -35,14 +30,9 @@ const LABEL_DATA = [
     },
   }, {
     position: ['113.665412', '34.757975'],
-    zooms: [5, 13],
-    zIndex: 1,
-    opacity: 1,
     text: {
       content: '河南',
       direction: 'center',
-      offset: [0, 20],
-      zooms: [3, 20],
       style: {
         fontSize: 15,
         fontWeight: 'normal',
