@@ -8,6 +8,15 @@ const DEFAULT_MAERKER = {
   fillColor: '#4e6398',
 };
 
+const POINT_TYPES = [
+  'circle',
+  'triangle',
+  'triangle-down',
+  'hexagon',
+  'water-droplet',
+  'pentagram',
+];
+
 export const MapPoint = {
   props: {
     data: {
@@ -18,6 +27,11 @@ export const MapPoint = {
       type: Object,
       default: () => ({}),
     },
+    type: {
+      type: String,
+      default: 'circle',
+      validator: value => POINT_TYPES.includes(value),
+    },
     cluster: {
       type: Boolean,
       default: true,
@@ -25,6 +39,14 @@ export const MapPoint = {
     descriptionKey: {
       type: String,
       default: 'description',
+    },
+    valueKey: {
+      type: String,
+      default: 'value',
+    },
+    valueOption: {
+      type: Array,
+      default: [],
     },
   },
 
