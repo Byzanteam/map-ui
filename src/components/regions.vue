@@ -104,12 +104,10 @@ export default {
       const geojson = new AMap.GeoJSON({
         geoJSON: GEOJSON,
         getPolygon: (json, lnglats) => {
-          const area = _.find(
-            CUSTOM_AREA, item => _.includes(
-              item.codes,
-              json.properties.adcode
-            )
-          );
+          const area = _.find(CUSTOM_AREA, item => _.includes(
+            item.codes,
+            json.properties.adcode
+          ));
           if (area) {
             return this.classifyArea(options, lnglats, area);
           }
