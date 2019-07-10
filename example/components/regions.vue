@@ -14,43 +14,45 @@
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
 
-const LABEL_DATA = [{
-  position: ['113.280637', '23.125178'],
-  zooms: [5, 13],
-  zIndex: 1,
-  opacity: 1,
-  text: {
-    content: '广东',
-    direction: 'center',
-    offset: [0, 0],
-    zooms: [3, 20],
-    style: {
-      fontSize: 15,
-      fontWeight: 'normal',
-      fillColor: '#eee',
-      strokeColor: '#c67805',
-      strokeWidth: 2,
+const LABEL_DATA = [
+  {
+    position: ['113.280637', '23.125178'],
+    zooms: [5, 13],
+    zIndex: 1,
+    opacity: 1,
+    text: {
+      content: '广东',
+      direction: 'center',
+      offset: [0, 0],
+      zooms: [3, 20],
+      style: {
+        fontSize: 15,
+        fontWeight: 'normal',
+        fillColor: '#eee',
+        strokeColor: '#c67805',
+        strokeWidth: 2,
+      },
+    },
+  }, {
+    position: ['113.665412', '34.757975'],
+    zooms: [5, 13],
+    zIndex: 1,
+    opacity: 1,
+    text: {
+      content: '河南',
+      direction: 'center',
+      offset: [0, 20],
+      zooms: [3, 20],
+      style: {
+        fontSize: 15,
+        fontWeight: 'normal',
+        fillColor: '#eee',
+        strokeColor: '#c67805',
+        strokeWidth: 2,
+      },
     },
   },
-}, {
-  position: ['113.665412', '34.757975'],
-  zooms: [5, 13],
-  zIndex: 1,
-  opacity: 1,
-  text: {
-    content: '河南',
-    direction: 'center',
-    offset: [0, 20],
-    zooms: [3, 20],
-    style: {
-      fontSize: 15,
-      fontWeight: 'normal',
-      fillColor: '#eee',
-      strokeColor: '#c67805',
-      strokeWidth: 2,
-    },
-  },
-}];
+];
 const CUSTOM_AREA = [
   {
     name: '西北',
@@ -75,7 +77,8 @@ const CUSTOM_AREA = [
       fillColor: '#000000',
       fillOpacity: 0.3,
     },
-  }];
+  },
+];
 
 export default {
   components: {
