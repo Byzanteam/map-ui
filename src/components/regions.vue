@@ -92,7 +92,6 @@ export default {
         this.map.setMask(mask);
       });
       this.renderGeojson();
-      this.renderLabel();
     },
 
     creatPolyline (bound) {
@@ -126,6 +125,7 @@ export default {
         },
       });
       geojson.setMap(this.map);
+      this.renderLabel();
     },
 
     classifyArea (area, options, lnglats) {
