@@ -30,15 +30,11 @@ export default {
     },
     sideOptions: {
       type: Object,
-      default () {
-        return {};
-      },
+      default: () => ({}),
     },
     polygonOptions: {
       type: Object,
-      default () {
-        return {};
-      },
+      default: () => ({}),
     },
     hoveredPolygonOptions: {
       type: Object,
@@ -48,10 +44,6 @@ export default {
           fillOpacity: 0.3,
         };
       },
-    },
-    customArea: {
-      type: Boolean,
-      default: false,
     },
   },
 
