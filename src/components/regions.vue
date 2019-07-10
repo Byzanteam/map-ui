@@ -68,6 +68,12 @@ export default {
     map () {
       return this.instance.map;
     },
+    mergedPolygonOptions () {
+      return {
+        ...POLYGON_OPTIONS,
+        ...this.polygonOptions,
+      };
+    },
   },
 
   watch: {
@@ -87,8 +93,7 @@ export default {
         level: 'country',
       });
       district.search(this.maskArea, (status, result) => {
-        const { boundaries } = result.districtList[0];
-        const mask = _.map(boundaries, (bound) => {
+        const mask = _.map(result.districtList[0].boundaries, (bound) => {
           // 底图描边
           this.creatPolyline(bound);
           return [bound];
@@ -108,10 +113,6 @@ export default {
     },
 
     renderGeojson () {
-      const options = {
-        ...POLYGON_OPTIONS,
-        ...this.polygonOptions,
-      };
       const geojson = new AMap.GeoJSON({
         geoJSON: this.geoJson,
         getPolygon: (json, lnglats) => {
@@ -120,23 +121,23 @@ export default {
             json.properties.adcode
           ));
           if (area) {
-            return this.classifyArea(options, lnglats, area);
+            return this.classifyArea(lnglats, area);
           }
-          return this.generatePolygon(options, lnglats);
+          return this.generatePolygon(lnglats);
         },
       });
       geojson.setMap(this.map);
       this.renderLabel();
     },
 
-    classifyArea (options, lnglats, area) {
+    classifyArea (lnglats, area) {
       let current_polygons = this.polygons[area.name];
       if (!current_polygons) {
         current_polygons = [];
       }
       const custom_area_options = {
         zIndex: 100,
-        ...options,
+        ...this.mergedPolygonOptions,
         ...area.options,
       };
       const polygon = new AMap.Polygon({
@@ -160,14 +161,14 @@ export default {
       return polygon;
     },
 
-    generatePolygon (options, lnglats) {
+    generatePolygon (lnglats) {
       const polygon = new AMap.Polygon({
         path: lnglats,
         zIndex: 100,
-        ...options,
+        ...this.mergedPolygonOptions,
       });
       polygon.on('mouseover', () => polygon.setOptions(this.hoveredPolygonOptions));
-      polygon.on('mouseout', () => polygon.setOptions(options));
+      polygon.on('mouseout', () => polygon.setOptions(this.mergedPolygonOptions));
       return polygon;
     },
 
