@@ -178,8 +178,7 @@ export default {
       });
       this.map.add(layer);
       _.each(this.labelData, (label) => {
-        const labelsMarker = new AMap.LabelMarker(label);
-        layer.add(labelsMarker);
+        layer.add(new AMap.LabelMarker(label));
       });
     },
   },
