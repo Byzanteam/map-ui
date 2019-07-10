@@ -67,15 +67,14 @@ export default {
 
   methods: {
     renderMask () {
-      const opts = {
+      const district = new AMap.DistrictSearch({
         //  显示下级行政区级数，0表示不返回下级行政区
         subdistrict: 0,
         //  返回行政区边界坐标等具体信息
         extensions: 'all',
         //  关键字对应的行政区级别，country表示国家
         level: 'country',
-      };
-      const district = new AMap.DistrictSearch(opts);
+      });
       district.search(this.maskArea, (status, result) => {
         const { boundaries } = result.districtList[0];
         const mask = _.map(boundaries, (bound) => {
