@@ -77,12 +77,11 @@ export default {
       };
       const district = new AMap.DistrictSearch(opts);
       district.search(this.maskArea, (status, result) => {
-        const bounds = result.districtList[0].boundaries;
-        const mask = [];
-        _.each(bounds, (bound) => {
-          mask.push([bound]);
+        const { boundaries } = result.districtList[0];
+        const mask = _.map(boundaries, (bound) => {
           // 底图描边
           this.creatPolyline(bound);
+          return [bound];
         });
         this.map.setMask(mask);
       });
