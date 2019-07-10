@@ -3,10 +3,7 @@
     :map-options="{viewMode: '3D', zoom: 4}"
     :transparent="true"
   >
-    <regions
-      :regions-url="regionsUrl"
-      :custom-area="true"
-    />
+    <regions :custom-area="true" />
   </base-map>
 </template>
 
@@ -18,12 +15,6 @@ export default {
   components: {
     BaseMap,
     Regions,
-  },
-
-  data () {
-    return {
-      regionsUrl: 'https://raw.githubusercontent.com/ufoe/d3js-geojson/master/china/china.json',
-    };
   },
 };
 </script>

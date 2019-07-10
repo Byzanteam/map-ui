@@ -24,14 +24,6 @@ export default {
   inject: ['instance'],
 
   props: {
-    regionsUrl: {
-      type: String,
-      default: '',
-    },
-    labelDataUrl: {
-      type: String,
-      default: '',
-    },
     maskArea: {
       type: String,
       default: '中国',
