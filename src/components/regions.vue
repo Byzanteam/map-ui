@@ -84,21 +84,23 @@ export default {
 
   methods: {
     renderMask () {
-      const district = new AMap.DistrictSearch({
+      this.map.plugin(['AMap.DistrictSearch'], () => {
+        const district = new AMap.DistrictSearch({
         //  显示下级行政区级数，0表示不返回下级行政区
-        subdistrict: 0,
-        //  返回行政区边界坐标等具体信息
-        extensions: 'all',
-        //  关键字对应的行政区级别，country表示国家
-        level: 'country',
-      });
-      district.search(this.maskArea, (status, result) => {
-        const mask = _.map(result.districtList[0].boundaries, (bound) => {
-          // 底图描边
-          this.creatPolyline(bound);
-          return [bound];
+          subdistrict: 0,
+          //  返回行政区边界坐标等具体信息
+          extensions: 'all',
+          //  关键字对应的行政区级别，country表示国家
+          level: 'country',
         });
-        this.map.setMask(mask);
+        district.search(this.maskArea, (status, result) => {
+          const mask = _.map(result.districtList[0].boundaries, (bound) => {
+          // 底图描边
+            this.creatPolyline(bound);
+            return [bound];
+          });
+          this.map.setMask(mask);
+        });
       });
       this.renderGeojson();
     },
