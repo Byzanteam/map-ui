@@ -140,14 +140,18 @@ export default {
 
       // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
       polygon.on('mouseover', () => {
-        _.each(current_polygons, (item) => {
-          item.setOptions(this.hoveredPolygonOptions);
-        });
+        this.animation(
+          current_polygons,
+          this.hoveredPolygonOptions,
+          custom_area_options
+        );
       });
       polygon.on('mouseout', () => {
-        _.each(current_polygons, (item) => {
-          item.setOptions(custom_area_options);
-        });
+        this.animation(
+          current_polygons,
+          custom_area_options,
+          this.hoveredPolygonOptions
+        );
       });
       return polygon;
     },
@@ -173,6 +177,34 @@ export default {
         layer.add(labelsMarker);
       });
     },
+
+    animation: _.debounce((polygon, new_options, old_options) => {
+      const new_opacity = new_options.fillOpacity * 10;
+      const old_opacity = old_options.fillOpacity * 10;
+      const opacity_range = (new_opacity - old_opacity);
+      let opacity_value = old_opacity;
+      const animationTimer = setInterval(() => {
+        if (opacity_range > 0) {
+          opacity_value += 1;
+        } else {
+          opacity_value -= 1;
+        }
+        const options = {
+          ...new_options,
+          fillOpacity: opacity_value / 10,
+        };
+        if (_.isArray(polygon)) {
+          _.each(polygon, (item) => {
+            item.setOptions(options);
+          });
+        } else {
+          polygon.setOptions(options);
+        }
+        if (opacity_value === new_opacity) {
+          clearInterval(animationTimer);
+        }
+      }, 200 / opacity_range);
+    }),
   },
 
   render () {
