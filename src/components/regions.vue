@@ -121,7 +121,7 @@ export default {
             json.properties.adcode
           ));
           if (area) {
-            return this.classifyArea(lnglats, area);
+            return this.generateAreaPolygon(lnglats, area);
           }
           return this.generatePolygon(lnglats);
         },
@@ -130,11 +130,7 @@ export default {
       this.renderLabel();
     },
 
-    classifyArea (lnglats, area) {
-      let current_polygons = this.polygons[area.name];
-      if (!current_polygons) {
-        current_polygons = [];
-      }
+    generateAreaPolygon (lnglats, area) {
       const custom_area_options = {
         zIndex: 100,
         ...this.mergedPolygonOptions,
@@ -144,21 +140,28 @@ export default {
         path: lnglats,
         ...custom_area_options,
       });
-      current_polygons.push(polygon);
-      this.polygons[area.name] = current_polygons;
-
+      this.classifyArea(polygon, area);
       // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
       polygon.on('mouseover', () => {
-        _.each(current_polygons, (item) => {
+        _.each(this.polygons[area.name], (item) => {
           item.setOptions(this.hoveredPolygonOptions);
         });
       });
       polygon.on('mouseout', () => {
-        _.each(current_polygons, (item) => {
+        _.each(this.polygons[area.name], (item) => {
           item.setOptions(custom_area_options);
         });
       });
       return polygon;
+    },
+
+    classifyArea (polygon, area) {
+      let current_polygons = this.polygons[area.name];
+      if (!current_polygons) {
+        current_polygons = [];
+      }
+      current_polygons.push(polygon);
+      this.polygons[area.name] = current_polygons;
     },
 
     generatePolygon (lnglats) {
