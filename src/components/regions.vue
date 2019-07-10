@@ -158,12 +158,8 @@ export default {
         zIndex: 100,
         ...options,
       });
-      polygon.on('mouseover', () => {
-        polygon.setOptions(this.hoveredPolygonOptions);
-      });
-      polygon.on('mouseout', () => {
-        polygon.setOptions(options);
-      });
+      polygon.on('mouseover', () => polygon.setOptions(this.hoveredPolygonOptions));
+      polygon.on('mouseout', () => polygon.setOptions(options));
       return polygon;
     },
 
