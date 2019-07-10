@@ -104,7 +104,6 @@ export default {
     },
 
     renderGeojson () {
-      // 配置的多边形样式和默认的多边形样式合并
       const options = {
         ...POLYGON_OPTIONS,
         ...this.polygonOptions,
@@ -119,18 +118,17 @@ export default {
             )
           );
           if (area) {
-            return this.classifyArea(area, options, lnglats);
+            return this.classifyArea(options, lnglats, area);
           }
-          return this.generatePolygon(json, options, lnglats);
+          return this.generatePolygon(options, lnglats);
         },
       });
       geojson.setMap(this.map);
       this.renderLabel();
     },
 
-    classifyArea (area, options, lnglats) {
+    classifyArea (options, lnglats, area) {
       let current_polygons = this.polygons[area.name];
-      // 初始化自定义区块多边形数组
       if (!current_polygons) {
         current_polygons = [];
       }
@@ -160,7 +158,7 @@ export default {
       return polygon;
     },
 
-    generatePolygon (json, options, lnglats) {
+    generatePolygon (options, lnglats) {
       const polygon = new AMap.Polygon({
         path: lnglats,
         zIndex: 100,
