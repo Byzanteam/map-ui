@@ -6,9 +6,19 @@ import markers from './markers.json';
 const DEFAULT_MAERKER = {
   radius: 20,
   strokeColor: '#767676',
-  strokeWeight: 2,
-  fillColor: '#4e6398',
+  strokeWidth: 1,
+  fill: '#4e6398',
 };
+const DEFAULT_MAERKER_LABEL = {
+  fontSize: '12px',
+  color: '#888',
+  fontWeight: 400,
+};
+const DEFAULT_MAERKER_VALUE = [
+  { value: 3, style: { fill: '#E28E49' } },
+  { value: 2, style: { fill: '#EAC438' } },
+  { value: 1, style: { fill: '#A6B76F' } },
+];
 
 export const MapPoint = {
   mixins: [MapMixin],
