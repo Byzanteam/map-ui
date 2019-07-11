@@ -5,18 +5,16 @@ import markers from './markers.json';
 const DEFAULT_MAERKER = {
   radius: 20,
   strokeColor: '#767676',
-  strokeWeight: 2,
+  strokeWidth: 2,
   fillColor: '#4e6398',
 };
 
-const POINT_TYPES = [
-  'circle',
-  'triangle',
-  'triangle-down',
-  'hexagon',
-  'water-droplet',
-  'pentagram',
-];
+
+const LABEL_STYLE = {
+  fontSize: '12px',
+  color: '#fff',
+  fontWeight: 400,
+};
 
 export const MapPoint = {
   props: {
@@ -134,14 +132,14 @@ export const MapPoint = {
       const {
         radius,
         fillColor,
-        strokeWeight,
+        strokeWidth,
         strokeColor,
       } = this.markerResult;
 
       const [path] = icons[this.type].paths;
 
       // 实际 icon 加上边框大小
-      const viewDiameter = size + strokeWeight * 2;
+      const viewDiameter = size + strokeWidth * 2;
       // 用户设置的 icon 大小
       const userDiameter = radius * 2;
 
@@ -151,7 +149,7 @@ export const MapPoint = {
           height="${userDiameter}px"
         >
         <path
-          stroke-width="${strokeWeight}"
+          stroke-width="${strokeWidth}"
           stroke="${strokeColor}"
           fill="${fillColor}"
           transform="translate(${strokeWeight} ${strokeWeight})"
