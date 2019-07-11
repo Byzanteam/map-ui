@@ -160,7 +160,7 @@ export const MapPoint = {
           stroke-width="${strokeWidth}"
           stroke="${strokeColor}"
           fill="${fillColor}"
-          transform="translate(${strokeWeight} ${strokeWeight})"
+          transform="translate(${strokeWidth} ${strokeWidth})"
           d='${path}'>
       </svg>`;
 
