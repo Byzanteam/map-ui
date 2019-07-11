@@ -1,5 +1,6 @@
 <script>
 import _ from 'lodash';
+import markers from './markers.json';
 
 const DEFAULT_MAERKER = {
   radius: 20,
@@ -45,8 +46,16 @@ export const MapPoint = {
       default: 'value',
     },
     valueOption: {
+      type: String,
+      default: 'value',
+    },
+    labelKey: {
+      type: String,
+      default: 'label',
+    },
+    labelOption: {
       type: Array,
-      default: [],
+      default: () => [],
     },
   },
 
@@ -88,13 +97,18 @@ export const MapPoint = {
     },
 
     buildClusterMakers (map) {
-      const styles = [{
-        url: 'https://a.amap.com/jsapi_demos/static/images/blue.png',
-        size: new AMap.Size(32, 32),
-        offset: new AMap.Pixel(-16, -16),
-      }];
+      map.plugin(
+        ['AMap.MarkerClusterer'],
+        () => new AMap.MarkerClusterer(
+          map,
+          this.generateMarkers,
+          { renderClusterMarker: this.clusterMarker },
+        )
+      );
+    },
 
-      map.plugin(['AMap.MarkerClusterer'], () => new AMap.MarkerClusterer(map, this.generateMarkers, { styles }));
+    clusterMarker (context) {
+
     },
 
     generateMakers () {
@@ -106,8 +120,7 @@ export const MapPoint = {
           extData: itme,
           offset: new AMap.Pixel(0, 0),
         });
-        marker.on('mouseout', this.hiddenInfo);
-        marker.on('mouseover', this.showInfo);
+
         return marker;
       });
     },
@@ -116,38 +129,36 @@ export const MapPoint = {
       _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
-    getGraphics (type) {
+    getGraphics () {
+      const { icons: [{ icons }], size: [size] } = markers;
       const {
-        fillColor,
         radius,
+        fillColor,
         strokeWeight,
         strokeColor,
       } = this.markerResult;
 
-      switch (type) {
-        default:
-          return `<div style="
-            background-color: ${fillColor};
-            height: ${radius}px;
-            width: ${radius}px;
-            border: ${strokeWeight}px solid ${strokeColor};
-            border-radius: ${radius}px;"></div>`;
-      }
-    },
+      const [path] = icons[this.type].paths;
 
-    showInfo (e) {
-      const { target } = e;
-      target.setLabel({
-        offset: new AMap.Pixel(0, -this.markerResult.radius),
-        content: target.B.extData[this.descriptionKey],
-        direction: 'center',
-      });
-    },
+      // 实际 icon 加上边框大小
+      const viewDiameter = size + strokeWeight * 2;
+      // 用户设置的 icon 大小
+      const userDiameter = radius * 2;
 
-    hiddenInfo (e) {
-      e.target.setLabel({
-        content: '',
-      });
+      const node = `<svg
+          viewBox="0 0 ${viewDiameter} ${viewDiameter}"
+          width="${userDiameter}px"
+          height="${userDiameter}px"
+        >
+        <path
+          stroke-width="${strokeWeight}"
+          stroke="${strokeColor}"
+          fill="${fillColor}"
+          transform="translate(${strokeWeight} ${strokeWeight})"
+          d='${path}'>
+      </svg>`;
+
+      return node;
     },
   },
 

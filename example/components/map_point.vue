@@ -10,7 +10,7 @@
   </base-map>
 </template>
 <script>
-import MapPoint from '../../src/components/map_point.vue';
+import MapPoint from '../../src/components/map_point/map_point.vue';
 import BaseMap from '../../src/components/map.vue';
 
 export default {
