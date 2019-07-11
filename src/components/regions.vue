@@ -205,11 +205,16 @@ export default {
       const old_opacity = old_options.fillOpacity * 10;
       const opacity_range = (new_opacity - old_opacity);
       let opacity_value = old_opacity;
-      const animationTimer = setInterval(() => {
-        if (opacity_range > 0) {
-          opacity_value += 1;
-        } else {
-          opacity_value -= 1;
+      const animationFunc = function () {
+        switch (true) {
+          case opacity_range > 0:
+            opacity_value += 1;
+            break;
+          case opacity_range < 0:
+            opacity_value -= 1;
+            break;
+          default:
+            break;
         }
         const options = {
           ...new_options,
@@ -222,11 +227,13 @@ export default {
         } else {
           polygon.setOptions(options);
         }
+        const request_aimation_id = requestAnimationFrame(animationFunc);
         if (opacity_value === new_opacity) {
-          clearInterval(animationTimer);
+          window.cancelAnimationFrame(request_aimation_id);
         }
-      }, 200 / opacity_range);
-    }),
+      };
+      animationFunc();
+    },
   },
 
   render () {
