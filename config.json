@@ -1,7 +1,6 @@
 {
   "amap": {
     "key": "d1d5c1dd836024b07017d5c639705937",
-    "version": "1.4.15",
-    "plugin": "Map3D,AMap.DistrictSearch,AMap.DistrictLayer"
+    "version": "1.4.15"
   }
 }

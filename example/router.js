@@ -4,7 +4,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const router = new VueRouter({
-  base: '/map_point',
+  mode: 'history',
   routes: [
     {
       path: '/',
