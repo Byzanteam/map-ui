@@ -9,6 +9,14 @@ const DEFAULT_MAERKER = {
   fillColor: '#4e6398',
 };
 
+const POINT_TYPES = [
+  'circle',
+  'triangle',
+  'triangle-down',
+  'hexagon',
+  'water-droplet',
+  'pentagram',
+];
 
 const LABEL_STYLE = {
   fontSize: '12px',
