@@ -107,9 +107,9 @@ export const MapPoint = {
       );
     },
 
-    clusterMarker (context) {
+    // clusterMarker (context) {
 
-    },
+    // },
 
     generateMakers () {
       this.generateMarkers = this.data.map((itme) => {
