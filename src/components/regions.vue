@@ -61,6 +61,8 @@ export default {
   data () {
     return {
       polygons: {},
+      currentArea: {},
+      preArea: {},
     };
   },
 
@@ -145,26 +147,25 @@ export default {
       this.classifyArea(polygon, area);
       // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
       polygon.on('mouseover', () => {
+        if (this.preArea === this.currentArea) return;
         this.animation(
           this.polygons[area.name],
           this.hoveredPolygonOptions,
           custom_area_options
         );
+        this.currentArea = area;
       });
       polygon.on('mouseout', () => {
-        this.animation(
-          this.polygons[area.name],
-          custom_area_options,
-          this.hoveredPolygonOptions
-        );
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(this.hoveredPolygonOptions);
-        });
-      });
-      polygon.on('mouseout', () => {
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(custom_area_options);
-        });
+        setTimeout(() => {
+          if (this.currentArea === this.preArea) return;
+          this.animation(
+            this.polygons[area.name],
+            custom_area_options,
+            this.hoveredPolygonOptions
+          );
+        }, 220);
+        this.preArea = area;
+        this.currentArea = {};
       });
       return polygon;
     },
@@ -199,7 +200,7 @@ export default {
       });
     },
 
-    animation: _.debounce((polygon, new_options, old_options) => {
+    animation: (polygon, new_options, old_options) => {
       const new_opacity = new_options.fillOpacity * 10;
       const old_opacity = old_options.fillOpacity * 10;
       const opacity_range = (new_opacity - old_opacity);
