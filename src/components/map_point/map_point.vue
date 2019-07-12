@@ -5,8 +5,8 @@ import markers from './markers.json';
 const DEFAULT_MAERKER = {
   radius: 20,
   strokeColor: '#767676',
-  strokeWidth: 2,
-  fillColor: '#4e6398',
+  strokeWidth: 1,
+  fill: '#4e6398',
 };
 
 const POINT_TYPES = [
@@ -52,16 +52,16 @@ export const MapPoint = {
       default: 'value',
     },
     valueOption: {
-      type: String,
-      default: 'value',
+      type: Array,
+      default: () => [],
     },
     labelKey: {
       type: String,
       default: 'label',
     },
-    labelOption: {
-      type: Array,
-      default: () => [],
+    labelStyle: {
+      type: Object,
+      default: () => {},
     },
   },
 
@@ -82,6 +82,13 @@ export const MapPoint = {
       return {
         ...DEFAULT_MAERKER,
         ...this.markerStyle,
+      };
+    },
+
+    labelResult () {
+      return {
+        ...LABEL_STYLE,
+        ...this.labelStyle,
       };
     },
   },
@@ -113,15 +120,23 @@ export const MapPoint = {
       );
     },
 
-    // clusterMarker (context) {
+    clusterMarker () {
 
-    // },
+    },
+
+    getStringWidth (text, fontSize = 16, fontFamily = 'sans-serif') {
+      const cvs = document.createElement('canvas');
+      const ctx = cvs.getContext('2d');
+      ctx.font = `${fontSize}px ${fontFamily}`;
+      const { width } = ctx.measureText(text);
+      return width;
+    },
 
     generateMakers () {
       this.generateMarkers = this.data.map((itme) => {
         const marker = new AMap.Marker({
           position: itme.lnglat,
-          content: this.getGraphics(),
+          content: this.getGraphics(itme),
           anchor: 'bottom-center',
           extData: itme,
           offset: new AMap.Pixel(0, 0),
@@ -135,36 +150,82 @@ export const MapPoint = {
       _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
-    getGraphics () {
+    getLabel (itme, userDiameter) {
+      if (!itme[this.labelKey]) return '';
+
+      const { color, fontWeight, fontSize } = this.labelResult;
+      const label = itme[this.labelKey];
+      const fontWidth = this.getStringWidth(label, 12);
+      const fontOffset = -(fontWidth - userDiameter) / 2;
+
+      const node = `<div
+          style="
+            position: absolute;
+            width:${fontWidth}px;
+            height:100%;
+            left:${fontOffset}px;
+            line-height:${userDiameter}px;
+            color:${color};
+            font-weight:${fontWeight};
+            font-size:${fontSize};
+            opacity: 0.8;
+          "
+        >
+          ${label}
+        </div>`;
+      return node;
+    },
+
+    getGraphics (itme) {
       const { icons: [{ icons }], size: [size] } = markers;
       const {
         radius,
-        fillColor,
+        fill,
         strokeWidth,
         strokeColor,
-      } = this.markerResult;
+      } = {
+        ...this.markerResult,
+        ...this.levelOptionParse(itme, this.valueKey, this.valueOption),
+      };
 
       const [path] = icons[this.type].paths;
-
       // 实际 icon 加上边框大小
       const viewDiameter = size + strokeWidth * 2;
       // 用户设置的 icon 大小
       const userDiameter = radius * 2;
 
-      const node = `<svg
-          viewBox="0 0 ${viewDiameter} ${viewDiameter}"
-          width="${userDiameter}px"
-          height="${userDiameter}px"
-        >
-        <path
-          stroke-width="${strokeWidth}"
-          stroke="${strokeColor}"
-          fill="${fillColor}"
-          transform="translate(${strokeWidth} ${strokeWidth})"
-          d='${path}'>
-      </svg>`;
+      const node = `<div style="width:${userDiameter}px;height:${userDiameter}px">
+        ${this.getLabel(itme, userDiameter, strokeWidth)}
+        <svg
+            viewBox="0 0 ${viewDiameter} ${viewDiameter}"
+            width="100%"
+            height="100%"
+          >
+          <path
+            stroke-width="${strokeWidth}"
+            stroke="${strokeColor}"
+            fill="${fill}"
+            transform="translate(${strokeWidth} ${strokeWidth})"
+            d='${path}'>
+        </svg>
+      </div>`;
 
       return node;
+    },
+
+    levelOptionParse (content, key, option) {
+      const pointValue = content[key];
+      let matchStyle = {};
+      if (!_.isNumber(pointValue)) return {};
+      option.sort((a, b) => a.value - b.value);
+
+      _.forEach(option, ({ value, style }) => {
+        if (pointValue >= value) {
+          matchStyle = style;
+        }
+      });
+
+      return matchStyle;
     },
   },
 
