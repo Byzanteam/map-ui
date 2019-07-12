@@ -6,7 +6,14 @@
   >
     <map-point
       :data="pointData"
-      :value-option="valueOption"
+      :value-option="{
+        marker: valueOption
+      }"
+      :marker-style="{
+        marker: {
+          strokeWidth: 0,
+        }
+      }"
       :cluster-option="clusterOption"
       label-key="description"
     />
@@ -32,7 +39,7 @@ export default {
         { lnglat: [116.286968, 39.863642], description: '丰台区', value: 500 },
       ],
       valueOption: [
-        { value: 500, style: { fill: 'red', radius: 30 } },
+        { value: 500, style: { fill: 'red' } },
         { value: 200, style: { fill: '#d9ff5d' } },
         { value: 300, style: { fill: '#d94f5d' } },
         { value: 100, style: { fill: '#fff' } },
