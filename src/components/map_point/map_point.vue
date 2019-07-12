@@ -277,7 +277,7 @@ export const MapPoint = {
       let iconType = DEFAULT_ICON;
 
       // 实际 icon 加上边框大小
-      const viewDiameter = SIZE + strokeWidth * 2;
+      const viewDiameter = (SIZE + strokeWidth) * 2;
       // 用户设置的 icon 大小
       const userDiameter = radius * 2;
 
