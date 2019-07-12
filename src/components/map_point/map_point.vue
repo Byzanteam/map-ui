@@ -169,8 +169,11 @@ export const MapPoint = {
         () => new AMap.MarkerClusterer(
           map,
           this.generateMarkers,
-          { renderClusterMarker: this.clusterMarker },
-        )
+          {
+            renderClusterMarker: this.clusterMarker,
+            zoomOnClick: false,
+          },
+        ).on('click', e => this.$emit('clustererClick', e))
       );
     },
 
@@ -221,7 +224,7 @@ export const MapPoint = {
           content,
         });
 
-        marker.on('click', (e) => this.$emit('pointClick',e));
+        marker.on('click', e => this.$emit('pointClick', e));
 
         return marker;
       });

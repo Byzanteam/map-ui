@@ -15,7 +15,6 @@
         }
       }"
       label-key="description"
-      @pointClick="click"
     />
   </base-map>
 </template>
@@ -45,11 +44,6 @@ export default {
         { value: 100, style: { fill: '#fff' } },
       ],
     };
-  },
-  methods: {
-    click (e) {
-      console.log(e);
-    },
   },
 };
 </script>
