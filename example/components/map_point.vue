@@ -14,8 +14,8 @@
           strokeWidth: 0,
         }
       }"
-      :cluster-option="clusterOption"
       label-key="description"
+      @pointClick="click"
     />
   </base-map>
 </template>
@@ -44,10 +44,12 @@ export default {
         { value: 300, style: { fill: '#d94f5d' } },
         { value: 100, style: { fill: '#fff' } },
       ],
-      clusterOption: [
-
-      ],
     };
+  },
+  methods: {
+    click (e) {
+      console.log(e);
+    },
   },
 };
 </script>

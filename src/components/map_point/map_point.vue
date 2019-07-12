@@ -221,6 +221,8 @@ export const MapPoint = {
           content,
         });
 
+        marker.on('click', (e) => this.$emit('pointClick',e));
+
         return marker;
       });
     },
