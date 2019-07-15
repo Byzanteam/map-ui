@@ -1,5 +1,6 @@
 <script>
 import _ from 'lodash';
+import MapMixin from '../mixins/map';
 
 const DEFAULT_BOUNDARY_STYLE = {
         strokeColor: '#5fd0dc',
@@ -22,8 +23,8 @@ const DEFAULT_BOUNDARY_STYLE = {
         strokeWeight: 1,
       };
 
-export default {
-  inject: ['instance'],
+export const Regions = {
+  mixins: [MapMixin],
 
   props: {
     labelData: {
@@ -58,9 +59,6 @@ export default {
   },
 
   computed: {
-    map () {
-      return this.instance.map;
-    },
     groupedGeoJSON () {
       if (_.isEmpty(this.groups)) {
         return [{
@@ -89,12 +87,6 @@ export default {
         };
       }
       return DEFAULT_BOUNDARY_STYLE;
-    },
-  },
-
-  watch: {
-    map () {
-      this.mapLoadedFunc();
     },
   },
 
@@ -180,9 +172,7 @@ export default {
       };
     },
   },
-
-  render () {
-    return null;
-  },
 };
+
+export default Regions;
 </script>

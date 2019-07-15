@@ -1,5 +1,6 @@
 <script>
 import _ from 'lodash';
+import MapMixin from '../mixins/map';
 
 const DEFAULT_MAERKER = {
   radius: 20,
@@ -9,6 +10,8 @@ const DEFAULT_MAERKER = {
 };
 
 export const MapPoint = {
+  mixins: [MapMixin],
+
   props: {
     data: {
       type: Array,
@@ -28,8 +31,6 @@ export const MapPoint = {
     },
   },
 
-  inject: ['instance'],
-
   data () {
     return {
       generateMarkers: [],
@@ -37,10 +38,6 @@ export const MapPoint = {
   },
 
   computed: {
-    map () {
-      return this.instance.map;
-    },
-
     markerResult () {
       return {
         ...DEFAULT_MAERKER,
@@ -49,19 +46,13 @@ export const MapPoint = {
     },
   },
 
-  watch: {
-    map (current) {
-      this.initMakers(current);
-    },
-  },
-
   methods: {
-    initMakers (map) {
+    mapLoadedFunc () {
       this.generateMakers();
       if (this.cluster) {
-        this.buildClusterMakers(map);
+        this.buildClusterMakers(this.map);
       } else {
-        this.buildMakers(map);
+        this.buildMakers(this.map);
       }
     },
 
@@ -127,10 +118,6 @@ export const MapPoint = {
         content: '',
       });
     },
-  },
-
-  render () {
-    return null;
   },
 };
 
