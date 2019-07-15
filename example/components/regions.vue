@@ -90,9 +90,7 @@ export default {
         Authorization: 'Token 5e4cdf89bed7d739668292c70f9983ee16c5bdf52a5d1d67',
         'Content-Type': 'application/json',
       },
-    }).then((res) => {
-      return res.json();
-    }).then((res) => {
+    }).then(res => res.json()).then((res) => {
       this.areas = res.data.features;
     });
   },

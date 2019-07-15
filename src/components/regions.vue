@@ -41,7 +41,7 @@ export const Regions = {
     },
   },
 
-  data() {
+  data () {
     return {
       geoJSONAreas: [],
     };
