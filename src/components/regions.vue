@@ -70,8 +70,9 @@ export const Regions = {
     },
   },
 
+  // response data props change
   watch: {
-    areas () {
+    groupedGeoJSON () {
       if (this.map) {
         this.renderGeoJSON();
       }
@@ -102,6 +103,7 @@ export const Regions = {
 
     clear () {
       _.forEach(this.geoJSONAreas, area => area.clearOverlays());
+      this.geoJSONAreas = [];
     },
 
     _generatePolygon (lnglats) {
