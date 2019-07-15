@@ -1,11 +1,12 @@
 <template>
   <base-map
     :map-options="{viewMode: '3D', zoom: 4}"
-    :transparent="true"
+    transparent
   >
     <regions
       :label-data="labelData"
       :custom-area="customArea"
+      :geo-json="geoJSON"
     />
   </base-map>
 </template>
@@ -13,6 +14,8 @@
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
+import { amap } from '../../config.json';
+import geojson from './geojson.json';
 
 const LABEL_DATA = [
   {
@@ -76,19 +79,20 @@ export default {
     Regions,
   },
 
+  data () {
+    return {
+      geoJSON: geojson,
+    };
+  },
+
   created () {
     this.labelData = LABEL_DATA;
     this.customArea = CUSTOM_AREA;
+    this.getGeoJSON();
+  },
+
+  methods: {
+    getGeoJSON () {},
   },
 };
 </script>
-
-<style lang="scss">
-  // move to reset, then let style be scoped
-  html,
-  body {
-    width: 100%;
-    height: 100%;
-    margin: 0;
-  }
-</style>
