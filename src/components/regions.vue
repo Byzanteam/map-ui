@@ -2,26 +2,25 @@
 import _ from 'lodash';
 
 const DEFAULT_BOUNDARY_STYLE = {
-  strokeColor: '#5fd0dc',
-  fillColor: '#5fd0dc',
-  strokeWeight: 1,
-  strokeOpacity: 0.2,
-};
-
-const POLYGON_OPTIONS = {
-  strokeColor: 'white',
-  strokeDasharray: [5, 10],
-  fillColor: '#5fd0dc',
-  fillOpacity: 0.7,
-  strokeWeight: 1,
-};
-const POLYGON_OPTIONS_HOVER = {
-  strokeColor: 'white',
-  strokeDasharray: [5, 10],
-  fillColor: '#666666',
-  fillOpacity: 0.7,
-  strokeWeight: 1,
-};
+        strokeColor: '#5fd0dc',
+        fillColor: '#5fd0dc',
+        strokeWeight: 1,
+        strokeOpacity: 0.2,
+      },
+      DEFAULT_AREA_STYLE = {
+        strokeColor: 'white',
+        strokeDasharray: [5, 10],
+        fillColor: '#5fd0dc',
+        fillOpacity: 0.7,
+        strokeWeight: 1,
+      },
+      DEFAULT_AREA_HOVER_STYLE = {
+        strokeColor: 'white',
+        strokeDasharray: [5, 10],
+        fillColor: '#666666',
+        fillOpacity: 0.7,
+        strokeWeight: 1,
+      };
 
 export default {
   inject: ['instance'],
@@ -43,48 +42,24 @@ export default {
     },
     boundaryLine: {
       type: Object,
-      default: () => ({
-        path: '',
-        style: {},
-      }),
+      default: null,
       validator (val) {
         return !val || val.path;
       },
     },
-    sideOptions: {
+    areaStyle: {
       type: Object,
       default: () => ({}),
     },
-    polygonOptions: {
+    areaHoverStyle: {
       type: Object,
       default: () => ({}),
     },
-    hoveredPolygonOptions: {
-      type: Object,
-      default () {
-        return {
-          fillColor: '#ffffff',
-          fillOpacity: 0.3,
-        };
-      },
-    },
-  },
-
-  data () {
-    return {
-      polygons: {},
-    };
   },
 
   computed: {
     map () {
       return this.instance.map;
-    },
-    mergedPolygonOptions () {
-      return {
-        ...POLYGON_OPTIONS,
-        ...this.polygonOptions,
-      };
     },
     groupedGeoJSON () {
       if (_.isEmpty(this.groups)) {
@@ -95,10 +70,7 @@ export default {
       }
       const groups = _.groupBy(this.areas, (item) => {
         const { adcode, name } = item.properties;
-        const group = _.find(
-          this.groups,
-          ({ codes }) => _.includes(codes, adcode),
-        );
+        const group = this._getGroupByCode(adcode);
         if (group) return group.name;
         return name;
       });
@@ -146,12 +118,14 @@ export default {
 
     renderGeoJSON () {
       _.forEach(this.groupedGeoJSON, (geoJSON) => {
+        const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
         const geojson = new AMap.GeoJSON({
           geoJSON,
           getPolygon: (_json, lnglats) => this.generatePolygon(lnglats),
         });
-        geojson.on('mouseover', () => geojson.setOptions(POLYGON_OPTIONS_HOVER));
-        geojson.on('mouseout', () => geojson.setOptions(POLYGON_OPTIONS));
+        geojson.setOptions(areaStyle);
+        geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
+        geojson.on('mouseout', () => geojson.setOptions(areaStyle));
         geojson.setMap(this.map);
       });
     },
@@ -160,7 +134,6 @@ export default {
       return new AMap.Polygon({
         path: lnglats,
         zIndex: 100,
-        ...this.mergedPolygonOptions,
       });
     },
 
@@ -172,6 +145,38 @@ export default {
       _.each(this.labelData, (label) => {
         layer.add(new AMap.LabelMarker(label));
       });
+    },
+
+    _getGroupByCode (adcode) {
+      if (_.isEmpty(this.groups)) return null;
+      return _.find(
+        this.groups,
+        ({ codes }) => _.includes(codes, adcode),
+      );
+    },
+
+    _getGeoJSONStyle (geoJSON) {
+      const [feature] = geoJSON.features,
+            { adcode, style, hoverStyle } = feature.properties,
+            group = this._getGroupByCode(adcode);
+      if (group) {
+        return this.__getAreaStyle(group.style, group.hoverStyle);
+      }
+      return this.__getAreaStyle(style, hoverStyle);
+    },
+    __getAreaStyle (style = {}, hoverStyle = {}) {
+      return {
+        areaStyle: {
+          ...DEFAULT_AREA_STYLE,
+          ...this.areaStyle,
+          ...style,
+        },
+        areaHoverStyle: {
+          ...DEFAULT_AREA_HOVER_STYLE,
+          ...this.areaHoverStyle,
+          ...hoverStyle,
+        },
+      };
     },
   },
 
