@@ -1,9 +1,3 @@
-// template 渲染还是 render 渲染？
-<template>
-  <div />
-</template>
-
-<script>
 export default {
   inject: ['instance'],
 
@@ -15,8 +9,15 @@ export default {
 
   watch: {
     map () {
-      // map ready
+      this.mapLoadedFunc();
     },
   },
+
+  methods: {
+    mapLoadedFunc () {},
+  },
+
+  render () {
+    return null;
+  },
 };
-</script>

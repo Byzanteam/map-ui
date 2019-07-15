@@ -1,195 +1,149 @@
 <script>
 import _ from 'lodash';
+import MapMixin from '../mixins/map';
 
-const SIDE_OPTIONS = {
-  strokeColor: '#5fd0dc',
-  fillColor: '#5fd0dc',
-  strokeWeight: 1,
-  strokeOpacity: 0.2,
-};
+const DEFAULT_AREA_STYLE = {
+        strokeColor: 'white',
+        strokeDasharray: [5, 10],
+        fillColor: '#5fd0dc',
+        fillOpacity: 0.7,
+        strokeWeight: 1,
+      },
+      DEFAULT_AREA_HOVER_STYLE = {
+        strokeColor: 'white',
+        strokeDasharray: [5, 10],
+        fillColor: '#666666',
+        fillOpacity: 0.7,
+        strokeWeight: 1,
+      };
 
-const POLYGON_OPTIONS = {
-  strokeColor: 'white',
-  strokeDasharray: [5, 10],
-  fillColor: '#5fd0dc',
-  fillOpacity: 0.7,
-  strokeWeight: 1,
-};
-
-export default {
-  inject: ['instance'],
+export const Regions = {
+  mixins: [MapMixin],
 
   props: {
-    maskArea: {
-      type: String,
-      default: '中国',
-    },
-    labelData: {
+    // Feature GeoJSON Array
+    areas: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
-    geoJson: {
-      type: Object,
-      default: () => ({
-        type: 'FeatureCollection',
-        features: [],
-      }),
-    },
-    customArea: {
+    // groups
+    groups: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
-    sideOptions: {
+    areaStyle: {
       type: Object,
       default: () => ({}),
     },
-    polygonOptions: {
+    areaHoverStyle: {
       type: Object,
       default: () => ({}),
-    },
-    hoveredPolygonOptions: {
-      type: Object,
-      default () {
-        return {
-          fillColor: '#ffffff',
-          fillOpacity: 0.3,
-        };
-      },
     },
   },
 
   data () {
     return {
-      polygons: {},
+      geoJSONAreas: [],
     };
   },
 
   computed: {
-    map () {
-      return this.instance.map;
-    },
-    mergedPolygonOptions () {
-      return {
-        ...POLYGON_OPTIONS,
-        ...this.polygonOptions,
-      };
+    groupedGeoJSON () {
+      if (_.isEmpty(this.groups)) {
+        return [{
+          type: 'FeatureCollection',
+          features: this.areas,
+        }];
+      }
+      const groups = _.groupBy(this.areas, (item) => {
+        const { adcode, name } = item.properties;
+        const group = this._getGroupByCode(adcode);
+        if (group) return group.name;
+        return name;
+      });
+      return _.transform(groups, (acc, value) => {
+        acc.push({
+          type: 'FeatureCollection',
+          features: value,
+        });
+      }, []);
     },
   },
 
+  // response data props change
   watch: {
-    map () {
-      this.renderMask();
+    groupedGeoJSON () {
+      if (this.map) {
+        this.renderGeoJSON();
+      }
     },
   },
 
   methods: {
-    renderMask () {
-      this.map.plugin(['AMap.DistrictSearch'], () => {
-        const district = new AMap.DistrictSearch({
-        //  显示下级行政区级数，0表示不返回下级行政区
-          subdistrict: 0,
-          //  返回行政区边界坐标等具体信息
-          extensions: 'all',
-          //  关键字对应的行政区级别，country表示国家
-          level: 'country',
-        });
-        district.search(this.maskArea, (status, result) => {
-          const mask = _.map(result.districtList[0].boundaries, (bound) => {
-          // 底图描边
-            this.creatPolyline(bound);
-            return [bound];
-          });
-          this.map.setMask(mask);
-        });
-      });
-      this.renderGeojson();
+    mapLoadedFunc () {
+      this.renderGeoJSON();
     },
 
-    creatPolyline (bound) {
+    renderGeoJSON () {
+      this.clear();
+      this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
+        const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
+        const geojson = new AMap.GeoJSON({
+          geoJSON,
+          getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
+        });
+        geojson.setOptions(areaStyle);
+        geojson.on('click', () => this.$emit('area-clicked', geoJSON));
+        geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
+        geojson.on('mouseout', () => geojson.setOptions(areaStyle));
+        geojson.setMap(this.map);
+        return geojson;
+      });
+    },
+
+    clear () {
+      _.forEach(this.geoJSONAreas, area => area.clearOverlays());
+      this.geoJSONAreas = [];
+    },
+
+    _generatePolygon (lnglats) {
       return new AMap.Polygon({
-        path: bound,
-        map: this.map,
-        ...SIDE_OPTIONS,
-        ...this.sideOptions,
-      });
-    },
-
-    renderGeojson () {
-      const geojson = new AMap.GeoJSON({
-        geoJSON: this.geoJson,
-        getPolygon: (json, lnglats) => {
-          const area = _.find(this.customArea, item => _.includes(
-            item.codes,
-            json.properties.adcode
-          ));
-          if (area) {
-            return this.generateAreaPolygon(lnglats, area);
-          }
-          return this.generatePolygon(lnglats);
-        },
-      });
-      geojson.setMap(this.map);
-      this.renderLabel();
-    },
-
-    generateAreaPolygon (lnglats, area) {
-      const custom_area_options = {
-        zIndex: 100,
-        ...this.mergedPolygonOptions,
-        ...area.options,
-      };
-      const polygon = new AMap.Polygon({
         path: lnglats,
-        ...custom_area_options,
+        zIndex: 100,
       });
-      this.classifyArea(polygon, area);
-      // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
-      polygon.on('mouseover', () => {
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(this.hoveredPolygonOptions);
-        });
-      });
-      polygon.on('mouseout', () => {
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(custom_area_options);
-        });
-      });
-      return polygon;
     },
-
-    classifyArea (polygon, area) {
-      let current_polygons = this.polygons[area.name];
-      if (!current_polygons) {
-        current_polygons = [];
+    _getGroupByCode (code) {
+      if (_.isEmpty(this.groups)) return null;
+      return _.find(this.groups, (group) => {
+        const { codes } = group;
+        return _.findIndex(codes, i => String(i) === String(code)) >= 0;
+      });
+    },
+    _getGeoJSONStyle (geoJSON) {
+      const [feature] = geoJSON.features,
+            { adcode, style, hoverStyle } = feature.properties,
+            group = this._getGroupByCode(adcode);
+      if (group) {
+        return this.__getAreaStyle(group.style, group.hoverStyle);
       }
-      current_polygons.push(polygon);
-      this.polygons[area.name] = current_polygons;
+      return this.__getAreaStyle(style, hoverStyle);
     },
-
-    generatePolygon (lnglats) {
-      const polygon = new AMap.Polygon({
-        path: lnglats,
-        zIndex: 100,
-        ...this.mergedPolygonOptions,
-      });
-      polygon.on('mouseover', () => polygon.setOptions(this.hoveredPolygonOptions));
-      polygon.on('mouseout', () => polygon.setOptions(this.mergedPolygonOptions));
-      return polygon;
+    __getAreaStyle (style = {}, hoverStyle = {}) {
+      return {
+        areaStyle: {
+          ...DEFAULT_AREA_STYLE,
+          ...this.areaStyle,
+          ...style,
+        },
+        areaHoverStyle: {
+          ...DEFAULT_AREA_HOVER_STYLE,
+          ...this.areaHoverStyle,
+          ...hoverStyle,
+        },
+      };
     },
-
-    renderLabel () {
-      const layer = new AMap.LabelsLayer({
-        zIndex: 200,
-      });
-      this.map.add(layer);
-      _.each(this.labelData, (label) => {
-        layer.add(new AMap.LabelMarker(label));
-      });
-    },
-  },
-
-  render () {
-    return null;
   },
 };
+
+export default Regions;
 </script>

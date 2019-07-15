@@ -43,7 +43,7 @@ export const BaseMap = {
     };
   },
 
-  created () {
+  mounted () {
     this._loadSource();
   },
 
