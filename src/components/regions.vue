@@ -109,7 +109,6 @@ export const Regions = {
     _generatePolygon (lnglats) {
       return new AMap.Polygon({
         path: lnglats,
-        zIndex: 100,
       });
     },
     _getGroupByCode (code) {
