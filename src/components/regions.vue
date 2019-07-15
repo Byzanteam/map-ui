@@ -40,7 +40,7 @@ export default {
       }),
     },
     // groups
-    customArea: {
+    groups: {
       type: Array,
       default: () => ([]),
     },
@@ -80,10 +80,10 @@ export default {
       };
     },
     groupedGeojson () {
-      if (_.isEmpty(this.customArea)) return [this.geoJson];
+      if (_.isEmpty(this.groups)) return [this.geoJson];
       const groups = _.groupBy(this.geoJson.features, (item) => {
         const { adcode, name } = item.properties;
-        const group = _.find(this.customArea, area => _.includes(area.codes, adcode));
+        const group = _.find(this.groups, area => _.includes(area.codes, adcode));
         if (group) return group.name;
         return name;
       });
