@@ -49,7 +49,7 @@ const AREA_GROUPS = [
   {
     name: '西北',
     codes: ['610000', '620000', '630000', '640000', '650000'],
-    options: {
+    style: {
       fillColor: '#000000',
       fillOpacity: 0.7,
     },
@@ -57,15 +57,15 @@ const AREA_GROUPS = [
   {
     name: '西藏',
     codes: ['540000'],
-    options: {
-      fillColor: '#ffffff',
+    style: {
+      fillColor: 'gray',
       fillOpacity: 0.1,
     },
   },
   {
     name: '华北',
     codes: ['110000', '120000', '130000', '140000', '150000'],
-    options: {
+    style: {
       fillColor: '#000000',
       fillOpacity: 0.3,
     },
