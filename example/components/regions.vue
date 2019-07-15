@@ -6,7 +6,7 @@
     <regions
       :label-data="labelData"
       :groups="groups"
-      :geo-json="geoJSON"
+      :areas="areas"
     />
   </base-map>
 </template>
@@ -14,7 +14,6 @@
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
-import { amap } from '../../config.json';
 import geojson from './geojson.json';
 
 const LABEL_DATA = [
@@ -82,7 +81,7 @@ export default {
   created () {
     this.labelData = LABEL_DATA;
     this.groups = AREA_GROUPS;
-    this.geoJSON = geojson;
+    this.areas = geojson.features;
   },
 };
 </script>
