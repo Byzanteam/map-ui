@@ -120,12 +120,12 @@ export default {
         zIndex: 100,
       });
     },
-    _getGroupByCode (adcode) {
+    _getGroupByCode (code) {
       if (_.isEmpty(this.groups)) return null;
-      return _.find(
-        this.groups,
-        ({ codes }) => _.includes(codes, adcode),
-      );
+      return _.find(this.groups, (group) => {
+        const { codes } = group;
+        return _.findIndex(codes, i => String(i) === String(code)) >= 0;
+      });
     },
     _getGeoJSONStyle (geoJSON) {
       const [feature] = geoJSON.features,

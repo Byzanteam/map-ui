@@ -17,7 +17,7 @@ import Regions from '../../src/components/regions.vue';
 const AREA_GROUPS = [
   {
     name: '西北',
-    codes: [610000, 620000, 630000, 640000, 650000],
+    codes: [610000, 620000, '630000', 640000, 650000],
     style: {
       fillColor: 'hsl(182, 25%, 50%)',
       fillOpacity: 0.7,
