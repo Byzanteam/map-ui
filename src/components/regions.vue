@@ -15,19 +15,23 @@ const POLYGON_OPTIONS = {
   fillOpacity: 0.7,
   strokeWeight: 1,
 };
+const POLYGON_OPTIONS_HOVER = {
+  strokeColor: 'white',
+  strokeDasharray: [5, 10],
+  fillColor: '#666666',
+  fillOpacity: 0.7,
+  strokeWeight: 1,
+};
 
 export default {
   inject: ['instance'],
 
   props: {
-    maskArea: {
-      type: String,
-      default: '中国',
-    },
     labelData: {
       type: Array,
       default: () => ([]),
     },
+    // areas
     geoJson: {
       type: Object,
       default: () => ({
@@ -35,6 +39,7 @@ export default {
         features: [],
       }),
     },
+    // groups
     customArea: {
       type: Array,
       default: () => ([]),
@@ -74,35 +79,33 @@ export default {
         ...this.polygonOptions,
       };
     },
+    groupedGeojson () {
+      if (_.isEmpty(this.customArea)) return [this.geoJson];
+      const groups = _.groupBy(this.geoJson.features, (item) => {
+        const { adcode, name } = item.properties;
+        const group = _.find(this.customArea, area => _.includes(area.codes, adcode));
+        if (group) return group.name;
+        return name;
+      });
+      return _.transform(groups, (acc, value) => {
+        acc.push({
+          type: 'FeatureCollection',
+          features: value,
+        });
+      }, []);
+    },
   },
 
   watch: {
     map () {
-      this.renderMask();
+      this.mapLoadedFunc();
     },
   },
 
   methods: {
-    renderMask () {
-      this.map.plugin(['AMap.DistrictSearch'], () => {
-        const district = new AMap.DistrictSearch({
-        //  显示下级行政区级数，0表示不返回下级行政区
-          subdistrict: 0,
-          //  返回行政区边界坐标等具体信息
-          extensions: 'all',
-          //  关键字对应的行政区级别，country表示国家
-          level: 'country',
-        });
-        district.search(this.maskArea, (status, result) => {
-          const mask = _.map(result.districtList[0].boundaries, (bound) => {
-          // 底图描边
-            this.creatPolyline(bound);
-            return [bound];
-          });
-          this.map.setMask(mask);
-        });
-      });
+    mapLoadedFunc () {
       this.renderGeojson();
+      // this.renderLabel();
     },
 
     creatPolyline (bound) {
@@ -115,66 +118,25 @@ export default {
     },
 
     renderGeojson () {
-      const geojson = new AMap.GeoJSON({
-        geoJSON: this.geoJson,
-        getPolygon: (json, lnglats) => {
-          const area = _.find(this.customArea, item => _.includes(
-            item.codes,
-            json.properties.adcode
-          ));
-          if (area) {
-            return this.generateAreaPolygon(lnglats, area);
-          }
-          return this.generatePolygon(lnglats);
-        },
-      });
-      geojson.setMap(this.map);
-      this.renderLabel();
-    },
-
-    generateAreaPolygon (lnglats, area) {
-      const custom_area_options = {
-        zIndex: 100,
-        ...this.mergedPolygonOptions,
-        ...area.options,
-      };
-      const polygon = new AMap.Polygon({
-        path: lnglats,
-        ...custom_area_options,
-      });
-      this.classifyArea(polygon, area);
-      // 多边形mouseover时找到与它同组的所有多边形，同时高亮，mouseout时同时失去高亮
-      polygon.on('mouseover', () => {
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(this.hoveredPolygonOptions);
+      _.forEach(this.groupedGeojson, (geoJSON) => {
+        const geojson = new AMap.GeoJSON({
+          geoJSON,
+          getPolygon: (json, lnglats) => {
+            return this.generatePolygon(lnglats);
+          },
         });
+        geojson.on('mouseover', () => geojson.setOptions(POLYGON_OPTIONS_HOVER));
+        geojson.on('mouseout', () => geojson.setOptions(POLYGON_OPTIONS));
+        geojson.setMap(this.map);
       });
-      polygon.on('mouseout', () => {
-        _.each(this.polygons[area.name], (item) => {
-          item.setOptions(custom_area_options);
-        });
-      });
-      return polygon;
-    },
-
-    classifyArea (polygon, area) {
-      let current_polygons = this.polygons[area.name];
-      if (!current_polygons) {
-        current_polygons = [];
-      }
-      current_polygons.push(polygon);
-      this.polygons[area.name] = current_polygons;
     },
 
     generatePolygon (lnglats) {
-      const polygon = new AMap.Polygon({
+      return new AMap.Polygon({
         path: lnglats,
         zIndex: 100,
         ...this.mergedPolygonOptions,
       });
-      polygon.on('mouseover', () => polygon.setOptions(this.hoveredPolygonOptions));
-      polygon.on('mouseout', () => polygon.setOptions(this.mergedPolygonOptions));
-      return polygon;
     },
 
     renderLabel () {
