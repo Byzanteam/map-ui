@@ -16,17 +16,11 @@ export const LabelMarker =  {
       type: Array,
       default: () => [],
     },
-    zIndex: {
-      type: Number,
-      default: 200,
-    },
   },
 
   methods: {
     mapLoadedFunc () {
-      const layer = new AMap.LabelsLayer({
-        zIndex: this.zIndex,
-      });
+      const layer = new AMap.LabelsLayer();
       this.map.add(layer);
       _.each(this.labelMarkers, (label) => {
         label.text.style = {
