@@ -40,7 +40,7 @@ export default {
     },
   },
 
-  data() {
+  data () {
     return {
       geoJSONAreas: [],
     };
