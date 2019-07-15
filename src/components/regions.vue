@@ -124,6 +124,7 @@ export default {
           getPolygon: (_json, lnglats) => this.generatePolygon(lnglats),
         });
         geojson.setOptions(areaStyle);
+        geojson.on('click', () => this.$emit('area-clicked', geoJSON));
         geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
         geojson.on('mouseout', () => geojson.setOptions(areaStyle));
         geojson.setMap(this.map);
