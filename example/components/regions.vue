@@ -5,7 +5,7 @@
   >
     <regions
       :label-data="labelData"
-      :custom-area="customArea"
+      :groups="groups"
       :geo-json="geoJSON"
     />
   </base-map>
@@ -46,7 +46,7 @@ const LABEL_DATA = [
     },
   },
 ];
-const CUSTOM_AREA = [
+const AREA_GROUPS = [
   {
     name: '西北',
     codes: ['610000', '620000', '630000', '640000', '650000'],
@@ -79,20 +79,10 @@ export default {
     Regions,
   },
 
-  data () {
-    return {
-      geoJSON: geojson,
-    };
-  },
-
   created () {
     this.labelData = LABEL_DATA;
-    this.customArea = CUSTOM_AREA;
-    this.getGeoJSON();
-  },
-
-  methods: {
-    getGeoJSON () {},
+    this.groups = AREA_GROUPS;
+    this.geoJSON = geojson;
   },
 };
 </script>
