@@ -1,13 +1,7 @@
 <script>
 import _ from 'lodash';
 
-const DEFAULT_BOUNDARY_STYLE = {
-        strokeColor: '#5fd0dc',
-        fillColor: '#5fd0dc',
-        strokeWeight: 1,
-        strokeOpacity: 0.2,
-      },
-      DEFAULT_AREA_STYLE = {
+const DEFAULT_AREA_STYLE = {
         strokeColor: 'white',
         strokeDasharray: [5, 10],
         fillColor: '#5fd0dc',
@@ -26,10 +20,6 @@ export default {
   inject: ['instance'],
 
   props: {
-    labelData: {
-      type: Array,
-      default: () => [],
-    },
     // Feature GeoJSON Array
     areas: {
       type: Array,
@@ -40,13 +30,6 @@ export default {
       type: Array,
       default: () => [],
     },
-    boundaryLine: {
-      type: Object,
-      default: null,
-      validator (val) {
-        return !val || val.path;
-      },
-    },
     areaStyle: {
       type: Object,
       default: () => ({}),
@@ -55,6 +38,12 @@ export default {
       type: Object,
       default: () => ({}),
     },
+  },
+
+  data() {
+    return {
+      geoJSONAreas: [],
+    };
   },
 
   computed: {
@@ -81,14 +70,13 @@ export default {
         });
       }, []);
     },
-    bonudaryLineStyle () {
-      if (this.boundaryLine && this.boundaryLine.style) {
-        return {
-          ...DEFAULT_BOUNDARY_STYLE,
-          ...this.boundaryLine.style,
-        };
+  },
+
+  watch: {
+    areas () {
+      if (this.map) {
+        this.renderGeoJSON();
       }
-      return DEFAULT_BOUNDARY_STYLE;
     },
   },
 
@@ -101,53 +89,35 @@ export default {
   methods: {
     mapLoadedFunc () {
       this.renderGeoJSON();
-      this.renderBoundaryLine();
-      this.renderLabel();
-    },
-
-    renderBoundaryLine () {
-      if (this.boundaryLine) {
-        return new AMap.Polygon({
-          path: this.boundaryLine.path,
-          map: this.map,
-          ...DEFAULT_BOUNDARY_STYLE,
-          ...this.boundaryLine.style,
-        });
-      }
     },
 
     renderGeoJSON () {
-      _.forEach(this.groupedGeoJSON, (geoJSON) => {
+      this.clear();
+      this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
         const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
         const geojson = new AMap.GeoJSON({
           geoJSON,
-          getPolygon: (_json, lnglats) => this.generatePolygon(lnglats),
+          getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
         geojson.setOptions(areaStyle);
         geojson.on('click', () => this.$emit('area-clicked', geoJSON));
         geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
         geojson.on('mouseout', () => geojson.setOptions(areaStyle));
         geojson.setMap(this.map);
+        return geojson;
       });
     },
 
-    generatePolygon (lnglats) {
+    clear () {
+      _.forEach(this.geoJSONAreas, area => area.clearOverlays());
+    },
+
+    _generatePolygon (lnglats) {
       return new AMap.Polygon({
         path: lnglats,
         zIndex: 100,
       });
     },
-
-    renderLabel () {
-      const layer = new AMap.LabelsLayer({
-        zIndex: 200,
-      });
-      this.map.add(layer);
-      _.each(this.labelData, (label) => {
-        layer.add(new AMap.LabelMarker(label));
-      });
-    },
-
     _getGroupByCode (adcode) {
       if (_.isEmpty(this.groups)) return null;
       return _.find(
@@ -155,7 +125,6 @@ export default {
         ({ codes }) => _.includes(codes, adcode),
       );
     },
-
     _getGeoJSONStyle (geoJSON) {
       const [feature] = geoJSON.features,
             { adcode, style, hoverStyle } = feature.properties,
