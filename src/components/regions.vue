@@ -1,7 +1,7 @@
 <script>
 import _ from 'lodash';
 
-const SIDE_OPTIONS = {
+const DEFAULT_BOUNDARY_STYLE = {
   strokeColor: '#5fd0dc',
   fillColor: '#5fd0dc',
   strokeWeight: 1,
@@ -40,6 +40,16 @@ export default {
     groups: {
       type: Array,
       default: () => [],
+    },
+    boundaryLine: {
+      type: Object,
+      default: () => ({
+        path: '',
+        style: {},
+      }),
+      validator (val) {
+        return !val || val.path;
+      },
     },
     sideOptions: {
       type: Object,
@@ -99,6 +109,15 @@ export default {
         });
       }, []);
     },
+    bonudaryLineStyle () {
+      if (this.boundaryLine && this.boundaryLine.style) {
+        return {
+          ...DEFAULT_BOUNDARY_STYLE,
+          ...this.boundaryLine.style,
+        };
+      }
+      return DEFAULT_BOUNDARY_STYLE;
+    },
   },
 
   watch: {
@@ -109,20 +128,23 @@ export default {
 
   methods: {
     mapLoadedFunc () {
-      this.renderGeojson();
+      this.renderGeoJSON();
+      this.renderBoundaryLine();
       // this.renderLabel();
     },
 
-    creatPolyline (bound) {
-      return new AMap.Polygon({
-        path: bound,
-        map: this.map,
-        ...SIDE_OPTIONS,
-        ...this.sideOptions,
-      });
+    renderBoundaryLine () {
+      if (this.boundaryLine) {
+        return new AMap.Polygon({
+          path: this.boundaryLine.path,
+          map: this.map,
+          ...DEFAULT_BOUNDARY_STYLE,
+          ...this.boundaryLine.style,
+        });
+      }
     },
 
-    renderGeojson () {
+    renderGeoJSON () {
       _.forEach(this.groupedGeoJSON, (geoJSON) => {
         const geojson = new AMap.GeoJSON({
           geoJSON,
