@@ -1,6 +1,6 @@
 <template>
   <base-map
-    :map-options="{viewMode: '3D', zoom: 4}"
+    :map-options="{zoom: 4}"
     transparent
   >
     <regions
@@ -50,16 +50,8 @@ const AREA_GROUPS = [
     name: '西北',
     codes: ['610000', '620000', '630000', '640000', '650000'],
     style: {
-      fillColor: '#000000',
+      fillColor: 'hsl(182, 25%, 50%)',
       fillOpacity: 0.7,
-    },
-  },
-  {
-    name: '西藏',
-    codes: ['540000'],
-    style: {
-      fillColor: 'gray',
-      fillOpacity: 0.1,
     },
   },
   {
@@ -68,6 +60,35 @@ const AREA_GROUPS = [
     style: {
       fillColor: '#000000',
       fillOpacity: 0.3,
+    },
+  },
+  {
+    name: '西南',
+    codes: ['510000', '500000', '520000', '530000', '540000'],
+    style: {
+      fillColor: 'hsl(160, 100%, 75%)',
+    },
+  },
+  {
+    name: '东南',
+    codes: ['310000', '320000', '330000', '340000', '350000', '360000', '370000'],
+    style: {
+      fillColor: 'hsl(33, 100%, 88%)',
+    },
+  },
+  {
+    name: '华中',
+    codes: ['410000', '420000', '430000', '440000', '450000', '460000'],
+    style: {
+      fillColor: 'hsl(219, 79%, 66%)',
+    },
+  },
+  {
+    name: '东北',
+    codes: ['210000', '220000', '230000'],
+    style: {
+      fillColor: 'hsl(180, 100%, 27%)',
+      fillOpacity: .3,
     },
   },
 ];
