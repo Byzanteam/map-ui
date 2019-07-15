@@ -102,7 +102,7 @@ export default {
     mapLoadedFunc () {
       this.renderGeoJSON();
       this.renderBoundaryLine();
-      // this.renderLabel();
+      this.renderLabel();
     },
 
     renderBoundaryLine () {
