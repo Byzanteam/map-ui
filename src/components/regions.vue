@@ -29,20 +29,17 @@ export default {
   props: {
     labelData: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
-    // areas
-    geoJson: {
-      type: Object,
-      default: () => ({
-        type: 'FeatureCollection',
-        features: [],
-      }),
+    // Feature GeoJSON Array
+    areas: {
+      type: Array,
+      default: () => [],
     },
     // groups
     groups: {
       type: Array,
-      default: () => ([]),
+      default: () => [],
     },
     sideOptions: {
       type: Object,
@@ -79,11 +76,19 @@ export default {
         ...this.polygonOptions,
       };
     },
-    groupedGeojson () {
-      if (_.isEmpty(this.groups)) return [this.geoJson];
-      const groups = _.groupBy(this.geoJson.features, (item) => {
+    groupedGeoJSON () {
+      if (_.isEmpty(this.groups)) {
+        return [{
+          type: 'FeatureCollection',
+          features: this.areas,
+        }];
+      }
+      const groups = _.groupBy(this.areas, (item) => {
         const { adcode, name } = item.properties;
-        const group = _.find(this.groups, area => _.includes(area.codes, adcode));
+        const group = _.find(
+          this.groups,
+          ({ codes }) => _.includes(codes, adcode),
+        );
         if (group) return group.name;
         return name;
       });
@@ -118,12 +123,10 @@ export default {
     },
 
     renderGeojson () {
-      _.forEach(this.groupedGeojson, (geoJSON) => {
+      _.forEach(this.groupedGeoJSON, (geoJSON) => {
         const geojson = new AMap.GeoJSON({
           geoJSON,
-          getPolygon: (json, lnglats) => {
-            return this.generatePolygon(lnglats);
-          },
+          getPolygon: (_json, lnglats) => this.generatePolygon(lnglats),
         });
         geojson.on('mouseover', () => geojson.setOptions(POLYGON_OPTIONS_HOVER));
         geojson.on('mouseout', () => geojson.setOptions(POLYGON_OPTIONS));
