@@ -24,37 +24,9 @@ export const MapPoint = {
   mixins: [MapMixin],
 
   props: {
-    data: {
-      type: Array,
-      default: () => [],
-    },
     markerStyle: {
       type: Object,
       default: () => ({}),
-    },
-    cluster: {
-      type: Boolean,
-      default: true,
-    },
-    descriptionKey: {
-      type: String,
-      default: 'description',
-    },
-    valueKey: {
-      type: String,
-      default: 'value',
-    },
-    valueOption: {
-      type: String,
-      default: 'value',
-    },
-    labelKey: {
-      type: String,
-      default: 'label',
-    },
-    labelOption: {
-      type: Array,
-      default: () => [],
     },
   },
 
@@ -66,9 +38,21 @@ export const MapPoint = {
 
   computed: {
     markerResult () {
+      const {
+        marker = {},
+        label = {},
+        icon = '',
+      } = this.markerStyle;
       return {
-        ...DEFAULT_MAERKER,
-        ...this.markerStyle,
+        pointStyle: {
+          ...DEFAULT_MAERKER,
+          ...marker,
+        },
+        labelStyle: {
+          ...DEFAULT_MAERKER_LABEL,
+          ...label,
+        },
+        icon,
       };
     },
   },
