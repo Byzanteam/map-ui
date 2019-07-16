@@ -22,7 +22,7 @@ const MARKER_TYPES = [
   'pentagram',
 ];
 
-const DEFAULT_MAERKER = {
+const DEFAULT_STYLE = {
   radius: 20,
   strokeColor: '#767676',
   strokeWidth: 1,
@@ -81,7 +81,7 @@ export const Markers = {
 
       return {
         markerStyle: {
-          ...DEFAULT_MAERKER,
+          ...DEFAULT_STYLE,
           ...marker,
         },
         labelStyle: {
