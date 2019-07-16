@@ -3,6 +3,8 @@ import markers from '../components/map_point/markers.json';
 
 const { icons: [{ icons: ICONS }], size: [SIZE] } = markers;
 
+const DEFAULT_ICON = 'circle';
+
 const POINT_TYPES = [
   'circle',
   'triangle',
@@ -13,11 +15,13 @@ const POINT_TYPES = [
 ];
 
 export default {
+
   data () {
     return {
       generateMarkers: [],
     };
   },
+
   methods: {
     styleResults (point, levelOption, style, vkey = 'value') {
       const { pointStyle, labelStyle, icon } = style;
@@ -81,7 +85,7 @@ export default {
       return node;
     },
 
-    getGraphics (labelText, style, currentIcon) {
+    getGraphics (labelText, style) {
       const {
         point: {
           radius,
@@ -98,7 +102,7 @@ export default {
       // 用户设置的 icon 大小
       const userDiameter = radius * 2;
 
-      let iconType = currentIcon;
+      let iconType = DEFAULT_ICON;
 
       if (POINT_TYPES.includes(icon)) iconType = icon;
 
