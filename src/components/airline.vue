@@ -40,6 +40,14 @@ export const AirLine = {
       type: Number,
       default: 1,
     },
+
+    pieceCount: {
+      type: Number,
+      default: 20,
+      validator (val) {
+        return val > 0;
+      },
+    },
   },
 
   data () {
@@ -135,17 +143,17 @@ export const AirLine = {
             lengthx = Math.abs(start[0] - end[0]),
             lengthy = Math.abs(start[1] - end[1]),
             length = Math.max(lengthx, lengthy),
-            PieceCount = 20,
             modulus = this.curvature * length * 0.4;
       let i = 0;
-      while (i <= PieceCount) {
-        const delta = modulus * (0.25 - ((0.5 - i / PieceCount) ** 2)),
+      while (i <= this.pieceCount) {
+        const lamda = i / this.pieceCount,
+              delta = modulus * (0.25 - ((0.5 - lamda) ** 2)),
               deltaX = lengthx >= lengthy ? 0 : delta,
               // 使得 deltaX,deltaY 有且一定只有一个等于 delta
               deltaY = delta - deltaX;
         result.push([
-          start[0] * (1 - i / PieceCount) + (end[0] * i / PieceCount) - deltaX,
-          start[1] * (1 - i / PieceCount) + (end[1] * i / PieceCount) + deltaY,
+          start[0] * (1 - lamda) + (end[0] * lamda) - deltaX,
+          start[1] * (1 - lamda) + (end[1] * lamda) + deltaY,
         ]);
         i += 1;
       }
