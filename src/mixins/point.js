@@ -136,8 +136,4 @@ export default {
       return node;
     },
   },
-
-  render () {
-    return null;
-  },
 };
