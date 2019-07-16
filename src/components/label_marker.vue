@@ -29,7 +29,8 @@ export const LabelMarker =  {
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
-        const label = _.cloneDeep(item);
+        const label = { ...item };
+        label.text = { ...item.text };
         label.text.style = {
           ...DEFAULT_STYLE,
           ...item.text.style,
