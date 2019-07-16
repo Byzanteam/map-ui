@@ -15,11 +15,24 @@ const POINT_TYPES = [
 ];
 
 export default {
+
+  props: {
+    data: {
+      type: Array,
+      default: () => [],
+    },
+    labelKey: {
+      type: String,
+      default: 'label',
+    },
+  },
+
   data () {
     return {
       generateMarkers: [],
     };
   },
+
   methods: {
     styleResults (point, levelOption, style, vkey = 'value') {
       const { pointStyle, labelStyle, icon } = style;
