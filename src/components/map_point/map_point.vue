@@ -36,8 +36,6 @@ export const MapPoint = {
     },
   },
 
-  inject: ['instance'],
-
   data () {
     return {
       generateMarkers: [],
@@ -45,10 +43,6 @@ export const MapPoint = {
   },
 
   computed: {
-    map () {
-      return this.instance.map;
-    },
-
     markerResult () {
       const {
         marker = {},
