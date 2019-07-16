@@ -47,12 +47,6 @@ export default {
     LabelMarker,
   },
 
-  data () {
-    return {
-      labelMarker: [],
-    };
-  },
-
   created () {
     this.labelMarker = LABEL_DATA;
   },
