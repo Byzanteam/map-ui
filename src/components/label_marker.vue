@@ -18,17 +18,27 @@ export const LabelMarker =  {
     },
   },
 
+  data () {
+    return {
+      labelLayer: null,
+    };
+  },
+
   methods: {
     mapLoadedFunc () {
-      const layer = new AMap.LabelsLayer();
-      this.map.add(layer);
+      this.labelLayer = new AMap.LabelsLayer();
+      this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (label) => {
         label.text.style = {
           ...LABEL_MARKER_STYLE,
           ...label.text.style,
         };
-        layer.add(new AMap.LabelMarker(label));
+        this.labelLayer.add(new AMap.LabelMarker(label));
       });
+    },
+
+    clear () {
+      this.labelLayer.clear();
     },
   },
 };
