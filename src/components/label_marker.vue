@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import MapMixin from '../mixins/map';
 
-const LABEL_MARKER_STYLE = {
+const DEFAULT_STYLE = {
   fontSize: 18,
   fontWeight: 'normal',
   fillColor: '#fff',
@@ -30,7 +30,7 @@ export const LabelMarker =  {
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (label) => {
         label.text.style = {
-          ...LABEL_MARKER_STYLE,
+          ...DEFAULT_STYLE,
           ...label.text.style,
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
