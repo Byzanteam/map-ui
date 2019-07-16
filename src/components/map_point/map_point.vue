@@ -82,6 +82,7 @@ export const MapPoint = {
 
     initMakers (map) {
       this.generateMakers();
+      this.renderMakers(map);
     },
 
     generateMakers () {
@@ -107,6 +108,17 @@ export const MapPoint = {
         marker.on('click', e => this.$emit('pointClick', e));
         return marker;
       });
+    },
+
+    renderMakers (map) {
+      _.forEach(
+        this.generateMarkers,
+        value => value.setMap(map)
+      );
+    },
+
+    render () {
+      return null;
     },
   },
 };
