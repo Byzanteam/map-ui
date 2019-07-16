@@ -1,3 +1,9 @@
+<template>
+  <span>
+    <slot name="cluster" />
+  </span>
+</template>
+
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
@@ -134,6 +140,7 @@ export const MapPoint = {
     },
 
     renderMakers (map) {
+      if (this.$slots.cluster) return;
       _.forEach(
         this.generateMarkers,
         value => value.setMap(map)
@@ -240,10 +247,6 @@ export const MapPoint = {
       </div>`;
 
       return node;
-    },
-
-    render () {
-      return null;
     },
   },
 };
