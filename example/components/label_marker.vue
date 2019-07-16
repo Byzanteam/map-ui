@@ -3,7 +3,7 @@
     :map-options="{zoom: 4}"
     transparent
   >
-    <label-marker :label-markers="labelMarker" />
+    <label-marker :label-markers="labelMarkers" />
   </base-map>
 </template>
 
@@ -48,7 +48,7 @@ export default {
   },
 
   created () {
-    this.labelMarker = LABEL_DATA;
+    this.labelMarkers = LABEL_DATA;
   },
 };
 </script>
