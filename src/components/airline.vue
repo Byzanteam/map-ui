@@ -35,6 +35,11 @@ export const AirLine = {
       type: Array,
       default: () => [],
     },
+    // 设定曲线的曲率，值越大越弯曲，0为直线
+    curvature: {
+      type: Number,
+      default: 1,
+    },
   },
 
   data () {
@@ -129,10 +134,11 @@ export const AirLine = {
             lengthx = Math.abs(start[0] - end[0]),
             lengthy = Math.abs(start[1] - end[1]),
             length = Math.max(lengthx, lengthy),
-            PieceCount = 20;
+            PieceCount = 20,
+            modulus = this.curvature * length * 0.4;
       let i = 0;
       while (i <= PieceCount) {
-        let delta = 0.5 * length * (0.25 - Math.pow(0.5 - i / PieceCount, 2));
+        let delta = modulus * (0.25 - Math.pow(0.5 - i / PieceCount, 2));
         let deltaX = lengthx >= lengthy ? 0 : delta;
         // 使得 deltaX,deltaY 有且一定只有一个等于 delta
         let deltaY = delta - deltaX;
