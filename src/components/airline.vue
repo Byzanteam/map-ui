@@ -52,8 +52,9 @@ export const AirLine = {
   computed: {
     toBeDrawnEdges () {
       return _.filter(this.edges, (edge) => {
-        const { source } = edge;
-        return _.findIndex(this.outPoints, point => point.id === source) > -1;
+        const { source, target } = edge;
+        return _.findIndex(this.outPoints, point => point.id === source) > -1
+            || _.findIndex(this.inPoints, point => point.id === target) > -1;
       });
     },
   },
@@ -86,8 +87,8 @@ export const AirLine = {
     },
 
     renderEdges () {
-      const edges = _.map(this.toBeDrawnEdges, (edge) => {
-        return new AMap.Polyline({
+      const edges = _.map(this.toBeDrawnEdges, edge => (
+        new AMap.Polyline({
           path: this._getCurvePoints(edge),
           strokeColor: '#3366FF',
           strokeOpacity: 1,
@@ -96,8 +97,8 @@ export const AirLine = {
           strokeStyle: 'solid',
           lineJoin: 'round',
           lineCap: 'round',
-        });
-      });
+        })
+      ));
       this.edgesGroup = new AMap.OverlayGroup(edges);
       this.edgesGroup.setMap(this.map);
     },
@@ -138,10 +139,10 @@ export const AirLine = {
             modulus = this.curvature * length * 0.4;
       let i = 0;
       while (i <= PieceCount) {
-        let delta = modulus * (0.25 - Math.pow(0.5 - i / PieceCount, 2));
-        let deltaX = lengthx >= lengthy ? 0 : delta;
-        // 使得 deltaX,deltaY 有且一定只有一个等于 delta
-        let deltaY = delta - deltaX;
+        const delta = modulus * (0.25 - ((0.5 - i / PieceCount) ** 2)),
+              deltaX = lengthx >= lengthy ? 0 : delta,
+              // 使得 deltaX,deltaY 有且一定只有一个等于 delta
+              deltaY = delta - deltaX;
         result.push([
           start[0] * (1 - i / PieceCount) + (end[0] * i / PieceCount) - deltaX,
           start[1] * (1 - i / PieceCount) + (end[1] * i / PieceCount) + deltaY,

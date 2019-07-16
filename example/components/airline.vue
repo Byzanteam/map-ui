@@ -7,6 +7,7 @@
       :points="points"
       :edges="edges"
       :out-points="[points[0]]"
+      :in-points="[points[3]]"
       @point-clicked="pointClicked"
     />
   </base-map>
