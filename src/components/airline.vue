@@ -82,9 +82,8 @@ export const AirLine = {
 
     renderEdges () {
       const edges = _.map(this.toBeDrawnEdges, (edge) => {
-        const path = this._getPointsByEdge(edge);
         return new AMap.Polyline({
-          path,
+          path: this._getCurvePoints(edge),
           strokeColor: '#3366FF',
           strokeOpacity: 1,
           strokeWeight: 2,
@@ -123,6 +122,27 @@ export const AirLine = {
         [sourcePoint.lng, sourcePoint.lat],
         [targetPoint.lng, targetPoint.lat],
       ];
+    },
+    _getCurvePoints (edge) {
+      const [start, end] = this._getPointsByEdge(edge),
+            result = [],
+            lengthx = Math.abs(start[0] - end[0]),
+            lengthy = Math.abs(start[1] - end[1]),
+            length = Math.max(lengthx, lengthy),
+            PieceCount = 20;
+      let i = 0;
+      while (i <= PieceCount) {
+        let delta = 0.5 * length * (0.25 - Math.pow(0.5 - i / PieceCount, 2));
+        let deltaX = lengthx >= lengthy ? 0 : delta;
+        // 使得 deltaX,deltaY 有且一定只有一个等于 delta
+        let deltaY = delta - deltaX;
+        result.push([
+          start[0] * (1 - i / PieceCount) + (end[0] * i / PieceCount) - deltaX,
+          start[1] * (1 - i / PieceCount) + (end[1] * i / PieceCount) + deltaY,
+        ]);
+        i += 1;
+      }
+      return result;
     },
   },
 };

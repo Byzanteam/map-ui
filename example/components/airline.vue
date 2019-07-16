@@ -32,6 +32,12 @@ export default {
           lat: 30.67,
         },
         {
+          id: 3,
+          name: '成都周边',
+          lng: 104.07,
+          lat: 34.67,
+        },
+        {
           id: 1,
           name: '北京',
           lng: 116.46,
@@ -75,6 +81,11 @@ export default {
           source: 2,
           target: 4,
           value: 72,
+        },
+        {
+          source: 4,
+          target: 3,
+          value: 10,
         },
       ],
     };
