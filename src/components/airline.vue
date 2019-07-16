@@ -140,6 +140,7 @@ export const AirLine = {
     _getCurvePoints (edge) {
       const [start, end] = this._getPointsByEdge(edge),
             result = [],
+            sign = (end[0] - start[0]) * (end[1] - start[1]) > 0 ? -1 : 1,
             lengthx = Math.abs(start[0] - end[0]),
             lengthy = Math.abs(start[1] - end[1]),
             length = Math.max(lengthx, lengthy),
@@ -152,7 +153,7 @@ export const AirLine = {
               // 使得 deltaX,deltaY 有且一定只有一个等于 delta
               deltaY = delta - deltaX;
         result.push([
-          start[0] * (1 - lamda) + (end[0] * lamda) - deltaX,
+          start[0] * (1 - lamda) + (end[0] * lamda) + sign * deltaX,
           start[1] * (1 - lamda) + (end[1] * lamda) + deltaY,
         ]);
         i += 1;
