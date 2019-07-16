@@ -28,6 +28,10 @@ export const MapPoint = {
       type: Object,
       default: () => ({}),
     },
+    valueOption: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -53,6 +57,20 @@ export const MapPoint = {
           ...label,
         },
         icon,
+      };
+    },
+
+    levelOptionResult () {
+      const {
+        marker = [],
+        valueKey = 'value',
+      } = this.valueOption;
+      return {
+        markerLv: _.sortedUniqBy([
+          ...DEFAULT_MAERKER_VALUE,
+          ...marker,
+        ], obj => obj.value),
+        valueKey,
       };
     },
   },
