@@ -9,9 +9,9 @@ const router = new VueRouter({
     {
       path: '/',
       name: 'Home',
-      redirect: '/map-point',
+      redirect: '/marker',
     },
-    { path: '/map-point', component: () => import('./components/map_point') },
+    { path: '/marker', component: () => import('./components/marker') },
     { path: '/regions', component: () => import('./components/regions') },
   ],
 });

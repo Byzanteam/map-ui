@@ -7,13 +7,13 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
-import Markers from './markers.json';
+import Icons from './markers.json';
 
-const { icons: [{ icons: ICONS }], size: [SIZE] } = Markers;
+const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
 const DEFAULT_ICON = 'circle';
 
-const POINT_TYPES = [
+const MARKER_TYPES = [
   'circle',
   'triangle',
   'triangle-down',
@@ -41,7 +41,9 @@ const DEFAULT_MAERKER_VALUE = [
   { value: 1, style: { fill: '#A6B76F' } },
 ];
 
-export const MapPoint = {
+export const Markers = {
+  name: 'Markers',
+
   mixins: [MapMixin],
 
   props: {
@@ -65,7 +67,7 @@ export const MapPoint = {
 
   data () {
     return {
-      generateMarkers: [],
+      markers: [],
     };
   },
 
@@ -76,8 +78,9 @@ export const MapPoint = {
         label = {},
         icon = '',
       } = this.markerStyle;
+
       return {
-        pointStyle: {
+        markerStyle: {
           ...DEFAULT_MAERKER,
           ...marker,
         },
@@ -106,17 +109,17 @@ export const MapPoint = {
 
   methods: {
     mapLoadedFunc () {
-      this.initMakers(this.instance.map);
+      this.initMarkers(this.instance.map);
     },
 
-    initMakers (map) {
-      this.generateMakers();
-      this.renderMakers(map);
+    initMarkers (map) {
+      this.generateMarkers();
+      this.renderMarkers(map);
     },
 
-    generateMakers () {
+    generateMarkers () {
       const { markerLv, valueKey } = this.levelOptionResult;
-      this.generateMarkers = this.data.map((extData) => {
+      this.markers = this.data.map((extData) => {
         const content = this.getGraphics(
           extData[this.labelKey],
           this.styleResults(
@@ -126,7 +129,7 @@ export const MapPoint = {
             valueKey,
           ),
         );
-        const center = this.markerResult.pointStyle.radius;
+        const center = this.markerResult.markerStyle.radius;
         const marker = new AMap.Marker({
           position: extData.lnglat,
           anchor: 'bottom-center',
@@ -134,26 +137,25 @@ export const MapPoint = {
           offset: new AMap.Pixel(center, center),
           content,
         });
-        marker.on('click', e => this.$emit('pointClick', e));
+        marker.on('click', e => this.$emit('markerClick', e));
         return marker;
       });
     },
 
-    renderMakers (map) {
+    renderMarkers (map) {
       if (this.$slots.cluster) return;
       _.forEach(
-        this.generateMarkers,
+        this.markers,
         value => value.setMap(map)
       );
     },
 
-    styleResults (point, levelOption, style, vkey = 'value') {
-      const { pointStyle, labelStyle, icon } = style;
-
+    styleResults (marker, levelOption, style, vkey = 'value') {
+      const { markerStyle, labelStyle, icon } = style;
       return {
-        point: {
-          ...pointStyle,
-          ...this.levelOptionParse(point, vkey, levelOption),
+        marker: {
+          ...markerStyle,
+          ...this.levelOptionParse(marker, vkey, levelOption),
         },
         labelStyle,
         icon,
@@ -161,14 +163,14 @@ export const MapPoint = {
     },
 
     levelOptionParse (content, key, option) {
-      const pointValue = content[key];
+      const markerValue = content[key];
       let matchStyle = {};
 
-      if (!_.isNumber(pointValue)) return {};
+      if (!_.isNumber(markerValue)) return {};
       option.sort((a, b) => a.value - b.value);
 
       _.forEach(option, ({ value, style }) => {
-        if (pointValue >= value) {
+        if (markerValue >= value) {
           matchStyle = style;
         }
       });
@@ -211,7 +213,7 @@ export const MapPoint = {
 
     getGraphics (labelText, style) {
       const {
-        point: {
+        marker: {
           radius,
           fill,
           strokeWidth,
@@ -220,7 +222,6 @@ export const MapPoint = {
         labelStyle,
         icon,
       } = style;
-
       // 实际 icon 加上边框大小
       const viewDiameter = SIZE + (strokeWidth * 2);
       // 用户设置的 icon 大小
@@ -228,7 +229,7 @@ export const MapPoint = {
 
       let iconType = DEFAULT_ICON;
 
-      if (POINT_TYPES.includes(icon)) iconType = icon;
+      if (MARKER_TYPES.includes(icon)) iconType = icon;
 
       const node = `<div style="width:${userDiameter}px;height:${userDiameter}px">
         ${this.getLabel(labelText, userDiameter, labelStyle)}
@@ -251,5 +252,5 @@ export const MapPoint = {
   },
 };
 
-export default MapPoint;
+export default Markers;
 </script>

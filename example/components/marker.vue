@@ -4,8 +4,8 @@
       zoom: 4
     }"
   >
-    <map-point
-      :data="pointData"
+    <markers
+      :data="markerData"
       :value-option="{
         marker: valueOption
       }"
@@ -19,17 +19,17 @@
   </base-map>
 </template>
 <script>
-import MapPoint from '../../src/components/map_point/map_point.vue';
+import Markers from '../../src/components/marker/marker.vue';
 import BaseMap from '../../src/components/map.vue';
 
 export default {
   components: {
-    MapPoint,
+    Markers,
     BaseMap,
   },
   data () {
     return {
-      pointData: [
+      markerData: [
         { lnglat: [116.258446, 37.686622], description: '景县', value: 100 },
         { lnglat: [113.559954, 22.124049], description: '圣方济各堂区', value: 200 },
         { lnglat: [116.366794, 39.915309], description: '西城区', value: 300 },
