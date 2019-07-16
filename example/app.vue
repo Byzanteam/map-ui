@@ -11,6 +11,11 @@
           regions
         </router-link>
       </li>
+      <li>
+        <router-link to="/label-marker">
+          labelMarker
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
