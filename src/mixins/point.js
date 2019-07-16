@@ -16,6 +16,17 @@ const POINT_TYPES = [
 
 export default {
 
+  props: {
+    data: {
+      type: Array,
+      default: () => [],
+    },
+    labelKey: {
+      type: String,
+      default: 'label',
+    },
+  },
+
   data () {
     return {
       generateMarkers: [],
