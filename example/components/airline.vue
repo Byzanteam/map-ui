@@ -3,9 +3,11 @@
     :map-options="{ zoom: 4 }"
   >
     <air-line
+      ref="airlineRef"
       :points="points"
       :edges="edges"
       :out-points="[points[0]]"
+      @point-clicked="pointClicked"
     />
   </base-map>
 </template>
@@ -76,6 +78,12 @@ export default {
         },
       ],
     };
+  },
+
+  methods: {
+    pointClicked () {
+      this.$refs.airlineRef.clearPoints();
+    },
   },
 };
 </script>

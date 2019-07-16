@@ -37,6 +37,13 @@ export const AirLine = {
     },
   },
 
+  data () {
+    return {
+      pointMarkers: [],
+      edgesGroup: null,
+    };
+  },
+
   computed: {
     toBeDrawnEdges () {
       return _.filter(this.edges, (edge) => {
@@ -53,10 +60,11 @@ export const AirLine = {
     },
 
     renderPoints () {
-      _.forEach(this.points, ({ lng, lat }) => {
-        new AMap.CircleMarker({
+      this.pointMarkers = _.map(this.points, (point) => {
+        const { lng, lat } = point;
+        const circle = new AMap.CircleMarker({
           center: [lng, lat],
-          radius: 10,
+          radius: 5,
           strokeColor: 'white',
           strokeWeight: 2,
           strokeOpacity: 0.5,
@@ -65,14 +73,17 @@ export const AirLine = {
           bubble: true,
           cursor: 'pointer',
           clickable: true,
-        }).setMap(this.map);
+        });
+        circle.on('click', () => this.$emit('point-clicked', point));
+        circle.setMap(this.map);
+        return circle;
       });
     },
 
     renderEdges () {
-      _.forEach(this.toBeDrawnEdges, (edge) => {
+      const edges = _.map(this.toBeDrawnEdges, (edge) => {
         const path = this._getPointsByEdge(edge);
-        new AMap.Polyline({
+        return new AMap.Polyline({
           path,
           strokeColor: '#3366FF',
           strokeOpacity: 1,
@@ -81,8 +92,27 @@ export const AirLine = {
           strokeStyle: 'solid',
           lineJoin: 'round',
           lineCap: 'round',
-        }).setMap(this.map);
+        });
       });
+      this.edgesGroup = new AMap.OverlayGroup(edges);
+      this.edgesGroup.setMap(this.map);
+    },
+
+    clearPoints () {
+      _.forEach(this.pointMarkers, (circle) => {
+        circle.hide();
+        circle.setMap(null);
+      });
+      this.pointMarkers = [];
+    },
+
+    clearEdges () {
+      this.edgesGroup.clearOverlays();
+    },
+
+    clear () {
+      this.clearPoints();
+      this.clearEdges();
     },
 
     _getPointsByEdge (edge) {
