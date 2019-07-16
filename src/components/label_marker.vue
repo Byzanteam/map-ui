@@ -28,10 +28,11 @@ export const LabelMarker =  {
     mapLoadedFunc () {
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
-      _.each(this.labelMarkers, (label) => {
+      _.each(this.labelMarkers, (item) => {
+        const label = _.cloneDeep(item);
         label.text.style = {
           ...DEFAULT_STYLE,
-          ...label.text.style,
+          ...item.text.style,
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
       });
