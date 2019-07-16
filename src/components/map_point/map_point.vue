@@ -1,7 +1,7 @@
 <script>
 import _ from 'lodash';
-import MapMixin from '../mixins/map';
-import markers from './markers.json';
+import MapMixin from '../../mixins/map';
+import Point from '../../mixins/point';
 
 const DEFAULT_MAERKER = {
   radius: 20,
@@ -9,11 +9,13 @@ const DEFAULT_MAERKER = {
   strokeWidth: 1,
   fill: '#4e6398',
 };
+
 const DEFAULT_MAERKER_LABEL = {
   fontSize: '12px',
   color: '#888',
   fontWeight: 400,
 };
+
 const DEFAULT_MAERKER_VALUE = [
   { value: 3, style: { fill: '#E28E49' } },
   { value: 2, style: { fill: '#EAC438' } },
@@ -21,7 +23,7 @@ const DEFAULT_MAERKER_VALUE = [
 ];
 
 export const MapPoint = {
-  mixins: [MapMixin],
+  mixins: [MapMixin, Point],
 
   props: {
     markerStyle: {
