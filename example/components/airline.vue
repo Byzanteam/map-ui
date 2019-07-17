@@ -1,6 +1,7 @@
 <template>
   <base-map
     :map-options="{ zoom: 4 }"
+    use-map-ui
   >
     <air-line
       :points="points"
