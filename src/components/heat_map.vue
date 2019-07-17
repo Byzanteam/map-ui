@@ -11,7 +11,7 @@ export const HeatMap = {
       type: Array,
       default: () => [],
     },
-    radius: {
+    heatPointRadius: {
       type: Number,
       default: 20,
     },
@@ -27,7 +27,7 @@ export const HeatMap = {
         const heatmap = new AMap.Heatmap(
           this.map,
           {
-            radius: this.radius,
+            radius: this.heatPointRadius,
           }
         );
         heatmap.setDataSet({ data: this.heatPoints });
