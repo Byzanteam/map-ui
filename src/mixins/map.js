@@ -9,7 +9,7 @@ export default {
 
   watch: {
     map () {
-      this.mapLoadedFunc();
+      this.mapLoadedFunc && this.mapLoadedFunc();
     },
   },
 
@@ -17,10 +17,11 @@ export default {
     this.registerCbs('mapCreated', (map) => {
       this.map = map;
     });
-  },
-
-  methods: {
-    mapLoadedFunc () {},
+    if (this.sourceReadyFunc) {
+      this.registerCbs('sourceReady', () => {
+        this.sourceReadyFunc();
+      });
+    }
   },
 
   render () {
