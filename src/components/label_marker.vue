@@ -51,6 +51,7 @@ export const LabelMarker =  {
     },
 
     _renderLabelMarker () {
+      this.clear();
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
