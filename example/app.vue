@@ -17,6 +17,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/heat-map">
+          heatMap
+        </router-link>
+      </li>
+      <li>
         <router-link to="/airline">
           airline
         </router-link>
