@@ -20,7 +20,6 @@ import { AirLine } from '../../src/components/airline.vue';
 const POINTS = [
   {
     id: 3,
-    name: '成都',
     position: [104.06, 30.67],
   },
   {
