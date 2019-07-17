@@ -67,6 +67,15 @@ export const AirLine = {
     },
   },
 
+  watch: {
+    toBeDrawnEdges () {
+      if (this.map) {
+        this.clearEdges();
+        this.renderEdges();
+      }
+    },
+  },
+
   methods: {
     mapLoadedFunc () {
       this.renderPoints();
