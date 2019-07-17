@@ -48,7 +48,9 @@ export const LabelMarker =  {
     },
 
     clear () {
-      this.labelLayer.clear();
+      if (this.labelLayer) {
+        this.labelLayer.clear();
+      }
     },
 
     _renderLabelMarker () {
