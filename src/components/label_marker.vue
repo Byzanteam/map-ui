@@ -37,6 +37,7 @@ export const LabelMarker =  {
   watch: {
     labelContents () {
       if (this.map) {
+        this.clear();
         this._renderLabelMarker();
       }
     },
@@ -54,7 +55,6 @@ export const LabelMarker =  {
     },
 
     _renderLabelMarker () {
-      this.clear();
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
