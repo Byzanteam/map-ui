@@ -21,6 +21,20 @@ export const HeatMap = {
     },
   },
 
+  data () {
+    return {
+      heatMapInstance: null,
+    };
+  },
+
+  watch: {
+    heatPoints (current) {
+      if (this.heatMapInstance) {
+        this.heatMapInstance.setDataSet({ data: current });
+      }
+    },
+  },
+
   methods: {
     mapLoadedFunc () {
       this.createHeatMap();
@@ -28,14 +42,14 @@ export const HeatMap = {
 
     createHeatMap () {
       this.map.plugin(['AMap.Heatmap'], () => {
-        const heatmap = new AMap.Heatmap(
+        this.heatMapInstance = new AMap.Heatmap(
           this.map,
           {
             radius: this.heatPointRadius,
             gradient: this.heatPointColorMap,
           }
         );
-        heatmap.setDataSet({ data: this.heatPoints });
+        this.heatMapInstance.setDataSet({ data: this.heatPoints });
       });
     },
   },
