@@ -26,6 +26,10 @@ export const BaseMap = {
         return {};
       },
     },
+    useAMapUI: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   provide () {
@@ -57,19 +61,46 @@ export const BaseMap = {
     },
 
     _loadSource () {
-      if ((typeof AMap) === 'undefined') {
-        const script = document.createElement('script');
-        script.charset = 'utf-8';
-        script.src = `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`;
-        script.onload = () => {
-          this.$emit('AMapLoaded');
-          this.initialize();
-        };
-        document.head.appendChild(script);
+      this.__loadMapSource();
+      if (this.useAMapUI) {
+        this.__loadUISource();
+      }
+    },
+
+    __loadMapSource () {
+      if (typeof AMap === 'undefined') {
+        this.__insertScript(
+          `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`,
+          () => {
+            this.$emit('AMapLoaded');
+            this.initialize();
+          },
+        );
       } else {
         this.initialize();
       }
     },
+
+    __loadUISource () {
+      if (typeof AMapUI === 'undefined') {
+        this.__insertScript(
+          'https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',
+          () => {
+            this.$emit('AMapUILoaded');
+          },
+        );
+      }
+    },
+
+    __insertScript (src, cb) {
+      const script = document.createElement('script');
+      script.charset = 'utf-8';
+      script.src = src;
+      script.onload = () => {
+        cb();
+      };
+      document.head.appendChild(script);
+    }
   },
 };
 
