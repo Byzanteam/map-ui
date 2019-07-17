@@ -24,8 +24,33 @@ export const LabelMarker =  {
     };
   },
 
+  computed: {
+    labelContents () {
+      _.reduce(this.labelMarkers, (memo, label_marker) => {
+        memo += label_marker.text.content;
+        return memo;
+      }, '');
+    },
+  },
+
+  watch: {
+    labelContents () {
+      if (this.map) {
+        this._renderLabelMarker();
+      }
+    },
+  },
+
   methods: {
     mapLoadedFunc () {
+      this._renderLabelMarker();
+    },
+
+    clear () {
+      this.labelLayer.clear();
+    },
+
+    _renderLabelMarker () {
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
@@ -37,10 +62,6 @@ export const LabelMarker =  {
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
       });
-    },
-
-    clear () {
-      this.labelLayer.clear();
     },
   },
 };
