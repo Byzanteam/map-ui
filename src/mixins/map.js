@@ -1,16 +1,22 @@
 export default {
-  inject: ['instance'],
+  inject: ['registerCbs'],
 
-  computed: {
-    map () {
-      return this.instance.map;
-    },
+  data () {
+    return {
+      map: null,
+    };
   },
 
   watch: {
     map () {
       this.mapLoadedFunc();
     },
+  },
+
+  created () {
+    this.registerCbs('mapCreated', (map) => {
+      this.map = map;
+    });
   },
 
   methods: {
