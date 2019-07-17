@@ -45,7 +45,7 @@ export const BaseMap = {
 
   computed: {
     sourceReady () {
-      return this.mapReady && this.mapUIReady;
+      return this.mapReady && (!this.useAMapUI || this.mapUIReady);
     },
   },
 
