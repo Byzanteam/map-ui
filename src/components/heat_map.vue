@@ -11,6 +11,10 @@ export const HeatMap = {
       type: Array,
       default: () => [],
     },
+    radius: {
+      type: Number,
+      default: 20,
+    },
   },
 
   methods: {
@@ -22,6 +26,9 @@ export const HeatMap = {
       this.map.plugin(['AMap.Heatmap'], () => {
         const heatmap = new AMap.Heatmap(
           this.map,
+          {
+            radius: this.radius,
+          }
         );
         heatmap.setDataSet({ data: this.heatPoints });
       });
