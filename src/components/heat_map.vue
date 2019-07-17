@@ -1,7 +1,9 @@
 <script>
 import MapMixin from '../mixins/map';
 
-export default {
+export const HeatMap = {
+  name: 'HeatMap',
+
   mixins: [MapMixin],
 
   props: {
@@ -26,4 +28,6 @@ export default {
     },
   },
 };
+
+export default HeatMap;
 </script>
