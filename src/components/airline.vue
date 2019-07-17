@@ -153,18 +153,17 @@ export const AirLine = {
             lengthy = Math.abs(start[1] - end[1]),
             length = Math.max(lengthx, lengthy),
             modulus = this.curvature * length * 0.4;
-      let i = 0;
-      while (i <= this.pieceCount) {
-        const lamda = i / this.pieceCount,
+      while (result.length <= this.pieceCount) {
+        const i = result.length,
+              lamda = i / this.pieceCount,
               delta = modulus * (0.25 - ((0.5 - lamda) ** 2)),
               deltaX = lengthx >= lengthy ? 0 : delta,
               // 使得 deltaX,deltaY 有且一定只有一个等于 delta
               deltaY = delta - deltaX;
         result.push([
-          start[0] * (1 - lamda) + (end[0] * lamda) + sign * deltaX,
-          start[1] * (1 - lamda) + (end[1] * lamda) + deltaY,
+          (start[0] * (1 - lamda)) + (end[0] * lamda) + (sign * deltaX),
+          (start[1] * (1 - lamda)) + (end[1] * lamda) + deltaY,
         ]);
-        i += 1;
       }
       return result;
     },

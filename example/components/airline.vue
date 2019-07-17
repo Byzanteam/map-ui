@@ -66,12 +66,13 @@ function GenerateEdges (points, count) {
         maxCount = (points.length ** 2) - points.length;
   while (result.length < Math.min(count, maxCount)) {
     const [source, target] = _.sampleSize(points, 2);
-    if (_.includes(cache, `${source.id},${target.id}`)) continue;
-    cache.push(`${source.id},${target.id}`);
-    result.push({
-      source: source.id,
-      target: target.id,
-    });
+    if (!(_.includes(cache, `${source.id},${target.id}`))) {
+      cache.push(`${source.id},${target.id}`);
+      result.push({
+        source: source.id,
+        target: target.id,
+      });
+    }
   }
   return result;
 }
