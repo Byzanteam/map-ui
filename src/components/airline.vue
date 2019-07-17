@@ -75,9 +75,8 @@ export const AirLine = {
 
     renderPoints () {
       this.pointMarkers = _.map(this.points, (point) => {
-        const { lng, lat } = point;
         const circle = new AMap.CircleMarker({
-          center: [lng, lat],
+          center: point.position,
           radius: 5,
           strokeColor: 'white',
           strokeWeight: 2,
@@ -133,8 +132,8 @@ export const AirLine = {
       const sourcePoint = _.find(this.points, point => point.id === source);
       const targetPoint = _.find(this.points, point => point.id === target);
       return [
-        [sourcePoint.lng, sourcePoint.lat],
-        [targetPoint.lng, targetPoint.lat],
+        sourcePoint.position,
+        targetPoint.position,
       ];
     },
     _getCurvePoints (edge) {
