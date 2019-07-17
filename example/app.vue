@@ -16,6 +16,11 @@
           labelMarker
         </router-link>
       </li>
+      <li>
+        <router-link to="/heat-map">
+          heatMap
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
