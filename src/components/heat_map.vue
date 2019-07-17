@@ -15,7 +15,7 @@ export const HeatMap = {
       type: Number,
       default: 20,
     },
-    heatPointColorMap: {
+    heatPointColorMapping: {
       type: Object,
       default: null,
     },
@@ -46,7 +46,7 @@ export const HeatMap = {
           this.map,
           {
             radius: this.heatPointRadius,
-            gradient: this.heatPointColorMap,
+            gradient: this.heatPointColorMapping,
           }
         );
         this.heatMapInstance.setDataSet({ data: this.heatPoints });

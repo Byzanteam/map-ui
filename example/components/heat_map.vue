@@ -7,7 +7,7 @@
     <heat-map
       :heat-points="heatPoints"
       :heat-point-radius="heatPointRadius"
-      :heat-point-color-map="heatPointColorMap"
+      :heat-point-color-mapping="heatPointColorMapping"
     />
   </base-map>
 </template>
@@ -48,7 +48,7 @@ export default {
     return {
       heatPoints: [],
       heatPointRadius: 50,
-      heatPointColorMap: {
+      heatPointColorMapping: {
         0.5: 'red',
         1: 'green',
       },
