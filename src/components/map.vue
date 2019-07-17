@@ -60,6 +60,9 @@ export const BaseMap = {
       if (val) {
         this.$emit('amap-loaded');
         this.initialize();
+        if (this.useAMapUI) {
+          this.__loadUISource();
+        }
       }
     },
     mapUIReady (val) {
@@ -122,9 +125,6 @@ export const BaseMap = {
 
     _loadSource () {
       this.__loadMapSource();
-      if (this.useAMapUI) {
-        this.__loadUISource();
-      }
     },
 
     __loadMapSource () {
