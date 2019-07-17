@@ -2,6 +2,44 @@
 import _ from 'lodash';
 import MapMixin from '../mixins/map';
 
+const EMPTY_STYLE = {
+  lineWidth: 0,
+  fillStyle: null,
+  strokeStyle: null,
+  borderStyle: null,
+};
+
+const DEFAULT_RENDER_OPTIONS = {
+  renderAllPointsIfNumberBelow: 100,
+  pathTolerance: 0,
+  pathLineStyle: {
+    strokeStyle: 'gray',
+    lineWidth: 1,
+    borderStyle: null,
+  },
+  pathLineSelectedStyle: EMPTY_STYLE,
+  pathLineHoverStyle: EMPTY_STYLE,
+  keyPointStyle: EMPTY_STYLE,
+  startPointStyle: EMPTY_STYLE,
+  endPointStyle: EMPTY_STYLE,
+  keyPointHoverStyle: EMPTY_STYLE,
+  keyPointOnSelectedPathLineStyle: EMPTY_STYLE,
+  pathNavigatorStyle: {
+    initRotateDegree: 0,
+    width: 16,
+    height: 16,
+    autoRotate: true,
+    lineJoin: 'round',
+    content: 'defaultPathNavigator',
+    pathLinePassedStyle: {
+      lineWidth: 0,
+      borderStyle: null,
+      strokeStyle: 'transparent',
+      dirArrowStyle: false,
+    },
+  },
+};
+
 export const AirLine = {
   mixins: [MapMixin],
 
@@ -54,6 +92,7 @@ export const AirLine = {
     return {
       pointMarkers: [],
       edgesGroup: null,
+      pathSimplifier: null,
     };
   },
 
@@ -69,9 +108,9 @@ export const AirLine = {
 
   watch: {
     toBeDrawnEdges () {
-      if (this.map) {
-        this.clearEdges();
-        this.renderEdges();
+      if (this.map && typeof AMapUI !== 'undefined') {
+        this.clearPathSimplifier();
+        this.renderPathSimplifierIfReady();
       }
     },
   },
@@ -79,7 +118,48 @@ export const AirLine = {
   methods: {
     mapLoadedFunc () {
       this.renderPoints();
-      this.renderEdges();
+    },
+
+    sourceReadyFunc () {
+      this.renderPathSimplifierIfReady();
+    },
+
+    renderPathSimplifierIfReady () {
+      if (typeof AMapUI === 'undefined') {
+        window.console.error(`AMapUI not found:
+          airline component required AMapUI
+          please set use-map-ui property on base-map
+        `);
+      } else {
+        AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier) => {
+          if (!PathSimplifier.supportCanvas) {
+            return window.console.error('当前环境不支持 Canvas！');
+          }
+          this.renderPathSimplifier(PathSimplifier);
+        });
+      }
+    },
+
+    renderPathSimplifier (PathSimplifier) {
+      const pathSimplifier = new PathSimplifier({
+        zIndex: 100,
+        map: this.map,
+        getPath: pathData => pathData.path,
+        renderOptions: DEFAULT_RENDER_OPTIONS,
+      });
+      pathSimplifier.setData(_.map(this.toBeDrawnEdges, (edge, index) => (
+        {
+          name: `路线${index + 1}`,
+          path: this._getCurvePoints(edge),
+        }
+      )));
+      _.forEach(this.toBeDrawnEdges, (_edge, index) => {
+        pathSimplifier.createPathNavigator(index, {
+          loop: true,
+          speed: 1000000,
+        }).start();
+      });
+      this.pathSimplifier = pathSimplifier;
     },
 
     renderPoints () {
@@ -102,21 +182,11 @@ export const AirLine = {
       });
     },
 
-    renderEdges () {
-      const edges = _.map(this.toBeDrawnEdges, edge => (
-        new AMap.Polyline({
-          path: this._getCurvePoints(edge),
-          strokeColor: '#3366FF',
-          strokeOpacity: 1,
-          strokeWeight: 2,
-          // 折线样式还支持 'dashed'
-          strokeStyle: 'solid',
-          lineJoin: 'round',
-          lineCap: 'round',
-        })
-      ));
-      this.edgesGroup = new AMap.OverlayGroup(edges);
-      this.edgesGroup.setMap(this.map);
+    clearPathSimplifier () {
+      if (this.pathSimplifier) {
+        this.pathSimplifier.setData();
+        this.pathSimplifier = null;
+      }
     },
 
     clearPoints () {
@@ -126,13 +196,9 @@ export const AirLine = {
       this.pointMarkers = [];
     },
 
-    clearEdges () {
-      this.edgesGroup.clearOverlays();
-    },
-
     clear () {
       this.clearPoints();
-      this.clearEdges();
+      this.clearPathSimplifier();
     },
 
     _getPointsByEdge (edge) {
