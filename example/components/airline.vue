@@ -3,7 +3,6 @@
     :map-options="{ zoom: 4 }"
   >
     <air-line
-      ref="airlineRef"
       :points="points"
       :edges="edges"
       :out-points="outPoints"

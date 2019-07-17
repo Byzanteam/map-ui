@@ -121,7 +121,6 @@ export const AirLine = {
 
     clearPoints () {
       _.forEach(this.pointMarkers, (circle) => {
-        circle.hide();
         circle.setMap(null);
       });
       this.pointMarkers = [];
