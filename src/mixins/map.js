@@ -1,20 +1,27 @@
 export default {
-  inject: ['instance'],
+  inject: ['registerCbs'],
 
-  computed: {
-    map () {
-      return this.instance.map;
-    },
+  data () {
+    return {
+      map: null,
+    };
   },
 
   watch: {
     map () {
-      this.mapLoadedFunc();
+      this.mapLoadedFunc && this.mapLoadedFunc();
     },
   },
 
-  methods: {
-    mapLoadedFunc () {},
+  created () {
+    this.registerCbs('mapCreated', (map) => {
+      this.map = map;
+    });
+    if (this.sourceReadyFunc) {
+      this.registerCbs('sourceReady', () => {
+        this.sourceReadyFunc();
+      });
+    }
   },
 
   render () {

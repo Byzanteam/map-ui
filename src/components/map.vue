@@ -1,12 +1,10 @@
 <template>
   <div class="map">
-    <div class="map-container" />
     <slot />
   </div>
 </template>
 
 <script>
-// move key to config
 const { amap } = require('../../config.json');
 
 export const BaseMap = {
@@ -27,49 +25,136 @@ export const BaseMap = {
         return {};
       },
     },
-  },
-
-  provide () {
-    return {
-      instance: this.instance,
-    };
+    useAMapUI: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
     return {
-      instance: {
-        map: null,
+      map: null,
+      mapReady: false,
+      mapUIReady: false,
+      cbs: {
+        mapCreated: [],
+        sourceReady: [],
       },
     };
   },
 
+  computed: {
+    sourceReady () {
+      return this.mapReady && (!this.useAMapUI || this.mapUIReady);
+    },
+  },
+
+  provide () {
+    return {
+      registerCbs: this.registerCbs,
+    };
+  },
+
+  watch: {
+    mapReady (val) {
+      if (val) {
+        this.$emit('amap-loaded');
+        this.initialize();
+      }
+    },
+    mapUIReady (val) {
+      if (val) this.$emit('amap-ui-loaded');
+    },
+    sourceReady (val) {
+      if (val) this.excuteCbs('sourceReady');
+    },
+  },
+
   mounted () {
+    this.mapReady = typeof AMap !== 'undefined';
+    this.mapUIReady = typeof AMapUI !== 'undefined';
     this._loadSource();
   },
 
   methods: {
     initialize () {
       const features = this.transparent ? [] : ['bg', 'road', 'building', 'point'];
-      this.instance.map = new AMap.Map(this.$el, {
+      this.map = new AMap.Map(this.$el, {
         ...this.mapOptions,
         features,
         mapStyle: this.mapStyle,
       });
+      // 对外
+      this.$emit('map-created', this.map);
+      // 对内
+      this.excuteCbs('mapCreated', this.map);
+    },
+
+    registerCbs (type, cb) {
+      switch (type) {
+        case 'mapCreated': {
+          if (this.map) {
+            cb(this.map);
+          } else {
+            this.cbs[type].push(cb);
+          }
+          break;
+        }
+        case 'sourceReady': {
+          if (this.sourceReady) {
+            cb();
+          } else {
+            this.cbs[type].push(cb);
+          }
+          break;
+        }
+        default:
+      }
+    },
+
+    excuteCbs (type, value) {
+      const cbs = this.cbs[type];
+      while (cbs.length) {
+        const cb = cbs.shift();
+        cb(value);
+      }
     },
 
     _loadSource () {
-      if ((typeof AMap) === 'undefined') {
-        const script = document.createElement('script');
-        script.charset = 'utf-8';
-        script.src = `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`;
-        script.onload = () => {
-          this.$emit('AMapLoaded');
-          this.initialize();
-        };
-        document.head.appendChild(script);
-      } else {
-        this.initialize();
+      this.__loadMapSource();
+      if (this.useAMapUI) {
+        this.__loadUISource();
       }
+    },
+
+    __loadMapSource () {
+      if (!this.mapReady) {
+        this.__insertScript(
+          `https://webapi.amap.com/maps?v=${amap.version}&key=${amap.key}`,
+          () => {
+            this.mapReady = true;
+          },
+        );
+      }
+    },
+
+    __loadUISource () {
+      if (!this.mapUIReady) {
+        this.__insertScript(
+          'https://webapi.amap.com/ui/1.0/main.js?v=1.0.11',
+          () => {
+            this.mapUIReady = true;
+          },
+        );
+      }
+    },
+
+    __insertScript (src, cb) {
+      const script = document.createElement('script');
+      script.charset = 'utf-8';
+      script.src = src;
+      script.onload = () => cb();
+      document.head.appendChild(script);
     },
   },
 };
