@@ -26,7 +26,8 @@ export const LabelMarker =  {
 
   computed: {
     labelContents () {
-      _.reduce(this.labelMarkers, (memo, label_marker) => {
+      _.reduce(this.labelMarkers, (result, label_marker) => {
+        let memo = result;
         memo += label_marker.text.content;
         return memo;
       }, '');
