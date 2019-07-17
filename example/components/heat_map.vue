@@ -6,6 +6,7 @@
   >
     <heat-map
       :heat-points="heatPoints"
+      :radius="radius"
     />
   </base-map>
 </template>
@@ -45,6 +46,7 @@ export default {
   data () {
     return {
       heatPoints: [],
+      radius: 50,
     };
   },
 
