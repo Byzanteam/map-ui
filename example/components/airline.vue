@@ -6,16 +6,76 @@
       ref="airlineRef"
       :points="points"
       :edges="edges"
-      :out-points="[points[0]]"
-      :in-points="[points[3]]"
+      :out-points="outPoints"
       @point-clicked="pointClicked"
     />
   </base-map>
 </template>
 
 <script>
+import _ from 'lodash';
 import { BaseMap } from '../../src/components/map.vue';
 import { AirLine } from '../../src/components/airline.vue';
+
+const POINTS = [
+  {
+    id: 3,
+    name: '成都',
+    position: [104.06, 30.67],
+  },
+  {
+    id: 4,
+    position: [87.68, 43.77],
+  },
+  {
+    id: 1,
+    position: [116.46, 39.92],
+  },
+  {
+    id: 2,
+    position: [121.48, 31.22],
+  },
+  {
+    id: 5,
+    position: [91.11, 29.97],
+  },
+  {
+    id: 6,
+    position: [101.74, 36.56],
+  },
+  {
+    id: 7,
+    position: [111.65, 40.82],
+  },
+  {
+    id: 8,
+    position: [113.23, 23.16],
+  },
+  {
+    id: 9,
+    position: [126.63, 45.75],
+  },
+  {
+    id: 10,
+    position: [110.35, 20.02],
+  },
+];
+
+function GenerateEdges (points, count) {
+  const cache = [],
+        result = [],
+        maxCount = (points.length ** 2) - points.length;
+  while (result.length < Math.min(count, maxCount)) {
+    const [source, target] = _.sampleSize(points, 2);
+    if (_.includes(cache, `${source.id},${target.id}`)) continue;
+    cache.push(`${source.id},${target.id}`);
+    result.push({
+      source: source.id,
+      target: target.id,
+    });
+  }
+  return result;
+}
 
 export default {
   components: {
@@ -25,76 +85,15 @@ export default {
 
   data () {
     return {
-      points: [
-        {
-          id: 4,
-          name: '成都',
-          lng: 104.06,
-          lat: 30.67,
-        },
-        {
-          id: 3,
-          name: '成都周边',
-          lng: 104.07,
-          lat: 34.67,
-        },
-        {
-          id: 1,
-          name: '北京',
-          lng: 116.46,
-          lat: 39.92,
-        },
-        {
-          id: 2,
-          name: '上海',
-          lng: 121.48,
-          lat: 31.22,
-        },
-      ],
-
-      edges: [
-        {
-          source: 1,
-          target: 2,
-          value: 100,
-        },
-        {
-          source: 1,
-          target: 4,
-          value: 56,
-        },
-        {
-          source: 4,
-          target: 1,
-          value: 700,
-        },
-        {
-          source: 4,
-          target: 2,
-          value: 654,
-        },
-        {
-          source: 2,
-          target: 1,
-          value: 120,
-        },
-        {
-          source: 2,
-          target: 4,
-          value: 72,
-        },
-        {
-          source: 4,
-          target: 3,
-          value: 10,
-        },
-      ],
+      points: POINTS,
+      outPoints: _.sampleSize(POINTS, 1),
+      edges: GenerateEdges(POINTS, 70),
     };
   },
 
   methods: {
-    pointClicked () {
-      this.$refs.airlineRef.clearPoints();
+    pointClicked (point) {
+      this.outPoints = [point];
     },
   },
 };
