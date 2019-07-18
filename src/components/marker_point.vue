@@ -23,10 +23,6 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
-    descriptionKey: {
-      type: String,
-      default: 'description',
-    },
   },
 
   data () {
