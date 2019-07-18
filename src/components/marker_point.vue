@@ -68,7 +68,7 @@ export const MarkerPoint = {
       _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
-    markerContent (type) {
+    markerContent () {
       const {
         fillColor,
         radius,
@@ -76,15 +76,12 @@ export const MarkerPoint = {
         strokeColor,
       } = this.markerResult;
 
-      switch (type) {
-        default:
-          return `<div style="
+      return `<div style="
             background-color: ${fillColor};
             height: ${radius}px;
             width: ${radius}px;
             border: ${strokeWeight}px solid ${strokeColor};
             border-radius: ${radius}px;"></div>`;
-      }
     },
   },
 };
