@@ -10,6 +10,7 @@ const DEFAULT_MAERKER = {
 };
 
 export const MarkerPoint = {
+  name: 'MarkerPoint',
 
   mixins: [MapMixin],
 
