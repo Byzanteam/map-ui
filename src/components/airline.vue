@@ -82,14 +82,30 @@ export const AirLine = {
       type: Number,
       default: 20,
       validator (val) {
-        return val > 0;
+        return val > 0 && Number.isInteger(val);
       },
     },
     // 用完成时间来定义速度
     duration: {
       type: Number,
-      // unit: s
+      // unit: 秒(s)
       default: 5,
+      validator (val) {
+        return val > 0;
+      },
+    },
+    density: {
+      type: Number,
+      default: 5,
+      validator (val) {
+        return val > 0 && Number.isInteger(val);
+      },
+    },
+    // 每隔多少时间发射一次
+    frequency: {
+      type: Number,
+      // unit: 秒(s)
+      default: 2,
       validator (val) {
         return val > 0;
       },
@@ -101,6 +117,11 @@ export const AirLine = {
       pointMarkers: [],
       edgesGroup: null,
       pathSimplifier: null,
+      batchTimer: null,
+      batch: {
+        tasks: [],
+        counter: 0,
+      },
     };
   },
 
@@ -112,6 +133,9 @@ export const AirLine = {
             || _.findIndex(this.inPoints, point => point.id === target) > -1;
       });
     },
+    groupedEdgesByStartPoint () {
+      return _.groupBy(this.toBeDrawnEdges, edge => edge.source);
+    },
   },
 
   watch: {
@@ -119,6 +143,14 @@ export const AirLine = {
       if (this.map && typeof AMapUI !== 'undefined') {
         this.clearPathSimplifier();
         this.renderPathSimplifierIfReady();
+      }
+    },
+    'batch.tasks': function (val) {
+      if (_.isEmpty(val)) {
+        clearTimeout(this.batchTimer);
+        this.batchTimer = null;
+      } else {
+        this.batchTimer = this._createBatchTimer();
       }
     },
   },
@@ -130,45 +162,6 @@ export const AirLine = {
 
     sourceReadyFunc () {
       this.renderPathSimplifierIfReady();
-    },
-
-    renderPathSimplifierIfReady () {
-      if (typeof AMapUI === 'undefined') {
-        window.console.error(`AMapUI not found:
-          airline component required AMapUI
-          please set use-map-ui property on base-map
-        `);
-      } else {
-        AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier) => {
-          if (!PathSimplifier.supportCanvas) {
-            return window.console.error('当前环境不支持 Canvas！');
-          }
-          this.renderPathSimplifier(PathSimplifier);
-        });
-      }
-    },
-
-    renderPathSimplifier (PathSimplifier) {
-      const pathSimplifier = new PathSimplifier({
-        zIndex: 100,
-        map: this.map,
-        autoSetFitView: false,
-        getPath: pathData => pathData.path,
-        renderOptions: DEFAULT_RENDER_OPTIONS,
-      });
-      pathSimplifier.setData(_.map(this.toBeDrawnEdges, (edge, index) => (
-        {
-          name: `路线${index + 1}`,
-          path: this._getCurvePoints(edge),
-        }
-      )));
-      _.forEach(this.toBeDrawnEdges, (edge, index) => {
-        pathSimplifier.createPathNavigator(index, {
-          loop: true,
-          speed: this._getSpeed(this._getPathLength(edge)),
-        }).start();
-      });
-      this.pathSimplifier = pathSimplifier;
     },
 
     renderPoints () {
@@ -192,8 +185,58 @@ export const AirLine = {
       this.map.setFitView(this.pointMarkers);
     },
 
+    renderPathSimplifierIfReady () {
+      if (typeof AMapUI === 'undefined') {
+        window.console.error(`AMapUI not found:
+          airline component required AMapUI
+          please set use-map-ui property on base-map
+        `);
+      } else {
+        AMapUI.load(['ui/misc/PathSimplifier'], (PathSimplifier) => {
+          if (!PathSimplifier.supportCanvas) {
+            return window.console.error('当前环境不支持 Canvas！');
+          }
+          this.renderPathSimplifier(PathSimplifier);
+        });
+      }
+    },
+
+    renderPathSimplifier (PathSimplifier) {
+      this.pathSimplifier = new PathSimplifier({
+        zIndex: 100,
+        map: this.map,
+        autoSetFitView: false,
+        getPath: pathData => pathData.path,
+        renderOptions: DEFAULT_RENDER_OPTIONS,
+      });
+      this.pathSimplifier.setData(_.map(this.toBeDrawnEdges, (edge, i) => (
+        {
+          name: `路线${i + 1}`,
+          path: this._getCurvePoints(edge),
+        }
+      )));
+      this.startNavigate();
+    },
+
+    startNavigate () {
+      _.forEach(this.groupedEdgesByStartPoint, (edges) => {
+        if (edges.length <= this.density) {
+          _.forEach(edges, (edge) => {
+            this._renderPathNavigator(edge, true).start();
+          });
+        } else {
+          this.time = Date.now();
+          this._batchNavigate(edges);
+        }
+      });
+    },
+
     clearPathSimplifier () {
       if (this.pathSimplifier) {
+        this.batch = {
+          tasks: [],
+          counter: 0,
+        };
         this.pathSimplifier.setData();
         this.pathSimplifier = null;
       }
@@ -211,6 +254,25 @@ export const AirLine = {
       this.clearPathSimplifier();
     },
 
+    _batchNavigate (edges) {
+      this.batch.tasks.push(edges);
+    },
+    _createBatchTimer () {
+      if (this.batchTimer) clearTimeout(this.batchTimer);
+      return setTimeout(this._executeBatchTasks, this.frequency * 1000);
+    },
+    _executeBatchTasks () {
+      this.batch.counter += 1;
+      this.batchTimer = this._createBatchTimer();
+    },
+    _renderPathNavigator (edge, loop = false) {
+      const index = _.findIndex(this.toBeDrawnEdges, edge);
+      // createPathNavigator(index, options)的index为pathSimplifier.data的索引
+      return this.pathSimplifier.createPathNavigator(index, {
+        loop,
+        speed: this._getSpeed(this._getPathLength(edge)),
+      });
+    },
     _getPointsByEdge (edge) {
       const { source, target } = edge;
       const sourcePoint = _.find(this.points, point => point.id === source);
