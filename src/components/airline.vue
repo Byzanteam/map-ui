@@ -26,8 +26,8 @@ const DEFAULT_RENDER_OPTIONS = {
   keyPointOnSelectedPathLineStyle: EMPTY_STYLE,
   pathNavigatorStyle: {
     initRotateDegree: 0,
-    width: 16,
-    height: 16,
+    width: 8,
+    height: 8,
     autoRotate: true,
     lineJoin: 'round',
     content: 'defaultPathNavigator',
@@ -78,10 +78,18 @@ export const AirLine = {
       type: Number,
       default: 1,
     },
-
     pieceCount: {
       type: Number,
       default: 20,
+      validator (val) {
+        return val > 0;
+      },
+    },
+    // 用完成时间来定义速度
+    duration: {
+      type: Number,
+      // unit: s
+      default: 5,
       validator (val) {
         return val > 0;
       },
@@ -154,10 +162,10 @@ export const AirLine = {
           path: this._getCurvePoints(edge),
         }
       )));
-      _.forEach(this.toBeDrawnEdges, (_edge, index) => {
+      _.forEach(this.toBeDrawnEdges, (edge, index) => {
         pathSimplifier.createPathNavigator(index, {
           loop: true,
-          speed: 1000000,
+          speed: this._getSpeed(this._getPathLength(edge)),
         }).start();
       });
       this.pathSimplifier = pathSimplifier;
@@ -232,6 +240,14 @@ export const AirLine = {
         ]);
       }
       return result;
+    },
+    _getPathLength (edge) {
+      const [start, end] = this._getPointsByEdge(edge);
+      return AMap.GeometryUtil.distance(start, end);
+    },
+    _getSpeed (length) {
+      // 1m/s = 3.6km/h
+      return 3.6 * (length / this.duration);
     },
   },
 };
