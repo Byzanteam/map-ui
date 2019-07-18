@@ -50,7 +50,7 @@ export const MarkerPoint = {
         const marker = new AMap.Marker({
           map: this.map,
           position: itme.lnglat,
-          content: this.markerContent(),
+          content: this.getMarkerContent(),
           anchor: 'bottom-center',
           extData: itme,
           offset: new AMap.Pixel(0, 0),
@@ -60,7 +60,7 @@ export const MarkerPoint = {
       });
     },
 
-    markerContent () {
+    getMarkerContent () {
       const {
         fillColor,
         radius,
