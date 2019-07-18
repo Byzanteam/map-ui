@@ -87,7 +87,7 @@ export default {
       points: POINTS,
       outPoints: _.sampleSize(POINTS, 1),
       edges: GenerateEdges(POINTS, 500),
-      inPoints: _.sampleSize(POINTS, 1),
+      inPoints: [],
     };
   },
 

@@ -89,7 +89,7 @@ export const AirLine = {
     duration: {
       type: Number,
       // unit: 秒(s)
-      default: 5,
+      default: 20,
       validator (val) {
         return val > 0;
       },
@@ -220,14 +220,7 @@ export const AirLine = {
 
     startNavigate () {
       _.forEach(this.groupedEdgesByStartPoint, (edges) => {
-        if (edges.length <= this.density) {
-          _.forEach(edges, (edge) => {
-            this._renderPathNavigator(edge, true).start();
-          });
-        } else {
-          this.time = Date.now();
-          this._batchNavigate(edges);
-        }
+        this._batchNavigate(edges);
       });
     },
 
@@ -255,6 +248,9 @@ export const AirLine = {
     },
 
     _batchNavigate (edges) {
+      _.forEach(edges, (edge) => {
+        this._renderPathNavigator(edge).start();
+      });
       this.batch.tasks.push(edges);
     },
     _createBatchTimer () {
@@ -262,6 +258,16 @@ export const AirLine = {
       return setTimeout(this._executeBatchTasks, this.frequency * 1000);
     },
     _executeBatchTasks () {
+      const { tasks, counter } = this.batch;
+
+      _.forEach(tasks, (task) => {
+        const offset = this.density * (counter % Math.ceil(task.length / this.density));
+        const edges = task.slice(offset, this.density + offset);
+        _.forEach(edges, (edge) => {
+          this._renderPathNavigator(edge).start();
+        });
+      });
+
       this.batch.counter += 1;
       this.batchTimer = this._createBatchTimer();
     },
