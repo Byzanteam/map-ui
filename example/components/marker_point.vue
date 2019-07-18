@@ -4,18 +4,18 @@
       zoom: 4
     }"
   >
-    <map-point
+    <marker-point
       :data="pointData"
     />
   </base-map>
 </template>
 <script>
-import MapPoint from '../../src/components/map_point.vue';
+import MarkerPoint from '../../src/components/marker_point.vue';
 import BaseMap from '../../src/components/map.vue';
 
 export default {
   components: {
-    MapPoint,
+    MarkerPoint,
     BaseMap,
   },
 

@@ -9,7 +9,8 @@ const DEFAULT_MAERKER = {
   fillColor: '#4e6398',
 };
 
-export const MapPoint = {
+export const MarkerPoint = {
+
   mixins: [MapMixin],
 
   props: {
@@ -121,5 +122,5 @@ export const MapPoint = {
   },
 };
 
-export default MapPoint;
+export default MarkerPoint;
 </script>
