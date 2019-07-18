@@ -2,7 +2,7 @@
   <div class="map-example">
     <ul class="menu">
       <li>
-        <router-link to="/map-point">
+        <router-link to="/marker-point">
           marker
         </router-link>
       </li>
