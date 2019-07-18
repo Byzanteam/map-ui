@@ -54,7 +54,7 @@ export const MarkerPoint = {
       this.generateMarkers = this.markers.map((itme) => {
         const marker = new AMap.Marker({
           position: itme.lnglat,
-          content: this.getGraphics(),
+          content: this.markerContent(),
           anchor: 'bottom-center',
           extData: itme,
           offset: new AMap.Pixel(0, 0),
@@ -68,7 +68,7 @@ export const MarkerPoint = {
       _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
-    getGraphics (type) {
+    markerContent (type) {
       const {
         fillColor,
         radius,
