@@ -5,7 +5,7 @@
     }"
   >
     <marker-point
-      :data="pointData"
+      :markers="pointData"
     />
   </base-map>
 </template>

@@ -15,7 +15,7 @@ export const MarkerPoint = {
   mixins: [MapMixin],
 
   props: {
-    data: {
+    markers: {
       type: Array,
       default: () => [],
     },
@@ -51,7 +51,7 @@ export const MarkerPoint = {
     },
 
     generateMakers () {
-      this.generateMarkers = this.data.map((itme) => {
+      this.generateMarkers = this.markers.map((itme) => {
         const marker = new AMap.Marker({
           position: itme.lnglat,
           content: this.getGraphics(),
