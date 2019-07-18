@@ -42,7 +42,6 @@ export const MarkerPoint = {
   methods: {
     mapLoadedFunc () {
       this.renderMarkers();
-      this.buildMakers(this.map);
     },
 
     renderMarkers () {
