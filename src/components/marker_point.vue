@@ -23,10 +23,6 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
-    cluster: {
-      type: Boolean,
-      default: true,
-    },
     descriptionKey: {
       type: String,
       default: 'description',
@@ -51,21 +47,7 @@ export const MarkerPoint = {
   methods: {
     mapLoadedFunc () {
       this.generateMakers();
-      if (this.cluster) {
-        this.buildClusterMakers(this.map);
-      } else {
-        this.buildMakers(this.map);
-      }
-    },
-
-    buildClusterMakers (map) {
-      const styles = [{
-        url: 'https://a.amap.com/jsapi_demos/static/images/blue.png',
-        size: new AMap.Size(32, 32),
-        offset: new AMap.Pixel(-16, -16),
-      }];
-
-      map.plugin(['AMap.MarkerClusterer'], () => new AMap.MarkerClusterer(map, this.generateMarkers, { styles }));
+      this.buildMakers(this.map);
     },
 
     generateMakers () {
