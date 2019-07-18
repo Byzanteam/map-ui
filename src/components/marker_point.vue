@@ -32,7 +32,7 @@ export const MarkerPoint = {
   },
 
   computed: {
-    markerResult () {
+    markerPointStyle () {
       return {
         ...DEFAULT_MAERKER,
         ...this.markerStyle,
@@ -70,7 +70,7 @@ export const MarkerPoint = {
         radius,
         strokeWeight,
         strokeColor,
-      } = this.markerResult;
+      } = this.markerPointStyle;
 
       return `<div style="
             background-color: ${fillColor};
