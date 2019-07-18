@@ -84,7 +84,7 @@ export default {
 
   data () {
     return {
-      edges: GenerateEdges(POINTS, 500),
+      edges: GenerateEdges(POINTS, 30),
     };
   },
 };

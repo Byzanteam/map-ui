@@ -111,14 +111,14 @@ export const AirLine = {
     points () {
       const cache = [];
       return _.reduce(this.edges, (acc, edge) => {
-        if ((_.includes(cache, edge.source))) {
+        if (!(_.includes(cache, edge.source))) {
           acc.push({
             id: edge.source,
             position: edge.location_from,
           });
           cache.push(edge.source);
         }
-        if ((_.includes(cache, edge.target))) {
+        if (!(_.includes(cache, edge.target))) {
           acc.push({
             id: edge.target,
             position: edge.location_to,
