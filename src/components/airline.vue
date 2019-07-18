@@ -89,7 +89,7 @@ export const AirLine = {
     duration: {
       type: Number,
       // unit: 秒(s)
-      default: 20,
+      default: 10,
       validator (val) {
         return val > 0;
       },
