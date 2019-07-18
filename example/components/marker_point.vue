@@ -8,7 +8,7 @@
   </base-map>
 </template>
 <script>
-import MarkerPoint from '../../src/components/marker_point.vue';
+import MarkerPoint from '../../src/components/marker_point/marker_point.vue';
 import BaseMap from '../../src/components/map.vue';
 
 export default {

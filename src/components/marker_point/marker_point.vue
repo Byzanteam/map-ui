@@ -1,5 +1,5 @@
 <script>
-import MapMixin from '../mixins/map';
+import MapMixin from '../../mixins/map';
 
 const DEFAULT_MAERKER_POINT_STYLE = {
   radius: 20,
