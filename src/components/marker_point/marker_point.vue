@@ -9,6 +9,15 @@ const DEFAULT_MAERKER_POINT_STYLE = {
   fillColor: '#4e6398',
 };
 
+const DEFAULT_ICON_TYPES = [
+  'circle',
+  'triangle',
+  'triangle-down',
+  'hexagon',
+  'water-droplet',
+  'pentagram',
+];
+
 export const MarkerPoint = {
   name: 'MarkerPoint',
 
@@ -22,6 +31,11 @@ export const MarkerPoint = {
     markerStyle: {
       type: Object,
       default: () => ({}),
+    },
+    iconType: {
+      type: String,
+      default: 'circle',
+      validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
   },
 
