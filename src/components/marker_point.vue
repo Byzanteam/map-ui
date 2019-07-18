@@ -42,11 +42,11 @@ export const MarkerPoint = {
 
   methods: {
     mapLoadedFunc () {
-      this.generateMakers();
+      this.renderMarkers();
       this.buildMakers(this.map);
     },
 
-    generateMakers () {
+    renderMarkers () {
       this.generateMarkers = this.markers.map((itme) => {
         const marker = new AMap.Marker({
           position: itme.lnglat,
