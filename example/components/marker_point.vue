@@ -4,9 +4,7 @@
       zoom: 4
     }"
   >
-    <marker-point
-      :markers="pointData"
-    />
+    <marker-point :markers="pointData" />
   </base-map>
 </template>
 <script>
