@@ -2,7 +2,7 @@
 import _ from 'lodash';
 import MapMixin from '../mixins/map';
 
-const DEFAULT_MAERKER = {
+const DEFAULT_MAERKER_POINT_STYLE = {
   radius: 20,
   strokeColor: '#767676',
   strokeWeight: 2,
@@ -34,7 +34,7 @@ export const MarkerPoint = {
   computed: {
     markerPointStyle () {
       return {
-        ...DEFAULT_MAERKER,
+        ...DEFAULT_MAERKER_POINT_STYLE,
         ...this.markerStyle,
       };
     },
