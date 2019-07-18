@@ -258,16 +258,16 @@ export const AirLine = {
       return setTimeout(this._executeBatchTasks, this.frequency * 1000);
     },
     _executeBatchTasks () {
-      const { tasks, counter } = this.batch;
+      const { tasks, counter } = this.batch,
+            { density } = this;
 
       _.forEach(tasks, (task) => {
-        const offset = this.density * (counter % Math.ceil(task.length / this.density));
-        const edges = task.slice(offset, this.density + offset);
+        const offset = density * (counter % Math.ceil(task.length / density)),
+              edges = task.slice(offset, density + offset);
         _.forEach(edges, (edge) => {
           this._renderPathNavigator(edge).start();
         });
       });
-
       this.batch.counter += 1;
       this.batchTimer = this._createBatchTimer();
     },
