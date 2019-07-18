@@ -1,5 +1,6 @@
 <script>
 import MapMixin from '../../mixins/map';
+import Icons from './icons.json';
 
 const DEFAULT_MAERKER_POINT_STYLE = {
   radius: 20,
