@@ -220,8 +220,10 @@ export const AirLine = {
 
     startNavigate () {
       _.forEach(this.groupedEdgesByStartPoint, (edges) => {
+        this._requestBatchTasks(edges);
         this._batchNavigate(edges);
       });
+      this.batch.counter += 1;
     },
 
     clearPathSimplifier () {
@@ -247,10 +249,16 @@ export const AirLine = {
       this.clearPathSimplifier();
     },
 
-    _batchNavigate (edges) {
+    _batchNavigate (navs) {
+      const { counter } = this.batch,
+            { density } = this,
+            offset = density * (counter % Math.ceil(navs.length / density)),
+            edges = navs.slice(offset, offset + density);
       _.forEach(edges, (edge) => {
         this._renderPathNavigator(edge).start();
       });
+    },
+    _requestBatchTasks (edges) {
       this.batch.tasks.push(edges);
     },
     _createBatchTimer () {
@@ -258,15 +266,9 @@ export const AirLine = {
       return setTimeout(this._executeBatchTasks, this.frequency * 1000);
     },
     _executeBatchTasks () {
-      const { tasks, counter } = this.batch,
-            { density } = this;
-
+      const { tasks } = this.batch;
       _.forEach(tasks, (task) => {
-        const offset = density * (counter % Math.ceil(task.length / density)),
-              edges = task.slice(offset, density + offset);
-        _.forEach(edges, (edge) => {
-          this._renderPathNavigator(edge).start();
-        });
+        this._batchNavigate(task);
       });
       this.batch.counter += 1;
       this.batchTimer = this._createBatchTimer();
