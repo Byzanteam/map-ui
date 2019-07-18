@@ -1,5 +1,4 @@
 <script>
-import _ from 'lodash';
 import MapMixin from '../mixins/map';
 
 const DEFAULT_MAERKER_POINT_STYLE = {
@@ -49,6 +48,7 @@ export const MarkerPoint = {
     renderMarkers () {
       this.generateMarkers = this.markers.map((itme) => {
         const marker = new AMap.Marker({
+          map: this.map,
           position: itme.lnglat,
           content: this.markerContent(),
           anchor: 'bottom-center',
@@ -58,10 +58,6 @@ export const MarkerPoint = {
 
         return marker;
       });
-    },
-
-    buildMakers (map) {
-      _.forEach(this.generateMarkers, value => value.setMap(map));
     },
 
     markerContent () {
