@@ -189,6 +189,7 @@ export const AirLine = {
         circle.setMap(this.map);
         return circle;
       });
+      this.map.setFitView(this.pointMarkers);
     },
 
     clearPathSimplifier () {
