@@ -84,11 +84,15 @@ export const MarkerPoint = {
       });
     },
 
-    getMarkerContent () {
+    getMarkerContent (marker) {
       const {
         color,
         size,
-      } = this.markerPointStyle;
+      } = this.getCurrentMarkerStyle(
+        marker,
+        this.markerPointStyle,
+        this.markerStyleMaps
+      );
 
       const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
@@ -100,6 +104,19 @@ export const MarkerPoint = {
       </div>`;
 
       return node;
+    },
+
+    getCurrentMarkerStyle (marker, style, styleMaps) {
+      const markerValue = marker[this.styleMapKey];
+
+      if (!styleMaps && !_.isNumber(markerValue)) return style;
+
+      styleMaps.sort((a, b) => a.value - b.value);
+
+      return {
+        ...style,
+        ..._.find(styleMaps, ({ value }) => markerValue <= value),
+      };
     },
   },
 };
