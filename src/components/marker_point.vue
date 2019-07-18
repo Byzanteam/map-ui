@@ -77,8 +77,7 @@ export const MarkerPoint = {
           extData: itme,
           offset: new AMap.Pixel(0, 0),
         });
-        marker.on('mouseout', this.hiddenInfo);
-        marker.on('mouseover', this.showInfo);
+
         return marker;
       });
     },
@@ -104,21 +103,6 @@ export const MarkerPoint = {
             border: ${strokeWeight}px solid ${strokeColor};
             border-radius: ${radius}px;"></div>`;
       }
-    },
-
-    showInfo (e) {
-      const { target } = e;
-      target.setLabel({
-        offset: new AMap.Pixel(0, -this.markerResult.radius),
-        content: target.B.extData[this.descriptionKey],
-        direction: 'center',
-      });
-    },
-
-    hiddenInfo (e) {
-      e.target.setLabel({
-        content: '',
-      });
     },
   },
 };
