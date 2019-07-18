@@ -53,7 +53,7 @@ const POSITIONS = [
   [112.549248, 37.857014],
   [116.405285, 39.904989],
   [117.190182, 39.125596],
-]
+];
 const POINTS = _.map(POSITIONS, (position, id) => ({
   id,
   position,
@@ -87,7 +87,7 @@ export default {
       points: POINTS,
       outPoints: _.sampleSize(POINTS, 1),
       edges: GenerateEdges(POINTS, 500),
-      inPoints: [],
+      inPoints: _.sampleSize(POINTS, 1),
     };
   },
 
