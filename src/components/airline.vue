@@ -255,7 +255,14 @@ export const AirLine = {
             offset = density * (counter % Math.ceil(navs.length / density)),
             edges = navs.slice(offset, offset + density);
       _.forEach(edges, (edge) => {
-        this._renderPathNavigator(edge).start();
+        const pathNavigator = this._renderPathNavigator(edge);
+        pathNavigator.on('move', () => {
+          // remove cursor when cursor at path end
+          if (pathNavigator.isCursorAtPathEnd()) {
+            pathNavigator.destroy();
+          }
+        });
+        pathNavigator.start();
       });
     },
     _requestBatchTasks (edges) {
