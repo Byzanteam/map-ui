@@ -26,7 +26,7 @@ export const MarkerPoint = {
 
   data () {
     return {
-      generateMarkers: [],
+      markerRefs: [],
     };
   },
 
@@ -46,7 +46,7 @@ export const MarkerPoint = {
     },
 
     renderMarkers () {
-      this.generateMarkers = this.markers.map((itme) => {
+      this.markerRefs = this.markers.map((itme) => {
         const marker = new AMap.Marker({
           map: this.map,
           position: itme.lnglat,
