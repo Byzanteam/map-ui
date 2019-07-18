@@ -1,4 +1,6 @@
 <script>
+import _ from 'lodash';
+
 import MapMixin from '../../mixins/map';
 import Icons from './icons.json';
 
@@ -36,6 +38,14 @@ export const MarkerPoint = {
       type: String,
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
+    },
+    markerStyleMaps: {
+      type: Array,
+      default: null,
+    },
+    styleMapKey: {
+      type: String,
+      default: 'value',
     },
   },
 
