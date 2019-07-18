@@ -70,13 +70,13 @@ export const MarkerPoint = {
     },
 
     renderMarkers () {
-      this.markerRefs = this.markers.map((itme) => {
+      this.markerRefs = this.markers.map((item) => {
         const marker = new AMap.Marker({
           map: this.map,
-          position: itme.lnglat,
-          content: this.getMarkerContent(),
+          position: item.lnglat,
+          content: this.getMarkerContent(item),
           anchor: 'bottom-center',
-          extData: itme,
+          extData: item,
           offset: new AMap.Pixel(0, 0),
         });
 
