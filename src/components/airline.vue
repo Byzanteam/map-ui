@@ -44,14 +44,6 @@ export const AirLine = {
   mixins: [MapMixin],
 
   props: {
-    points: {
-      type: Array,
-      required: true,
-      validator (val) {
-        // 至少保证有2个点
-        return val.length > 1;
-      },
-    },
     edges: {
       type: Array,
       default: () => [],
@@ -62,16 +54,6 @@ export const AirLine = {
           edge => (_.hasIn(edge, 'source') && _.hasIn(edge, 'target')),
         );
       },
-    },
-    // 需要绘制从这些点出去的所有线
-    outPoints: {
-      type: Array,
-      default: () => [],
-    },
-    // 需要绘制进入这些点的所有边
-    inPoints: {
-      type: Array,
-      default: () => [],
     },
     // 设定曲线的曲率，值越大越弯曲，0为直线
     curvature: {
@@ -126,20 +108,34 @@ export const AirLine = {
   },
 
   computed: {
-    toBeDrawnEdges () {
-      return _.filter(this.edges, (edge) => {
-        const { source, target } = edge;
-        return _.findIndex(this.outPoints, point => point.id === source) > -1
-            || _.findIndex(this.inPoints, point => point.id === target) > -1;
-      });
+    points () {
+      const cache = [];
+      return _.reduce(this.edges, (acc, edge) => {
+        if ((_.includes(cache, edge.source))) {
+          acc.push({
+            id: edge.source,
+            position: edge.location_from,
+          });
+          cache.push(edge.source);
+        }
+        if ((_.includes(cache, edge.target))) {
+          acc.push({
+            id: edge.target,
+            position: edge.location_to,
+          });
+          cache.push(edge.target);
+        }
+        return acc;
+      }, []);
     },
+
     groupedEdgesByStartPoint () {
-      return _.groupBy(this.toBeDrawnEdges, edge => edge.source);
+      return _.groupBy(this.edges, edge => edge.source);
     },
   },
 
   watch: {
-    toBeDrawnEdges () {
+    groupedEdgesByStartPoint () {
       if (this.map && typeof AMapUI !== 'undefined') {
         this.clearPathSimplifier();
         this.renderPathSimplifierIfReady();
@@ -209,7 +205,7 @@ export const AirLine = {
         getPath: pathData => pathData.path,
         renderOptions: DEFAULT_RENDER_OPTIONS,
       });
-      this.pathSimplifier.setData(_.map(this.toBeDrawnEdges, (edge, i) => (
+      this.pathSimplifier.setData(_.map(this.edges, (edge, i) => (
         {
           name: `路线${i + 1}`,
           path: this._getCurvePoints(edge),
@@ -265,13 +261,16 @@ export const AirLine = {
         pathNavigator.start();
       });
     },
+
     _requestBatchTasks (edges) {
       this.batch.tasks.push(edges);
     },
+
     _createBatchTimer () {
       if (this.batchTimer) clearTimeout(this.batchTimer);
       return setTimeout(this._executeBatchTasks, this.frequency * 1000);
     },
+
     _executeBatchTasks () {
       const { tasks } = this.batch;
       _.forEach(tasks, (task) => {
@@ -280,25 +279,26 @@ export const AirLine = {
       this.batch.counter += 1;
       this.batchTimer = this._createBatchTimer();
     },
-    _renderPathNavigator (edge, loop = false) {
-      const index = _.findIndex(this.toBeDrawnEdges, edge);
+
+    _renderPathNavigator (edge) {
+      const index = _.findIndex(this.edges, edge);
       // createPathNavigator(index, options)的index为pathSimplifier.data的索引
       return this.pathSimplifier.createPathNavigator(index, {
-        loop,
-        speed: this._getSpeed(this._getPathLength(edge)),
+        loop: false,
+        speed: this._getSpeed(edge),
       });
     },
-    _getPointsByEdge (edge) {
-      const { source, target } = edge;
-      const sourcePoint = _.find(this.points, point => point.id === source);
-      const targetPoint = _.find(this.points, point => point.id === target);
+
+    _getEdgePoints (edge) {
+      const { location_from, location_to } = edge;
       return [
-        sourcePoint.position,
-        targetPoint.position,
+        location_from,
+        location_to,
       ];
     },
+
     _getCurvePoints (edge) {
-      const [start, end] = this._getPointsByEdge(edge),
+      const [start, end] = this._getEdgePoints(edge),
             result = [],
             sign = (end[0] - start[0]) * (end[1] - start[1]) > 0 ? -1 : 1,
             lengthx = Math.abs(start[0] - end[0]),
@@ -319,11 +319,14 @@ export const AirLine = {
       }
       return result;
     },
+
     _getPathLength (edge) {
-      const [start, end] = this._getPointsByEdge(edge);
+      const [start, end] = this._getEdgePoints(edge);
       return AMap.GeometryUtil.distance(start, end);
     },
-    _getSpeed (length) {
+
+    _getSpeed (edge) {
+      const length = this._getPathLength(edge);
       // 1m/s = 3.6km/h
       return 3.6 * (length / this.duration);
     },
