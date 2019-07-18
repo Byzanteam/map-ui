@@ -2,11 +2,11 @@
 import MapMixin from '../../mixins/map';
 import Icons from './icons.json';
 
+const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
+
 const DEFAULT_MAERKER_POINT_STYLE = {
-  radius: 20,
-  strokeColor: '#767676',
-  strokeWeight: 2,
-  fillColor: '#4e6398',
+  color: '#04BF78',
+  size: 6,
 };
 
 const DEFAULT_ICON_TYPES = [
@@ -76,18 +76,20 @@ export const MarkerPoint = {
 
     getMarkerContent () {
       const {
-        fillColor,
-        radius,
-        strokeWeight,
-        strokeColor,
+        color,
+        size,
       } = this.markerPointStyle;
 
-      return `<div style="
-            background-color: ${fillColor};
-            height: ${radius}px;
-            width: ${radius}px;
-            border: ${strokeWeight}px solid ${strokeColor};
-            border-radius: ${radius}px;"></div>`;
+      const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
+        <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
+          <path
+            fill="${color}"
+            d="${ICONS[this.iconType].paths}"
+          />
+        </svg>
+      </div>`;
+
+      return node;
     },
   },
 };

@@ -4,7 +4,10 @@
       zoom: 4
     }"
   >
-    <marker-point :markers="pointData" />
+    <marker-point
+      :markers="pointData"
+      icon-type="water-droplet"
+    />
   </base-map>
 </template>
 <script>
