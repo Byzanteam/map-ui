@@ -104,7 +104,7 @@ export const MarkerPoint = {
      * 如果设置了映射，小于最小映射的透明色
      */
     getMarkerStyle (marker) {
-      if (!this.markerStyleMap && !_.isNumber(marker.value)) {
+      if (!this.markerStyleMap || !_.isNumber(marker.value)) {
         return this.markerPointStyle;
       }
 
