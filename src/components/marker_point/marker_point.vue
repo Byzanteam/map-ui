@@ -106,21 +106,28 @@ export const MarkerPoint = {
       return node;
     },
 
-    getCurrentMarkerStyle (marker, style, styleMaps) {
+    /**
+     * 如果设置了映射，小于最小映射的透明色
+     */
+    getCurrentMarkerStyle (marker, defaultStyle, styleMaps) {
       const markerValue = marker[this.styleMapKey];
+      let currentStyle = {};
 
-      if (!styleMaps && !_.isNumber(markerValue)) return style;
+      if (!styleMaps && !_.isNumber(markerValue)) return defaultStyle;
 
       styleMaps.sort((a, b) => a.value - b.value);
 
-      const maxMap = styleMaps[styleMaps.length - 1];
-
-      let currentStyle = _.find(styleMaps, ({ value }) => markerValue <= value);
-
-      if (!currentStyle) currentStyle = maxMap;
+      _.forEach(styleMaps, ({ value, ...rest }) => {
+        if (markerValue >= value) {
+          currentStyle = rest;
+        }
+      });
 
       return {
-        ...style,
+        ...{
+          color: 'transparent',
+          size: defaultStyle.size,
+        },
         ...currentStyle,
       };
     },
