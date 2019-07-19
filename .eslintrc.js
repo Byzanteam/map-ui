@@ -9,7 +9,8 @@ module.exports = {
     "airbnb-base", // introduce airbnb lint
   ],
   "globals": {
-    "AMap": true
+    "AMap": true,
+    "AMapUI": true,
   },
   "plugins": ["vue"],
   "parserOptions": {
