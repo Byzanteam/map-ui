@@ -3,7 +3,10 @@
     :map-options="{ zoom: 5 }"
     use-map-ui
   >
-    <air-line :edges="edges" />
+    <air-line
+      :edges="edges"
+      :points="points"
+    />
   </base-map>
 </template>
 
@@ -49,9 +52,9 @@ const POSITIONS = [
   [117.190182, 39.125596, '天津市'],
 ];
 const POINTS = _.map(POSITIONS, (position) => {
-  const [lng, lat, name] = position;
+  const [lng, lat, id] = position;
   return {
-    name,
+    id,
     position: [lng, lat],
   };
 });
@@ -62,13 +65,11 @@ function GenerateEdges (points, count) {
         maxCount = (points.length ** 2) - points.length;
   while (result.length < Math.min(count, maxCount)) {
     const [source, target] = _.sampleSize(points, 2);
-    if (!(_.includes(cache, `${source.name},${target.name}`))) {
-      cache.push(`${source.name},${target.name}`);
+    if (!(_.includes(cache, `${source.id},${target.id}`))) {
+      cache.push(`${source.id},${target.id}`);
       result.push({
-        source: source.name,
-        target: target.name,
-        location_from: source.position,
-        location_to: target.position,
+        source: source.id,
+        target: target.id,
         value: Math.ceil(Math.random() * 100),
       });
     }
@@ -83,8 +84,10 @@ export default {
   },
 
   data () {
+    const points = _.sampleSize(POINTS, 15);
     return {
-      edges: GenerateEdges(POINTS, 30),
+      points,
+      edges: GenerateEdges(points, 30),
     };
   },
 };

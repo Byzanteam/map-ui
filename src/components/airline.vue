@@ -55,6 +55,10 @@ export const AirLine = {
         );
       },
     },
+    points: {
+      type: Array,
+      default: () => [],
+    },
     // 设定曲线的曲率，值越大越弯曲，0为直线
     curvature: {
       type: Number,
@@ -108,27 +112,6 @@ export const AirLine = {
   },
 
   computed: {
-    points () {
-      const cache = [];
-      return _.reduce(this.edges, (acc, edge) => {
-        if (!(_.includes(cache, edge.source))) {
-          acc.push({
-            id: edge.source,
-            position: edge.location_from,
-          });
-          cache.push(edge.source);
-        }
-        if (!(_.includes(cache, edge.target))) {
-          acc.push({
-            id: edge.target,
-            position: edge.location_to,
-          });
-          cache.push(edge.target);
-        }
-        return acc;
-      }, []);
-    },
-
     groupedEdgesByStartPoint () {
       return _.groupBy(this.edges, edge => edge.source);
     },
@@ -290,11 +273,18 @@ export const AirLine = {
     },
 
     _getEdgePoints (edge) {
-      const { location_from, location_to } = edge;
-      return [
-        location_from,
-        location_to,
-      ];
+      const { source, target } = edge,
+            sourcePoint = _.find(this.points, point => point.id === source),
+            targetPoint = _.find(this.points, point => point.id === target);
+      if (sourcePoint && targetPoint) {
+        return [
+          sourcePoint.position,
+          targetPoint.position,
+        ];
+      }
+      throw new Error(`params error:
+        points not includes ${edge.source} or ${edge.target}
+      `);
     },
 
     _getCurvePoints (edge) {
