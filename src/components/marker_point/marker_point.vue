@@ -113,7 +113,7 @@ export const MarkerPoint = {
 
       styleMaps.sort((a, b) => a.value - b.value);
 
-      const maxMap = styleMaps[styleMaps.length];
+      const maxMap = styleMaps[styleMaps.length - 1];
 
       let currentStyle = _.find(styleMaps, ({ value }) => markerValue <= value);
 
