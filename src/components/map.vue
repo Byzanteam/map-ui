@@ -54,21 +54,21 @@ export const BaseMap = {
     },
 
     mapFeatures () {
-      let features = [];
+      let result = [];
       switch (this.features) {
         case 'all': {
-          features = AVAILABLE_FEATURES;
+          result = AVAILABLE_FEATURES;
           break;
         }
         case 'none': {
-          features = [];
+          result = [];
           break;
         }
         default: {
-          features = this.features;
+          result = this.features;
         }
       }
-      return features;
+      return result;
     },
   },
 
