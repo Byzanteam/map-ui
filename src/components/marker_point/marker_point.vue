@@ -34,7 +34,7 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
-    iconType: {
+    icon: {
       type: String,
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
@@ -98,7 +98,7 @@ export const MarkerPoint = {
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
             fill="${color}"
-            d="${ICONS[this.iconType].paths}"
+            d="${ICONS[this.icon].paths}"
           />
         </svg>
       </div>`;

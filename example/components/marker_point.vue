@@ -7,7 +7,7 @@
     <marker-point
       :markers="pointData"
       :marker-style-maps="markerStyleMaps"
-      icon-type="water-droplet"
+      icon="water-droplet"
     />
   </base-map>
 </template>
