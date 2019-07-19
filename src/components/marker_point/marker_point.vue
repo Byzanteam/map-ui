@@ -71,7 +71,7 @@ export const MarkerPoint = {
       this.markerRefs = this.markers.map((item) => {
         const marker = new AMap.Marker({
           map: this.map,
-          position: item.lnglat,
+          position: item.location,
           content: this.getMarkerContent(item),
           anchor: 'bottom-center',
           extData: item,
