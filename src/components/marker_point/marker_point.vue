@@ -108,10 +108,11 @@ export const MarkerPoint = {
         return this.markerPointStyle;
       }
 
-      this.markerStyleMap.sort((a, b) => b.value - a.value);
+      const [...map] = this.markerStyleMap;
+      map.sort((a, b) => b.value - a.value);
 
       const currentStyle = _.find(
-        this.markerStyleMap,
+        map,
         ({ value }) => marker.value >= value
       );
 
