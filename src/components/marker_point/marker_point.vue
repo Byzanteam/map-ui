@@ -20,6 +20,8 @@ const DEFAULT_ICON_TYPES = [
   'pentagram',
 ];
 
+const DEFAULT_STYLE_MAP = null;
+
 export const MarkerPoint = {
   name: 'MarkerPoint',
 
@@ -41,7 +43,7 @@ export const MarkerPoint = {
     },
     markerStyleMap: {
       type: Array,
-      default: null,
+      default: () => DEFAULT_STYLE_MAP,
     },
     styleMapKey: {
       type: String,
