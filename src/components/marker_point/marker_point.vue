@@ -104,19 +104,16 @@ export const MarkerPoint = {
      * 如果设置了映射，小于最小映射的透明色
      */
     getCurrentMarkerStyle (marker) {
-      let currentStyle = {};
-
       if (!this.markerStyleMap && !_.isNumber(marker.value)) {
         return this.markerPointStyle;
       }
 
-      this.markerStyleMap.sort((a, b) => a.value - b.value);
+      this.markerStyleMap.sort((a, b) => b.value - a.value);
 
-      _.forEach(this.markerStyleMap, ({ value, ...rest }) => {
-        if (marker.value >= value) {
-          currentStyle = rest;
-        }
-      });
+      const currentStyle = _.find(
+        this.markerStyleMap,
+        ({ value }) => marker.value >= value
+      );
 
       return {
         ...{
