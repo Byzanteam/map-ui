@@ -70,6 +70,7 @@ export const LabelMarker =  {
             direction: 'center',
             style: {
               ...DEFAULT_STYLE,
+              ...this.labelStyle,
               ...style,
             },
           },
