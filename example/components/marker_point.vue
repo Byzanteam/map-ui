@@ -28,12 +28,12 @@ export default {
         { lnglat: [113.559954, 22.124049], value: 2 },
         { lnglat: [116.366794, 39.915309], value: 2 },
         { lnglat: [116.486409, 39.921489], value: 2 },
-        { lnglat: [116.286968, 39.863642], value: 0 },
+        { lnglat: [116.286968, 39.863642], value: 5 },
       ],
       markerStyleMaps: [
         { value: 1, color: 'yellow' },
         { value: 2, color: 'red' },
-        { value: 2, color: 'green' },
+        { value: 3, color: 'green' },
       ],
     };
   },
