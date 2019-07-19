@@ -280,7 +280,10 @@ export const AirLine = {
 
     _renderPathNavigator (edge) {
       const index = _.findIndex(this.edges, edge);
-      // createPathNavigator(index, options)的index为pathSimplifier.data的索引
+      /**
+       * createPathNavigator(index, options)
+       * index 需要与 pathSimplifier 的 data 索引相同
+       */
       return this.pathSimplifier.createPathNavigator(index, {
         loop: false,
         speed: this._getSpeed(edge),
