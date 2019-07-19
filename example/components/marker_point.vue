@@ -24,16 +24,15 @@ export default {
   data () {
     return {
       pointData: [
-        { lnglat: [116.258446, 37.686622], value: 1 },
-        { lnglat: [113.559954, 22.124049], value: 2 },
+        { lnglat: [116.258446, 37.686622], value: 0 },
+        { lnglat: [113.559954, 22.124049], value: 1.5 },
         { lnglat: [116.366794, 39.915309], value: 2 },
         { lnglat: [116.486409, 39.921489], value: 2 },
         { lnglat: [116.286968, 39.863642], value: 5 },
       ],
       markerStyleMaps: [
-        { value: 1, color: 'yellow' },
+        { value: 1, color: 'green' },
         { value: 2, color: 'red' },
-        { value: 3, color: 'green' },
       ],
     };
   },
