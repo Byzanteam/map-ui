@@ -14,29 +14,23 @@ import LabelMarker from '../../src/components/label_marker.vue';
 const LABEL_DATA = [
   {
     position: ['113.280637', '23.125178'],
-    text: {
-      content: '广东',
-      direction: 'center',
-      style: {
-        fontSize: 15,
-        fontWeight: 'normal',
-        fillColor: '#eee',
-        strokeColor: '#c67805',
-        strokeWidth: 2,
-      },
+    text: '广东',
+    style: {
+      fontSize: 15,
+      fontWeight: 'normal',
+      fillColor: '#eee',
+      strokeColor: '#c67805',
+      strokeWidth: 2,
     },
   }, {
     position: ['113.665412', '34.757975'],
-    text: {
-      content: '河南',
-      direction: 'center',
-      style: {
-        fontSize: 15,
-        fontWeight: 'normal',
-        fillColor: '#eee',
-        strokeColor: '#c67805',
-        strokeWidth: 2,
-      },
+    text: '河南',
+    style: {
+      fontSize: 15,
+      fontWeight: 'normal',
+      fillColor: '#eee',
+      strokeColor: '#c67805',
+      strokeWidth: 2,
     },
   },
 ];

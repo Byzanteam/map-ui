@@ -16,6 +16,10 @@ export const LabelMarker =  {
       type: Array,
       default: () => [],
     },
+    labelStyle: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -58,11 +62,18 @@ export const LabelMarker =  {
       this.labelLayer = new AMap.LabelsLayer();
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
-        const label = { ...item };
-        label.text = { ...item.text };
-        label.text.style = {
-          ...DEFAULT_STYLE,
-          ...item.text.style,
+        const { position, text, style } = item;
+        const label = {
+          position,
+          text: {
+            content: text,
+            direction: 'center',
+            style: {
+              ...DEFAULT_STYLE,
+              ...this.labelStyle,
+              ...style,
+            },
+          },
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
       });

@@ -30,7 +30,7 @@ export const BaseMap = {
         return {};
       },
     },
-    useAMapUI: {
+    useMapUi: {
       type: Boolean,
       default: false,
     },
@@ -50,7 +50,7 @@ export const BaseMap = {
 
   computed: {
     sourceReady () {
-      return this.mapReady && (!this.useAMapUI || this.mapUIReady);
+      return this.mapReady && (!this.useMapUi || this.mapUIReady);
     },
 
     mapFeatures () {
@@ -83,6 +83,9 @@ export const BaseMap = {
       if (val) {
         this.$emit('amap-loaded');
         this.initialize();
+        if (this.useMapUi) {
+          this.__loadUISource();
+        }
       }
     },
     mapUIReady (val) {
@@ -144,9 +147,6 @@ export const BaseMap = {
 
     _loadSource () {
       this.__loadMapSource();
-      if (this.useAMapUI) {
-        this.__loadUISource();
-      }
     },
 
     __loadMapSource () {
