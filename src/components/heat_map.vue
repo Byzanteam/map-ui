@@ -29,7 +29,7 @@ export const HeatMap = {
 
   watch: {
     heatPoints (current) {
-      this.pointDataSet(current);
+      this.setPointData(current);
     },
   },
 
@@ -48,18 +48,18 @@ export const HeatMap = {
           }
         );
 
-        this.pointDataSet(this.heatPoints);
+        this.setPointData(this.heatPoints);
       });
     },
 
-    pointDataSet (data) {
+    setPointData (data) {
       if (this.heatMapInstance) {
         this.heatMapInstance.setDataSet({ data });
       }
     },
 
     clear () {
-      this.pointDataSet([]);
+      this.setPointData([]);
     },
   },
 };
