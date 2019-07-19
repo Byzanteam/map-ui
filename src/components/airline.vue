@@ -44,6 +44,13 @@ export const AirLine = {
   mixins: [MapMixin],
 
   props: {
+    /**
+     * {
+     *    source: source_node_id,
+     *    target: target_node_id,
+     *    value: 20, // 边权重
+     * }
+     */
     edges: {
       type: Array,
       default: () => [],
@@ -55,6 +62,14 @@ export const AirLine = {
         );
       },
     },
+    /**
+     * 节点应该包含所有边的起止点，可以有冗余
+     * {
+     *    id: 23,
+     *    position: [lng, lat], // 节点位置
+     *    value: 100, // 节点权重
+     * }
+     */
     points: {
       type: Array,
       default: () => [],
