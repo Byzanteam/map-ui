@@ -6,7 +6,7 @@
   >
     <marker-point
       :markers="pointData"
-      :marker-style-maps="markerStyleMaps"
+      :marker-style-map="markerStyleMap"
       icon="water-droplet"
     />
   </base-map>
@@ -30,7 +30,7 @@ export default {
         { lnglat: [116.486409, 39.921489], value: 2 },
         { lnglat: [116.286968, 39.863642], value: 5 },
       ],
-      markerStyleMaps: [
+      markerStyleMap: [
         { value: 1, color: 'green' },
         { value: 2, color: 'red' },
       ],

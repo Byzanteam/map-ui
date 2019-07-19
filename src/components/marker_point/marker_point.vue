@@ -39,7 +39,7 @@ export const MarkerPoint = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
-    markerStyleMaps: {
+    markerStyleMap: {
       type: Array,
       default: null,
     },
@@ -91,7 +91,7 @@ export const MarkerPoint = {
       } = this.getCurrentMarkerStyle(
         marker,
         this.markerPointStyle,
-        this.markerStyleMaps
+        this.markerStyleMap
       );
 
       const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
