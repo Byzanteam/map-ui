@@ -86,11 +86,7 @@ export const MarkerPoint = {
       const {
         color,
         size,
-      } = this.getCurrentMarkerStyle(
-        marker,
-        this.markerPointStyle,
-        this.markerStyleMap
-      );
+      } = this.getCurrentMarkerStyle(marker);
 
       const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
@@ -107,16 +103,17 @@ export const MarkerPoint = {
     /**
      * 如果设置了映射，小于最小映射的透明色
      */
-    getCurrentMarkerStyle (marker, defaultStyle, styleMaps) {
-      const { value: markerValue } = marker;
+    getCurrentMarkerStyle (marker) {
       let currentStyle = {};
 
-      if (!styleMaps && !_.isNumber(markerValue)) return defaultStyle;
+      if (!this.markerStyleMap && !_.isNumber(marker.value)) {
+        return this.markerPointStyle;
+      }
 
-      styleMaps.sort((a, b) => a.value - b.value);
+      this.markerStyleMap.sort((a, b) => a.value - b.value);
 
-      _.forEach(styleMaps, ({ value, ...rest }) => {
-        if (markerValue >= value) {
+      _.forEach(this.markerStyleMap, ({ value, ...rest }) => {
+        if (marker.value >= value) {
           currentStyle = rest;
         }
       });
@@ -124,7 +121,7 @@ export const MarkerPoint = {
       return {
         ...{
           color: 'transparent',
-          size: defaultStyle.size,
+          size: this.markerPointStyle.size,
         },
         ...currentStyle,
       };
