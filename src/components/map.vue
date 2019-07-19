@@ -5,6 +5,8 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 const { amap } = require('../../config.json');
 
 const AVAILABLE_FEATURES = ['bg', 'point', 'road', 'building'];
