@@ -7,13 +7,18 @@
 <script>
 const { amap } = require('../../config.json');
 
+const AVAILABLE_FEATURES = ['bg', 'point', 'road', 'building'];
+
 export const BaseMap = {
   name: 'BaseMap',
 
   props: {
-    transparent: {
-      type: Boolean,
-      default: false,
+    features: {
+      type: [Array, String],
+      default: 'all',
+      validator (val) {
+        return Array.isArray(val) || _.includes(['all', 'none'], val);
+      },
     },
     mapStyle: {
       type: String,
@@ -47,6 +52,24 @@ export const BaseMap = {
     sourceReady () {
       return this.mapReady && (!this.useAMapUI || this.mapUIReady);
     },
+
+    mapFeatures () {
+      let features = [];
+      switch (this.features) {
+        case 'all': {
+          features = AVAILABLE_FEATURES;
+          break;
+        }
+        case 'none': {
+          features = [];
+          break;
+        }
+        default: {
+          features = this.features;
+        }
+      }
+      return features;
+    },
   },
 
   provide () {
@@ -78,10 +101,9 @@ export const BaseMap = {
 
   methods: {
     initialize () {
-      const features = this.transparent ? [] : ['bg', 'road', 'building', 'point'];
       this.map = new AMap.Map(this.$el, {
         ...this.mapOptions,
-        features,
+        features: this.mapFeatures,
         mapStyle: this.mapStyle,
       });
       // 对外

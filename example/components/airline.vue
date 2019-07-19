@@ -1,6 +1,7 @@
 <template>
   <base-map
     :map-options="{ zoom: 4 }"
+    :features="['bg', 'road']"
   >
     <air-line
       :points="points"

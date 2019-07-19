@@ -1,7 +1,7 @@
 <template>
   <base-map
     :map-options="{zoom: 4}"
-    transparent
+    features="none"
   >
     <label-marker :label-markers="labelMarkers" />
   </base-map>
