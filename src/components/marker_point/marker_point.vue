@@ -45,10 +45,6 @@ export const MarkerPoint = {
       type: Array,
       default: () => DEFAULT_STYLE_MAP,
     },
-    styleMapKey: {
-      type: String,
-      default: 'value',
-    },
   },
 
   data () {
@@ -112,7 +108,7 @@ export const MarkerPoint = {
      * 如果设置了映射，小于最小映射的透明色
      */
     getCurrentMarkerStyle (marker, defaultStyle, styleMaps) {
-      const markerValue = marker[this.styleMapKey];
+      const { value: markerValue } = marker;
       let currentStyle = {};
 
       if (!styleMaps && !_.isNumber(markerValue)) return defaultStyle;
