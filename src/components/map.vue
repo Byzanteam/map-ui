@@ -5,15 +5,22 @@
 </template>
 
 <script>
+import _ from 'lodash';
+
 const { amap } = require('../../config.json');
+
+const AVAILABLE_FEATURES = ['bg', 'point', 'road', 'building'];
 
 export const BaseMap = {
   name: 'BaseMap',
 
   props: {
-    transparent: {
-      type: Boolean,
-      default: false,
+    features: {
+      type: [Array, String],
+      default: 'all',
+      validator (val) {
+        return Array.isArray(val) || _.includes(['all', 'none'], val);
+      },
     },
     mapStyle: {
       type: String,
@@ -46,6 +53,24 @@ export const BaseMap = {
   computed: {
     sourceReady () {
       return this.mapReady && (!this.useMapUi || this.mapUIReady);
+    },
+
+    mapFeatures () {
+      let result = [];
+      switch (this.features) {
+        case 'all': {
+          result = AVAILABLE_FEATURES;
+          break;
+        }
+        case 'none': {
+          result = [];
+          break;
+        }
+        default: {
+          result = this.features;
+        }
+      }
+      return result;
     },
   },
 
@@ -81,10 +106,9 @@ export const BaseMap = {
 
   methods: {
     initialize () {
-      const features = this.transparent ? [] : ['bg', 'road', 'building', 'point'];
       this.map = new AMap.Map(this.$el, {
         ...this.mapOptions,
-        features,
+        features: this.mapFeatures,
         mapStyle: this.mapStyle,
       });
       // 对外

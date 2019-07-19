@@ -1,5 +1,6 @@
 <template>
   <base-map
+    :features="['bg', 'road']"
     :map-options="{ zoom: 5 }"
     use-map-ui
   >
