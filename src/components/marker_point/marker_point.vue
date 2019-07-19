@@ -86,7 +86,7 @@ export const MarkerPoint = {
       const {
         color,
         size,
-      } = this.getCurrentMarkerStyle(marker);
+      } = this.getMarkerStyle(marker);
 
       const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
@@ -103,7 +103,7 @@ export const MarkerPoint = {
     /**
      * 如果设置了映射，小于最小映射的透明色
      */
-    getCurrentMarkerStyle (marker) {
+    getMarkerStyle (marker) {
       if (!this.markerStyleMap && !_.isNumber(marker.value)) {
         return this.markerPointStyle;
       }
