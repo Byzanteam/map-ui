@@ -140,7 +140,9 @@ export const MarkerPoint = {
         width,
       } = this.markerBorderStyle;
 
-      const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
+      const node = `<div
+        style="width: ${size}px;height: ${size}px;font-size: 0px;position: relative;">
+      ${color === 'transparent' ? '' : this.getInnerLable(marker)}
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
             stroke-width="${width}px"
@@ -152,6 +154,22 @@ export const MarkerPoint = {
       </div>`;
 
       return node;
+    },
+
+    getInnerLable (marker) {
+      if (!this.innerLabelShow) return '';
+
+      const {
+        fontSize,
+        color,
+        fontWeight,
+      } = this.markerInnerLabelStyle;
+
+      return `<div
+        style="${INNER_LABERL_FIXED_STYLE}font-weight:${fontWeight};color:${color};font-size:${fontSize}px;"
+      >
+        ${marker[this.innerLabelKey]}
+      </div>`;
     },
 
     /**
