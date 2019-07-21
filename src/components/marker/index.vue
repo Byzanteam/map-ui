@@ -27,6 +27,21 @@ const DEFAULT_BORDER = {
   width: 1,
 };
 
+const DEFAULT_INNER_LABEL_STYLE = {
+  fontSize: 12,
+  color: 'rgba(255, 255, 255, 0.2)',
+  fontWeight: 400,
+};
+
+const INNER_LABERL_FIXED_STYLE = `
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:auto;
+  white-space:nowrap;
+`;
+
 export const MarkerPoint = {
   name: 'MarkerPoint',
 
@@ -54,6 +69,17 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
+    innerLabelStyle: {
+      type: Object,
+      default: () => {},
+    },
+    innerLabelKey: {
+      type: String,
+      default: 'value',
+    },
+    innerLabelShow: {
+      type: Boolean,
+    },
   },
 
   data () {
@@ -73,6 +99,12 @@ export const MarkerPoint = {
       return {
         ...DEFAULT_BORDER,
         ...this.borderStyle,
+      }
+    },
+    markerInnerLabelStyle () {
+      return {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...this.innerLabelStyle,
       };
     },
   },
