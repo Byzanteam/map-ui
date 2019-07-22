@@ -22,6 +22,11 @@ const DEFAULT_ICON_TYPES = [
 
 const DEFAULT_STYLE_MAP = null;
 
+const DEFAULT_BORDER = {
+  color: 'rgba(255, 255, 255, 0.2)',
+  width: 1,
+};
+
 export const MarkerPoint = {
   name: 'MarkerPoint',
 
@@ -45,6 +50,10 @@ export const MarkerPoint = {
       type: Array,
       default: () => DEFAULT_STYLE_MAP,
     },
+    borderStyle: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -58,6 +67,12 @@ export const MarkerPoint = {
       return {
         ...DEFAULT_MAERKER_POINT_STYLE,
         ...this.markerStyle,
+      };
+    },
+    markerBorderStyle () {
+      return {
+        ...DEFAULT_BORDER,
+        ...this.borderStyle,
       };
     },
   },
@@ -88,9 +103,16 @@ export const MarkerPoint = {
         size,
       } = this.getMarkerStyle(marker);
 
+      const {
+        color: borderColor,
+        width,
+      } = this.markerBorderStyle;
+
       const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
+            stroke-width="${width}px"
+            stroke="${borderColor}"
             fill="${color}"
             d="${ICONS[this.icon].paths}"
           />
