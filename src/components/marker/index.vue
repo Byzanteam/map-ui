@@ -52,7 +52,7 @@ export const MarkerPoint = {
     },
     borderStyle: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
   },
 
