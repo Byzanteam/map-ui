@@ -8,7 +8,7 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       icon="water-droplet"
-      @markerClick="click"
+      @markerClick="markerClickFunc"
     />
   </base-map>
 </template>
@@ -69,7 +69,7 @@ export default {
   },
 
   methods: {
-    click () {
+    markerClickFunc () {
       this.pointData = [];
     },
   },
