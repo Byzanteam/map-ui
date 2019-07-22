@@ -71,7 +71,7 @@ export const MarkerPoint = {
     },
     innerLabelStyle: {
       type: Object,
-      default: () => {},
+      default: () => ({}),
     },
     innerLabelShow: {
       type: Boolean,
