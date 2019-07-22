@@ -73,10 +73,6 @@ export const MarkerPoint = {
       type: Object,
       default: () => {},
     },
-    innerLabelKey: {
-      type: String,
-      default: 'value',
-    },
     innerLabelShow: {
       type: Boolean,
     },
@@ -168,7 +164,7 @@ export const MarkerPoint = {
       return `<div
         style="${INNER_LABERL_FIXED_STYLE}font-weight:${fontWeight};color:${color};font-size:${fontSize}px;"
       >
-        ${marker[this.innerLabelKey]}
+        ${marker.label}
       </div>`;
     },
 
