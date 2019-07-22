@@ -216,16 +216,15 @@ export const MarkerPoint = {
     },
 
     setMarkerData (data) {
-      if (this.markerRefs.length) {
-        _.forEach(this.markerRefs, marker => this.map.remove(marker));
-        this.markerRefs = [];
-      }
-
+      this.clear();
       this.renderMarkers(data);
     },
 
     clear () {
-      this.setMarkerData([]);
+      if (this.markerRefs.length) {
+        _.forEach(this.markerRefs, marker => this.map.remove(marker));
+        this.markerRefs = [];
+      }
     },
   },
 };
