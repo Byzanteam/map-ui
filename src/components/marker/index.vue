@@ -27,6 +27,21 @@ const DEFAULT_BORDER = {
   width: 1,
 };
 
+const DEFAULT_INNER_LABEL_STYLE = {
+  fontSize: 12,
+  color: 'rgba(255, 255, 255, 0.2)',
+  fontWeight: 400,
+};
+
+const INNER_LABERL_FIXED_STYLE = `
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width:auto;
+  white-space:nowrap;
+`;
+
 export const MarkerPoint = {
   name: 'MarkerPoint',
 
@@ -54,6 +69,10 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
+    innerLabelStyle: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -73,6 +92,12 @@ export const MarkerPoint = {
       return {
         ...DEFAULT_BORDER,
         ...this.borderStyle,
+      };
+    },
+    markerInnerLabelStyle () {
+      return {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...this.innerLabelStyle,
       };
     },
   },
@@ -103,12 +128,24 @@ export const MarkerPoint = {
         size,
       } = this.getMarkerStyle(marker);
 
+      let markerSize = size;
+      let label = '';
+
       const {
         color: borderColor,
         width,
       } = this.markerBorderStyle;
 
-      const node = `<div style="width: ${size}px;height: ${size}px;font-size: 0px;">
+      if (color !== 'transparent' && marker.label) {
+        const { size: fontSizePadding } = DEFAULT_MAERKER_POINT_STYLE;
+        const { fontSize } = this.markerInnerLabelStyle;
+        label = this.getInnerLabel(marker);
+        markerSize = fontSize + (fontSizePadding * 2);
+      }
+
+      const node = `<div
+        style="width: ${markerSize}px;height: ${markerSize}px;font-size: 0px;position: relative;">
+        ${label}
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
             stroke-width="${width}px"
@@ -120,6 +157,26 @@ export const MarkerPoint = {
       </div>`;
 
       return node;
+    },
+
+    getInnerLabel (marker) {
+      const {
+        fontSize,
+        color,
+        fontWeight,
+      } = this.markerInnerLabelStyle;
+
+      const userSettingStyle = `
+        font-weight: ${fontWeight};
+        color: ${color};
+        font-size:${fontSize}px;
+      `;
+
+      return `<div
+        style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
+      >
+        ${marker.label}
+      </div>`;
     },
 
     /**
