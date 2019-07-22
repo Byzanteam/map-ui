@@ -124,6 +124,10 @@ export const MarkerPoint = {
           offset: new AMap.Pixel(0, 0),
         });
 
+        marker.on('click', e => this.$emit('markerClick', e));
+        marker.on('mouseover', e => this.$emit('markerMouseover', e));
+        marker.on('mouseout', e => this.$emit('markerMouseout', e));
+
         return marker;
       });
     },
