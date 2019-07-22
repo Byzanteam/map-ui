@@ -161,8 +161,14 @@ export const MarkerPoint = {
         fontWeight,
       } = this.markerInnerLabelStyle;
 
+      const userSettingStyle = `
+        font-weight: ${fontWeight};
+        color: ${color};
+        font-size:${fontSize}px;
+      `;
+
       return `<div
-        style="${INNER_LABERL_FIXED_STYLE}font-weight:${fontWeight};color:${color};font-size:${fontSize}px;"
+        style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
       >
         ${marker.label}
       </div>`;
