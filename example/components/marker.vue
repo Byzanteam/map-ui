@@ -46,7 +46,7 @@ const MARKERS = [
     value: 5,
     label: '五号点',
   },
-],
+];
 
 export default {
   components: {
