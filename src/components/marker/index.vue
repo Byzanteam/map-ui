@@ -73,9 +73,6 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
-    innerLabelShow: {
-      type: Boolean,
-    },
   },
 
   data () {
@@ -139,7 +136,7 @@ export const MarkerPoint = {
         width,
       } = this.markerBorderStyle;
 
-      if (color !== 'transparent' && this.innerLabelShow) {
+      if (color !== 'transparent' && marker.label) {
         const { size: fontSizePadding } = DEFAULT_MAERKER_POINT_STYLE;
         const { fontSize } = this.markerInnerLabelStyle;
         label = this.getInnerLabel(marker);

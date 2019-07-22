@@ -8,7 +8,6 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       icon="water-droplet"
-      inner-label-show
     />
   </base-map>
 </template>
@@ -35,7 +34,6 @@ export default {
           id: 2,
           location: [113.559954, 22.124049],
           value: 1.5,
-          label: '二号点',
         },
         {
           id: 3,
