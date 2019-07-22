@@ -83,7 +83,9 @@ export const MarkerPoint = {
 
   watch: {
     markers (current) {
-      this.setMarkerData(current);
+      if (this.map) {
+        this.setMarkerData(current);
+      }
     },
   },
 
@@ -114,6 +116,8 @@ export const MarkerPoint = {
     },
 
     renderMarkers (data) {
+      if (!data.length) return;
+
       this.markerRefs = data.map((item) => {
         const marker = new AMap.Marker({
           map: this.map,
@@ -214,10 +218,10 @@ export const MarkerPoint = {
     setMarkerData (data) {
       if (this.markerRefs.length) {
         _.forEach(this.markerRefs, marker => this.map.remove(marker));
-        this.markers = [];
+        this.markerRefs = [];
       }
 
-      if (!data.lenght) this.renderMarkers(data);
+      this.renderMarkers(data);
     },
 
     clear () {
