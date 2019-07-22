@@ -1,6 +1,12 @@
 {
   "amap": {
-    "key": "d1d5c1dd836024b07017d5c639705937",
-    "version": "1.4.15"
+    "jsApi": {
+      "key": "5cea04488d363ccd7851fb5cca2e4ed3",
+      "version": "1.4.15",
+      "style": ""
+    },
+    "mapUi": {
+      "version": "1.0.11"
+    }
   }
 }
