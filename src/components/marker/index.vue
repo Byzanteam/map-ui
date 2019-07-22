@@ -215,6 +215,10 @@ export const MarkerPoint = {
 
       if (!data.lenght) this.renderMarkers(data);
     },
+
+    clear () {
+      this.setMarkerData([]);
+    },
   },
 };
 
