@@ -23,7 +23,7 @@ const DEFAULT_ICON_TYPES = [
 const DEFAULT_STYLE_MAP = null;
 
 const DEFAULT_BORDER = {
-  color: '#ffffff33',
+  color: 'rgba(255, 255, 255, 0.2)',
   width: 1,
 };
 
