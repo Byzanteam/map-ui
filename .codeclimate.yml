@@ -1,0 +1,62 @@
+version: "2"
+checks:
+  argument-count:
+    enabled: true
+    config:
+      threshold: 4
+  complex-logic:
+    enabled: true
+    config:
+      threshold: 4
+  method-complexity:
+    enabled: true
+    config:
+      threshold: 5
+  method-lines:
+    config:
+      threshold: 40
+  nested-control-flow:
+    enabled: true
+    config:
+      threshold: 4
+  return-statements:
+    enabled: true
+    config:
+      threshold: 4
+  similar-code:
+    enabled: true
+  identical-code:
+    enabled: true
+
+plugins:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+    exclude_patterns:
+      - test/"
+  scss-lint:
+    enabled: true
+  eslint:
+    enabled: true
+    channel: eslint-4
+    checks:
+      no-undef:
+        enabled: false
+    config:
+      config: .eslintrc.js
+      extensions:
+      - .es6
+      - .js
+      - .vue
+  editorconfig:
+    enabled: true
+    channel: beta
+    config:
+      editorconfig: .editorconfig
+
+exclude_patterns:
+  - "**/node_modules/"
+  - "**/vendor/"
+  - "**/src/assets/images"
