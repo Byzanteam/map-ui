@@ -1,0 +1,49 @@
+version: v1.0
+name: map-ui
+agent:
+  machine:
+    type: e1-standard-2
+    os_image: ubuntu1804
+blocks:
+  - name: Install dependencies
+    task:
+      jobs:
+        - name: Install dependencies
+          commands:
+            - checkout
+            - nvm use lts/*
+            - yarn install
+            - cache store dependencies-$(checksum yarn-lock.json) node_modules
+  - name: Run Tests
+    skip:
+      when: "tag =~ '.*'"
+    task:
+      prologue:
+        commands:
+          - checkout
+          - nvm use lts/*
+          - cache restore dependencies-$(checksum yarn-lock.json)
+      jobs:
+        - name: Lint
+          commands:
+            - yarn lint --no-fix
+        - name: Test
+          commands:
+            - yarn test
+        - name: Build
+          commands:
+            - yarn build
+  - name: Publish package
+    skip:
+      when: "branch !~ 'refs/tags/*'"
+    task:
+      secrets:
+        - name: fe-library
+      jobs:
+        - name: Publish
+          commands:
+            - checkout
+            - nvm use lts/*
+            - cache restore dependencies-$(checksum yarn-lock.json)
+            - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
+            - npm publish --access=public
