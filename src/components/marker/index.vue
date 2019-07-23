@@ -81,6 +81,14 @@ export const MarkerPoint = {
     };
   },
 
+  watch: {
+    markers (current) {
+      if (this.map) {
+        this.setMarkerData(current);
+      }
+    },
+  },
+
   computed: {
     markerPointStyle () {
       return {
@@ -104,11 +112,13 @@ export const MarkerPoint = {
 
   methods: {
     mapLoadedFunc () {
-      this.renderMarkers();
+      this.renderMarkers(this.markers);
     },
 
-    renderMarkers () {
-      this.markerRefs = this.markers.map((item) => {
+    renderMarkers (data) {
+      if (!data.length) return;
+
+      this.markerRefs = data.map((item) => {
         const marker = new AMap.Marker({
           map: this.map,
           position: item.location,
@@ -117,6 +127,10 @@ export const MarkerPoint = {
           extData: item,
           offset: new AMap.Pixel(0, 0),
         });
+
+        marker.on('click', e => this.$emit('markerClick', e));
+        marker.on('mouseover', e => this.$emit('markerMouseover', e));
+        marker.on('mouseout', e => this.$emit('markerMouseout', e));
 
         return marker;
       });
@@ -199,6 +213,16 @@ export const MarkerPoint = {
         },
         ...currentStyle,
       };
+    },
+
+    setMarkerData (data) {
+      this.clear();
+      this.renderMarkers(data);
+    },
+
+    clear () {
+      _.forEach(this.markerRefs, marker => this.map.remove(marker));
+      this.markerRefs = [];
     },
   },
 };
