@@ -27,9 +27,6 @@ blocks:
         - name: Lint
           commands:
             - yarn lint --no-fix
-        - name: Test
-          commands:
-            - yarn test
         - name: Build
           commands:
             - yarn build
