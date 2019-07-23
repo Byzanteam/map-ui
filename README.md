@@ -25,5 +25,12 @@ yarn run test
 yarn run lint
 ```
 
+### usage
+```
+yarn add @byzanteam/map-ui
+
+import { BaseMap, Regions } from '@byzanteam/map-ui'
+```
+
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
