@@ -12,8 +12,8 @@ blocks:
           commands:
             - checkout
             - nvm use lts/*
-            - yarn install
-            - cache store dependencies-$(checksum yarn-lock.json) node_modules
+            - npm ci
+            - cache store dependencies-$(checksum package-lock.json) node_modules
   - name: Run Tests
     skip:
       when: "tag =~ '.*'"
@@ -22,7 +22,7 @@ blocks:
         commands:
           - checkout
           - nvm use lts/*
-          - cache restore dependencies-$(checksum yarn-lock.json)
+          - cache restore dependencies-$(checksum package-lock.json)
       jobs:
         - name: Lint
           commands:
@@ -44,6 +44,6 @@ blocks:
           commands:
             - checkout
             - nvm use lts/*
-            - cache restore dependencies-$(checksum yarn-lock.json)
+            - cache restore dependencies-$(checksum package-lock.json)
             - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             - npm publish --access=public
