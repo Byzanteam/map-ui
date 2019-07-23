@@ -1,8 +1,9 @@
 {
   "name": "@byzanteam/map-ui",
   "version": "0.1.0",
-  "private": true,
+  "main": "dist/map-ui.common.js",
   "files": [
+    "dist",
     "src"
   ],
   "repository": "https://github.com/Byzanteam/map-ui",
@@ -10,7 +11,8 @@
   "scripts": {
     "serve": "vue-cli-service serve example/index.js",
     "build": "vue-cli-service build --target lib --name map-ui src/index.js",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint",
+    "prepack": "npm run build"
   },
   "dependencies": {
     "lodash": "^4.17.11",
@@ -21,11 +23,13 @@
     "@vue/cli-plugin-eslint": "^3.7.0",
     "@vue/cli-service": "^3.8.0",
     "babel-eslint": "^10.0.1",
+    "babel-plugin-lodash": "^3.3.4",
     "eslint": "^5.16.0",
     "eslint-config-airbnb-base": "^13.1.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-react": "^7.12.4",
     "eslint-plugin-vue": "^5.2.2",
+    "lodash-webpack-plugin": "^0.11.5",
     "sass": "^1.20.1",
     "sass-loader": "^7.1.0",
     "vue-router": "^3.0.7",
