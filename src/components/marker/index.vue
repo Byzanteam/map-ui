@@ -221,10 +221,8 @@ export const MarkerPoint = {
     },
 
     clear () {
-      if (this.markerRefs.length) {
-        _.forEach(this.markerRefs, marker => this.map.remove(marker));
-        this.markerRefs = [];
-      }
+      _.forEach(this.markerRefs, marker => this.map.remove(marker));
+      this.markerRefs = [];
     },
   },
 };
