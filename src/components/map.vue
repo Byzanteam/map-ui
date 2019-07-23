@@ -106,6 +106,19 @@ export const BaseMap = {
   },
 
   methods: {
+    // map api
+    setCenter (position) {
+      if (this.map) {
+        this.map.setCenter(position);
+      }
+    },
+
+    setZoom (zoom) {
+      if (this.map) {
+        this.map.setZoom(zoom);
+      }
+    },
+
     initialize () {
       this.map = new AMap.Map(this.$el, {
         ...this.mapOptions,

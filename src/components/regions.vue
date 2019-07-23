@@ -106,6 +106,12 @@ export const Regions = {
       this.geoJSONAreas = [];
     },
 
+    setFitView (area) {
+      if (this.map) {
+        this.map.setFitView(area);
+      }
+    },
+
     _generatePolygon (lnglats) {
       return new AMap.Polygon({
         path: lnglats,
