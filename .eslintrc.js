@@ -1,127 +1,127 @@
 module.exports = {
-  "env": {
-    "browser": true,
-    "commonjs": true,
-    "es6": true
+  env: {
+    browser: true,
+    commonjs: true,
+    es6: true,
   },
-  "extends": [
-    "plugin:vue/recommended",
-    "airbnb-base", // introduce airbnb lint
+  extends: [
+    'plugin:vue/recommended',
+    'airbnb-base', // introduce airbnb lint
   ],
-  "globals": {
-    "AMap": true,
-    "AMapUI": true,
+  globals: {
+    AMap: true,
+    AMapUI: true,
   },
-  "plugins": ["vue"],
-  "parserOptions": {
-    "parser": "babel-eslint",
-    "sourceType": "module"
+  plugins: ['vue'],
+  parserOptions: {
+    parser: 'babel-eslint',
+    sourceType: 'module',
   },
-  "rules": {
-    "indent": [
-      "error",
+  rules: {
+    indent: [
+      'error',
       2,
       {
-        "SwitchCase": 1,
-        "VariableDeclarator": {
-          "var": 2,
-          "let": 2,
-          "const": 3
-        }
-      }
-    ],
-    "linebreak-style": [
-      "error",
-      "unix"
-    ],
-    "quotes": [
-      "error",
-      "single"
-    ],
-    "semi": [
-      "error",
-      "always"
-    ],
-    "no-unused-vars": [
-      "error",
-      {
-        "argsIgnorePattern": "^_"
-      }
-    ],
-    "comma-dangle": [
-      "error",
-      "always-multiline"
-    ],
-    "max-len": [
-      "error",
-      {
-        "ignoreUrls": true,
-        "ignoreStrings": true,
-        "ignoreTemplateLiterals": true,
-        "ignoreRegExpLiterals": true,
-      },
-    ],
-    "no-underscore-dangle": [
-      "off",
-    ],
-    "func-names": [
-      "error",
-      "as-needed",
-    ],
-    "no-multi-spaces": [
-      "error",
-      {
-        "exceptions": {
-          "VariableDeclarator": true,
+        SwitchCase: 1,
+        VariableDeclarator: {
+          var: 2,
+          let: 2,
+          const: 3,
         },
       },
     ],
-    "one-var": [
-      "off",
+    'linebreak-style': [
+      'error',
+      'unix',
     ],
-    "no-param-reassign": [
-      "error",
+    quotes: [
+      'error',
+      'single',
+    ],
+    semi: [
+      'error',
+      'always',
+    ],
+    'no-unused-vars': [
+      'error',
       {
-        "props": false,
+        argsIgnorePattern: '^_',
       },
     ],
-    "consistent-return": [
-      "off",
+    'comma-dangle': [
+      'error',
+      'always-multiline',
     ],
-    "no-unused-expressions": [
-      "error",
+    'max-len': [
+      'error',
       {
-        "allowShortCircuit": true,
-        "allowTernary": true,
+        ignoreUrls: true,
+        ignoreStrings: true,
+        ignoreTemplateLiterals: true,
+        ignoreRegExpLiterals: true,
       },
     ],
-    "radix": [
-      "off",
+    'no-underscore-dangle': [
+      'off',
     ],
-    "space-before-function-paren": [
-      "error",
-      "always",
+    'func-names': [
+      'error',
+      'as-needed',
     ],
-    "camelcase": [
-      "off",
+    'no-multi-spaces': [
+      'error',
+      {
+        exceptions: {
+          VariableDeclarator: true,
+        },
+      },
     ],
-    "function-paren-newline": [
-      "error",
-      "consistent",
+    'one-var': [
+      'off',
+    ],
+    'no-param-reassign': [
+      'error',
+      {
+        props: false,
+      },
+    ],
+    'consistent-return': [
+      'off',
+    ],
+    'no-unused-expressions': [
+      'error',
+      {
+        allowShortCircuit: true,
+        allowTernary: true,
+      },
+    ],
+    radix: [
+      'off',
+    ],
+    'space-before-function-paren': [
+      'error',
+      'always',
+    ],
+    camelcase: [
+      'off',
+    ],
+    'function-paren-newline': [
+      'error',
+      'consistent',
     ],
 
-    "import/no-unresolved": [
-      "off",
+    'import/no-unresolved': [
+      'off',
     ],
-    "import/no-extraneous-dependencies": [
-      "off",
+    'import/no-extraneous-dependencies': [
+      'off',
     ],
   },
-  "overrides": [{
-    "files": ["*-test.js", "*.spec.js"],
-    "rules": {
-      "no-unused-expressions": "off",
-      "no-undef": "off",
+  overrides: [{
+    files: ['*-test.js', '*.spec.js'],
+    rules: {
+      'no-unused-expressions': 'off',
+      'no-undef': 'off',
     },
-  }, ],
+  }],
 };
