@@ -50,10 +50,10 @@ export const Regions = {
   computed: {
     groupedGeoJSON () {
       if (_.isEmpty(this.groups)) {
-        return [{
+        return _.map(this.areas, area => ({
           type: 'FeatureCollection',
-          features: this.areas,
-        }];
+          features: [area],
+        }));
       }
       const groups = _.groupBy(this.areas, (item) => {
         const { adcode, name } = item.properties;
