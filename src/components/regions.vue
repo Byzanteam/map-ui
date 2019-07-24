@@ -53,6 +53,7 @@ export const Regions = {
         return _.map(this.areas, area => ({
           type: 'FeatureCollection',
           features: [area],
+          properties: area.properties,
         }));
       }
       const groups = _.groupBy(this.areas, (item) => {
@@ -62,9 +63,13 @@ export const Regions = {
         return name;
       });
       return _.transform(groups, (acc, value) => {
+        const group = this._getGroupByCode(value[0].properties.adcode);
         acc.push({
           type: 'FeatureCollection',
           features: value,
+          properties: {
+            ...group,
+          },
         });
       }, []);
     },
