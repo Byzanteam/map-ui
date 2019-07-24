@@ -74,6 +74,7 @@ export const Regions = {
   watch: {
     groupedGeoJSON () {
       if (this.map) {
+        this.clear();
         this.renderGeoJSON();
       }
     },
@@ -85,7 +86,6 @@ export const Regions = {
     },
 
     renderGeoJSON () {
-      this.clear();
       this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
         const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
         const geojson = new AMap.GeoJSON({
