@@ -12,8 +12,8 @@ blocks:
           commands:
             - checkout
             - nvm use lts/*
-            - npm ci
-            - cache store dependencies-$(checksum package-lock.json) node_modules
+            - yarn install
+            - cache store dependencies-$(checksum yarn.lock) node_modules
   - name: Run Tests
     skip:
       when: "tag =~ '.*'"
@@ -22,7 +22,7 @@ blocks:
         commands:
           - checkout
           - nvm use lts/*
-          - cache restore dependencies-$(checksum package-lock.json)
+          - cache restore dependencies-$(checksum yarn.lock)
       jobs:
         - name: Lint
           commands:
@@ -35,12 +35,12 @@ blocks:
       when: "branch !~ 'refs/tags/*'"
     task:
       secrets:
-        - name: fe-library
+        - name: map-ui
       jobs:
         - name: Publish
           commands:
             - checkout
             - nvm use lts/*
-            - cache restore dependencies-$(checksum package-lock.json)
+            - cache restore dependencies-$(checksum yarn.lock)
             - echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > ~/.npmrc
             - npm publish --access=public
