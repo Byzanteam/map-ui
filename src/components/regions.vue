@@ -57,10 +57,10 @@ export const Regions = {
         }));
       }
       const groups = _.groupBy(this.areas, (item) => {
-        const { adcode, name } = item.properties;
+        const { adcode } = item.properties;
         const group = this._getGroupByCode(adcode);
-        if (group) return group.name;
-        return name;
+        if (group) return group.codes.join(',');
+        return `${adcode}`;
       });
       return _.transform(groups, (acc, value) => {
         const group = this._getGroupByCode(value[0].properties.adcode);
@@ -68,7 +68,7 @@ export const Regions = {
           type: 'FeatureCollection',
           features: value,
           properties: {
-            ...group,
+            group,
           },
         });
       }, []);
@@ -128,7 +128,7 @@ export const Regions = {
       if (_.isEmpty(this.groups)) return null;
       return _.find(this.groups, (group) => {
         const { codes } = group;
-        return _.findIndex(codes, i => String(i) === String(code)) >= 0;
+        return _.findIndex(codes, i => `${i}` === `${code}`) >= 0;
       });
     },
     _getGeoJSONStyle (geoJSON) {
