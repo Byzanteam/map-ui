@@ -50,10 +50,10 @@ export const Regions = {
   computed: {
     groupedGeoJSON () {
       if (_.isEmpty(this.groups)) {
-        return [{
+        return _.map(this.areas, area => ({
           type: 'FeatureCollection',
-          features: this.areas,
-        }];
+          features: [area],
+        }));
       }
       const groups = _.groupBy(this.areas, (item) => {
         const { adcode, name } = item.properties;
@@ -74,6 +74,7 @@ export const Regions = {
   watch: {
     groupedGeoJSON () {
       if (this.map) {
+        this.clear();
         this.renderGeoJSON();
       }
     },
@@ -85,7 +86,6 @@ export const Regions = {
     },
 
     renderGeoJSON () {
-      this.clear();
       this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
         const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
         const geojson = new AMap.GeoJSON({
@@ -93,7 +93,9 @@ export const Regions = {
           getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
         geojson.setOptions(areaStyle);
-        geojson.on('click', () => this.$emit('area-clicked', geoJSON));
+        geojson.on('click', () => (
+          this.$emit('area-clicked', geoJSON, geojson, this)
+        ));
         geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
         geojson.on('mouseout', () => geojson.setOptions(areaStyle));
         geojson.setMap(this.map);
