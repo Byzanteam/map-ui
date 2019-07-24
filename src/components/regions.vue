@@ -93,7 +93,9 @@ export const Regions = {
           getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
         geojson.setOptions(areaStyle);
-        geojson.on('click', () => this.$emit('area-clicked', geoJSON));
+        geojson.on('click', () => (
+          this.$emit('area-clicked', geoJSON, geojson, this)
+        ));
         geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
         geojson.on('mouseout', () => geojson.setOptions(areaStyle));
         geojson.setMap(this.map);
