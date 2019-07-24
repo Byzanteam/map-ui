@@ -4,17 +4,14 @@ import MapMixin from '../mixins/map';
 
 const DEFAULT_AREA_STYLE = {
         strokeColor: 'white',
-        strokeDasharray: [5, 10],
         fillColor: '#5fd0dc',
-        fillOpacity: 0.7,
+        fillOpacity: 0.2,
         strokeWeight: 1,
       },
       DEFAULT_AREA_HOVER_STYLE = {
         strokeColor: 'white',
-        strokeDasharray: [5, 10],
-        fillColor: '#666666',
-        fillOpacity: 0.7,
-        strokeWeight: 1,
+        fillOpacity: 1,
+        strokeWeight: 2,
       };
 
 export const Regions = {
@@ -147,9 +144,13 @@ export const Regions = {
           ...this.areaStyle,
           ...style,
         },
+        // hover 的样式默认继承正常的样式
         areaHoverStyle: {
+          ...DEFAULT_AREA_STYLE,
           ...DEFAULT_AREA_HOVER_STYLE,
+          ...this.areaStyle,
           ...this.areaHoverStyle,
+          ...style,
           ...hoverStyle,
         },
       };
