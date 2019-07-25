@@ -14,7 +14,7 @@ export const RegionLabel = {
   mixins: [MapMixin],
 
   props: {
-    labels: {
+    texts: {
       type: Array,
       default: () => [],
     },
@@ -26,12 +26,12 @@ export const RegionLabel = {
 
   data () {
     return {
-      texts: [],
+      overlayGroup: null,
     };
   },
 
   watch: {
-    labels: {
+    texts: {
       deep: true,
       handler () {
         if (this.map) {
@@ -47,13 +47,11 @@ export const RegionLabel = {
       this._renderLabel();
     },
     clear () {
-      _.each(this.texts, (text) => {
-        text.hide();
-      });
-      this.texts = [];
+      this.overlayGroup.hide();
+      this.overlayGroup.clearOverlays();
     },
     _renderLabel () {
-      _.each(this.labels, (label) => {
+      const texts = _.map(this.texts, (label) => {
         const text = new AMap.Text({
           text: label.text,
           position: label.position,
@@ -62,9 +60,13 @@ export const RegionLabel = {
             ...this.labelStyle,
           },
         });
-        this.texts.push(text);
         text.setMap(this.map);
+        return text;
       });
+      this._generateOverlayGroup(texts);
+    },
+    _generateOverlayGroup (texts) {
+      this.overlayGroup = new AMap.OverlayGroup(texts);
     },
   },
 };
