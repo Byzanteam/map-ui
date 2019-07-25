@@ -47,8 +47,8 @@ export const TextMarker = {
       this._renderLabel();
     },
     clear () {
-      this.overlayGroup.hide();
       this.overlayGroup.clearOverlays();
+      this.overlayGroup.setMap(null);
     },
     _renderLabel () {
       const texts = _.map(this.texts, (label) => {
@@ -60,13 +60,13 @@ export const TextMarker = {
             ...this.textStyle,
           },
         });
-        text.setMap(this.map);
         return text;
       });
       this._generateOverlayGroup(texts);
     },
     _generateOverlayGroup (texts) {
       this.overlayGroup = new AMap.OverlayGroup(texts);
+      this.overlayGroup.setMap(this.map);
     },
   },
 };
