@@ -46,7 +46,12 @@ export const RegionLabel = {
     mapLoadedFunc () {
       this._renderLabel();
     },
-
+    clear () {
+      _.each(this.texts, (text) => {
+        text.hide();
+      });
+      this.texts = [];
+    },
     _renderLabel () {
       _.each(this.labels, (label) => {
         const text = new AMap.Text({
@@ -60,13 +65,6 @@ export const RegionLabel = {
         this.texts.push(text);
         text.setMap(this.map);
       });
-    },
-
-    clear () {
-      _.each(this.texts, (text) => {
-        text.hide();
-      });
-      this.texts = [];
     },
   },
 };
