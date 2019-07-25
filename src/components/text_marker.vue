@@ -47,8 +47,8 @@ export const TextMarker = {
       this._renderLabel();
     },
     clear () {
-      this.overlayGroup.clearOverlays();
       this.overlayGroup.setMap(null);
+      this.overlayGroup.clearOverlays();
     },
     _renderLabel () {
       const texts = _.map(this.texts, (label) => {
