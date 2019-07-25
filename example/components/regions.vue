@@ -9,7 +9,7 @@
     />
     <text-marker
       :texts="labels"
-      :label-style="labelStyle"
+      :text-style="labelStyle"
     />
   </base-map>
 </template>

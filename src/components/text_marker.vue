@@ -18,7 +18,7 @@ export const TextMarker = {
       type: Array,
       default: () => [],
     },
-    labelStyle: {
+    textStyle: {
       type: Object,
       default: () => ({}),
     },
@@ -57,7 +57,7 @@ export const TextMarker = {
           position: label.position,
           style: {
             ...DEFAULT_STYLE,
-            ...this.labelStyle,
+            ...this.textStyle,
           },
         });
         text.setMap(this.map);
