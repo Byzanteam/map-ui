@@ -7,12 +7,14 @@
       :groups="groups"
       :areas="areas"
     />
+    <label-marker :label-markers="labelMarkers" />
   </base-map>
 </template>
 
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
+import LabelMarker from '../../src/components/label_marker.vue';
 
 const AREA_GROUPS = [
   {
@@ -20,7 +22,6 @@ const AREA_GROUPS = [
     codes: [610000, 620000, '630000', 640000, 650000],
     style: {
       fillColor: 'hsl(182, 25%, 50%)',
-      fillOpacity: 0.7,
     },
   },
   {
@@ -28,7 +29,6 @@ const AREA_GROUPS = [
     codes: [110000, 120000, 130000, 140000, 150000],
     style: {
       fillColor: '#000000',
-      fillOpacity: 0.3,
     },
   },
   {
@@ -64,7 +64,30 @@ const AREA_GROUPS = [
     codes: [210000, 220000, 230000],
     style: {
       fillColor: 'hsl(180, 100%, 27%)',
-      fillOpacity: 0.3,
+    },
+  },
+];
+
+const LABEL_DATA = [
+  {
+    position: ['113.280637', '23.125178'],
+    text: '广东',
+    style: {
+      fontSize: 15,
+      fontWeight: 'normal',
+      fillColor: 'red',
+      strokeColor: '#c67805',
+      strokeWidth: 2,
+    },
+  }, {
+    position: ['113.665412', '34.757975'],
+    text: '河南',
+    style: {
+      fontSize: 15,
+      fontWeight: 'normal',
+      fillColor: 'red',
+      strokeColor: '#c67805',
+      strokeWidth: 2,
     },
   },
 ];
@@ -73,6 +96,7 @@ export default {
   components: {
     BaseMap,
     Regions,
+    LabelMarker,
   },
 
   data () {
@@ -83,6 +107,7 @@ export default {
 
   created () {
     this.groups = AREA_GROUPS;
+    this.labelMarkers = LABEL_DATA;
 
     fetch('http://nitrogen.skylarkly.com/geo/100000?district=false', {
       method: 'GET',
