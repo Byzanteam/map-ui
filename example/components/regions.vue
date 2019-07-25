@@ -7,8 +7,8 @@
       :groups="groups"
       :areas="areas"
     />
-    <region-label
-      :labels="labels"
+    <text-marker
+      :texts="labels"
       :label-style="labelStyle"
     />
   </base-map>
@@ -17,7 +17,7 @@
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
-import RegionLabel from '../../src/components/region_label.vue';
+import TextMarker from '../../src/components/text_marker.vue';
 
 const AREA_GROUPS = [
   {
@@ -141,7 +141,7 @@ export default {
   components: {
     BaseMap,
     Regions,
-    RegionLabel,
+    TextMarker,
   },
 
   data () {

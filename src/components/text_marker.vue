@@ -10,7 +10,7 @@ const DEFAULT_STYLE = {
   'font-size': 18,
 };
 
-export const RegionLabel = {
+export const TextMarker = {
   mixins: [MapMixin],
 
   props: {
@@ -71,5 +71,5 @@ export const RegionLabel = {
   },
 };
 
-export default RegionLabel;
+export default TextMarker;
 </script>
