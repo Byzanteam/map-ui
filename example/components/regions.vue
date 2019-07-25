@@ -7,14 +7,17 @@
       :groups="groups"
       :areas="areas"
     />
-    <label-marker :label-markers="labelMarkers" />
+    <region-label
+      :labels="labels"
+      :label-style="labelStyle"
+    />
   </base-map>
 </template>
 
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
-import LabelMarker from '../../src/components/label_marker.vue';
+import RegionLabel from '../../src/components/region_label.vue';
 
 const AREA_GROUPS = [
   {
@@ -92,16 +95,65 @@ const LABEL_DATA = [
   },
 ];
 
+const REGISON_LABELS = [
+  {
+    text: '西北',
+    position: ['94.200012', '37.314738'],
+  },
+  {
+    text: '华北',
+    position: ['113.799622', '40.594393'],
+  },
+  {
+    position: ['104.307434', '28.62942'],
+  },
+  {
+    text: '东南',
+    position: ['117.139465', '26.918691'],
+  },
+  {
+    text: '上海',
+    position: ['121.472644', '31.231706'],
+  },
+  {
+    text: '华中',
+    position: ['111.690247', '30.236812'],
+  },
+  {
+    text: '华南',
+    position: ['111.426575', '22.934669'],
+  },
+  {
+    text: '苏皖',
+    position: ['118.545715', '32.413867'],
+  },
+  {
+    text: '东北',
+    position: ['128.477356', '43.910993'],
+  },
+  {
+    text: '山东',
+    position: ['117.000923', '36.675807'],
+  },
+];
+
 export default {
   components: {
     BaseMap,
     Regions,
-    LabelMarker,
+    RegionLabel,
   },
 
   data () {
     return {
       areas: [],
+      labels: REGISON_LABELS,
+      labelStyle: {
+        'font-size': '18px',
+        color: 'red',
+        'background-color': 'transparent',
+        border: 'none',
+      },
     };
   },
 
