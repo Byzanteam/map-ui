@@ -9,7 +9,6 @@ const DEFAULT_AREA_STYLE = {
         strokeWeight: 1,
       },
       DEFAULT_AREA_HOVER_STYLE = {
-        strokeColor: 'white',
         fillOpacity: 1,
         strokeWeight: 2,
       };
@@ -106,7 +105,10 @@ export const Regions = {
     },
 
     clear () {
-      _.forEach(this.geoJSONAreas, area => area.clearOverlays());
+      _.forEach(this.geoJSONAreas, (area) => {
+        area.setMap(null);
+        area.clearOverlays();
+      });
       this.geoJSONAreas = [];
     },
 
@@ -147,10 +149,10 @@ export const Regions = {
         // hover 的样式默认继承正常的样式
         areaHoverStyle: {
           ...DEFAULT_AREA_STYLE,
-          ...DEFAULT_AREA_HOVER_STYLE,
           ...this.areaStyle,
-          ...this.areaHoverStyle,
           ...style,
+          ...DEFAULT_AREA_HOVER_STYLE,
+          ...this.areaHoverStyle,
           ...hoverStyle,
         },
       };
