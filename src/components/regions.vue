@@ -105,7 +105,10 @@ export const Regions = {
     },
 
     clear () {
-      _.forEach(this.geoJSONAreas, area => area.clearOverlays());
+      _.forEach(this.geoJSONAreas, (area) => {
+        area.setMap(null);
+        area.clearOverlays();
+      });
       this.geoJSONAreas = [];
     },
 
