@@ -30,8 +30,24 @@ export const RegionLabel = {
     };
   },
 
+  watch: {
+    labels: {
+      deep: true,
+      handler () {
+        if (this.map) {
+          this.clear();
+          this._renderLabel();
+        }
+      },
+    },
+  },
+
   methods: {
     mapLoadedFunc () {
+      this._renderLabel();
+    },
+
+    _renderLabel () {
       _.each(this.labels, (label) => {
         const text = new AMap.Text({
           text: label.text,
