@@ -51,17 +51,14 @@ export const TextMarker = {
       this.overlayGroup.clearOverlays();
     },
     _renderLabel () {
-      const texts = _.map(this.texts, (label) => {
-        const text = new AMap.Text({
-          text: label.text,
-          position: label.position,
-          style: {
-            ...DEFAULT_STYLE,
-            ...this.textStyle,
-          },
-        });
-        return text;
-      });
+      const texts = _.map(this.texts, label => new AMap.Text({
+        text: label.text,
+        position: label.position,
+        style: {
+          ...DEFAULT_STYLE,
+          ...this.textStyle,
+        },
+      }));
       this._generateOverlayGroup(texts);
     },
     _generateOverlayGroup (texts) {
