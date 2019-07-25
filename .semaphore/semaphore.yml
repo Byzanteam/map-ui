@@ -32,7 +32,7 @@ blocks:
             - yarn build
   - name: Publish package
     skip:
-      when: "branch !~ 'refs/tags/*'"
+      when: "tag !~ '.*'"
     task:
       secrets:
         - name: map-ui
