@@ -4,17 +4,14 @@ import MapMixin from '../mixins/map';
 
 const DEFAULT_AREA_STYLE = {
         strokeColor: 'white',
-        strokeDasharray: [5, 10],
         fillColor: '#5fd0dc',
-        fillOpacity: 0.7,
+        fillOpacity: 0.2,
         strokeWeight: 1,
       },
       DEFAULT_AREA_HOVER_STYLE = {
         strokeColor: 'white',
-        strokeDasharray: [5, 10],
-        fillColor: '#666666',
-        fillOpacity: 0.7,
-        strokeWeight: 1,
+        fillOpacity: 1,
+        strokeWeight: 2,
       };
 
 export const Regions = {
@@ -53,18 +50,23 @@ export const Regions = {
         return _.map(this.areas, area => ({
           type: 'FeatureCollection',
           features: [area],
+          properties: area.properties,
         }));
       }
       const groups = _.groupBy(this.areas, (item) => {
-        const { adcode, name } = item.properties;
+        const { adcode } = item.properties;
         const group = this._getGroupByCode(adcode);
-        if (group) return group.name;
-        return name;
+        if (group) return group.codes.join(',');
+        return `${adcode}`;
       });
       return _.transform(groups, (acc, value) => {
+        const group = this._getGroupByCode(value[0].properties.adcode);
         acc.push({
           type: 'FeatureCollection',
           features: value,
+          properties: {
+            group,
+          },
         });
       }, []);
     },
@@ -123,7 +125,7 @@ export const Regions = {
       if (_.isEmpty(this.groups)) return null;
       return _.find(this.groups, (group) => {
         const { codes } = group;
-        return _.findIndex(codes, i => String(i) === String(code)) >= 0;
+        return _.findIndex(codes, i => `${i}` === `${code}`) >= 0;
       });
     },
     _getGeoJSONStyle (geoJSON) {
@@ -142,9 +144,13 @@ export const Regions = {
           ...this.areaStyle,
           ...style,
         },
+        // hover 的样式默认继承正常的样式
         areaHoverStyle: {
+          ...DEFAULT_AREA_STYLE,
           ...DEFAULT_AREA_HOVER_STYLE,
+          ...this.areaStyle,
           ...this.areaHoverStyle,
+          ...style,
           ...hoverStyle,
         },
       };

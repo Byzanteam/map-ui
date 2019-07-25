@@ -28,8 +28,11 @@ export const HeatMap = {
   },
 
   watch: {
-    heatPoints (current) {
-      this.setPointData(current);
+    heatPoints: {
+      deep: true,
+      handler () {
+        this.setPointData(this.heatPoints);
+      },
     },
   },
 
