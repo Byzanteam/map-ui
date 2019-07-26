@@ -35,11 +35,22 @@ export const Regions = {
       type: Object,
       default: () => ({}),
     },
+    selectable: {
+      type: Boolean,
+      default: true,
+    },
+
+    multipleSelect: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
+    // 频繁交互可能导致卡顿，因为一个 area 的数据结构大且深
+    // 优化的时候可以考虑简化结构或者 seletedAreas 不被监视
     return {
-      geoJSONAreas: [],
+      selectedAreas: [],
     };
   },
 
@@ -79,6 +90,17 @@ export const Regions = {
         this.renderGeoJSON();
       }
     },
+
+    selectedAreas () {
+      _.forEach(this.selectedAreas, (item) => {
+        const { areaHoverStyle } = this._getGeoJSONStyle(item.geoJSON);
+        item.shape.setOptions(areaHoverStyle);
+      });
+    },
+  },
+
+  created () {
+    this.geoJSONAreas = [];
   },
 
   methods: {
@@ -89,27 +111,62 @@ export const Regions = {
     renderGeoJSON () {
       this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
         const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
-        const geojson = new AMap.GeoJSON({
+        const shape = new AMap.GeoJSON({
           geoJSON,
           getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
-        geojson.setOptions(areaStyle);
-        geojson.on('click', () => (
-          this.$emit('area-clicked', geoJSON, geojson, this)
-        ));
-        geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
-        geojson.on('mouseout', () => geojson.setOptions(areaStyle));
-        geojson.setMap(this.map);
-        return geojson;
+        shape.setOptions(areaStyle);
+        shape.on('click', () => this._areaClicked(shape, geoJSON));
+        shape.on('mouseover', () => shape.setOptions(areaHoverStyle));
+        shape.on('mouseout', () => this._areaMouseout(shape, areaStyle));
+        shape.setMap(this.map);
+        return { shape, geoJSON };
       });
     },
 
+    selectArea (area) {
+      const geoJSONArea = this._findArea(area);
+      if (!this._isSelected(geoJSONArea)) {
+        this._selectArea(geoJSONArea);
+      }
+    },
+
+    unselectArea (area) {
+      const geoJSONArea = this._findArea(area);
+      const old_index = _.findIndex(
+        this.selectedAreas,
+        item => geoJSONArea === item,
+      );
+      if (old_index > -1) {
+        const { areaStyle } = this._getGeoJSONStyle(geoJSONArea.geoJSON);
+        this.selectedAreas.splice(old_index, 1);
+        geoJSONArea.shape.setOptions(areaStyle);
+      }
+    },
+
+    unselectAll () {
+      _.forEach(this.selectedAreas, ({ geoJSON, shape }) => {
+        shape.setOptions(this._getGeoJSONStyle(geoJSON).areaStyle);
+      });
+      this.selectedAreas = [];
+    },
+
+    toggleSelectArea (area) {
+      const geoJSONArea = this._findArea(area);
+      if (this._isSelected(geoJSONArea)) {
+        this.unselectArea(geoJSONArea);
+      } else {
+        this._selectArea(geoJSONArea);
+      }
+    },
+
     clear () {
-      _.forEach(this.geoJSONAreas, (area) => {
-        area.setMap(null);
-        area.clearOverlays();
+      _.forEach(this.geoJSONAreas, ({ shape }) => {
+        shape.setMap(null);
+        shape.clearOverlays();
       });
       this.geoJSONAreas = [];
+      this.unselectAll();
     },
 
     setFitView (area) {
@@ -118,6 +175,38 @@ export const Regions = {
       }
     },
 
+    _selectArea (area) {
+      if (this.multipleSelect) {
+        this.selectedAreas.push(area);
+      } else {
+        if (this.selectedAreas.length) {
+          const { geoJSON, shape } = this.selectedAreas[0];
+          shape.setOptions(this._getGeoJSONStyle(geoJSON).areaStyle);
+        }
+        this.selectedAreas = [area];
+      }
+    },
+    _isSelected (area) {
+      return _.includes(this.selectedAreas, area);
+    },
+    _areaClicked (area, geoJSON) {
+      if (this.selectable) {
+        this.toggleSelectArea(this._findAreaByShape(area));
+      }
+      this.$emit('area-clicked', geoJSON, area, this);
+    },
+    _areaMouseout (area, style) {
+      if (this._isSelected(this._findAreaByShape(area))) return;
+      area.setOptions(style);
+    },
+    _findArea (area) {
+      return area instanceof AMap.GeoJSON
+        ? this._findAreaByShape(area)
+        : area;
+    },
+    _findAreaByShape (area) {
+      return _.find(this.geoJSONAreas, item => item.shape === area);
+    },
     _generatePolygon (lnglats) {
       return new AMap.Polygon({
         path: lnglats,
