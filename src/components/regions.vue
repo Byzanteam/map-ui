@@ -47,8 +47,9 @@ export const Regions = {
   },
 
   data () {
+    // 频繁交互可能导致卡顿，因为一个 area 的数据结构大且深
+    // 优化的时候可以考虑简化结构或者 seletedAreas 不被监视
     return {
-      geoJSONAreas: [],
       selectedAreas: [],
     };
   },
@@ -96,6 +97,10 @@ export const Regions = {
         item.shape.setOptions(areaHoverStyle);
       });
     },
+  },
+
+  created () {
+    this.geoJSONAreas = [];
   },
 
   methods: {
