@@ -89,6 +89,13 @@ export const Regions = {
         this.renderGeoJSON();
       }
     },
+
+    selectedAreas () {
+      _.forEach(this.selectedAreas, (item) => {
+        const { areaHoverStyle } = this._getGeoJSONStyle(item.geoJSON);
+        item.shape.setOptions(areaHoverStyle);
+      });
+    },
   },
 
   methods: {
@@ -99,24 +106,28 @@ export const Regions = {
     renderGeoJSON () {
       this.geoJSONAreas = _.map(this.groupedGeoJSON, (geoJSON) => {
         const { areaStyle, areaHoverStyle } = this._getGeoJSONStyle(geoJSON);
-        const geojson = new AMap.GeoJSON({
+        const shape = new AMap.GeoJSON({
           geoJSON,
           getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
-        geojson.setOptions(areaStyle);
-        geojson.on('click', () => {
+        const result = {
+          shape,
+          geoJSON,
+        };
+        shape.setOptions(areaStyle);
+        shape.on('click', () => {
           if (this.selectable) {
-            this.toggleSelectArea(geojson);
+            this.toggleSelectArea(result);
           }
-          this.$emit('area-clicked', geoJSON, geojson, this);
+          this.$emit('area-clicked', geoJSON, shape, this);
         });
-        geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
-        geojson.on('mouseout', () => {
-          if (this.selectable && this._isSelected(geojson)) return;
-          geojson.setOptions(areaStyle);
+        shape.on('mouseover', () => shape.setOptions(areaHoverStyle));
+        shape.on('mouseout', () => {
+          if (this.selectable && this._isSelected(result)) return;
+          shape.setOptions(areaStyle);
         });
-        geojson.setMap(this.map);
-        return geojson;
+        shape.setMap(this.map);
+        return result;
       });
     },
 
@@ -127,10 +138,11 @@ export const Regions = {
     },
 
     unselectArea (area) {
-      this.selectedAreas = _.filter(
-        this.selectedAreas,
-        item => item === area,
-      );
+      const old_index = _.findIndex(this.selectedAreas, item => area === item);
+      if (old_index > -1) {
+        this.selectedAreas.splice(old_index, 1);
+        area.shape.setOptions(this._getGeoJSONStyle(area.geoJSON).areaStyle);
+      }
     },
 
     toggleSelectArea (area) {
@@ -160,6 +172,9 @@ export const Regions = {
       if (this.multipleSelect) {
         this.selectedAreas.push(area);
       } else {
+        if (this.selectedAreas.length) {
+          this.unselectArea(this.selectedAreas[0]);
+        }
         this.selectedAreas = [area];
       }
     },
