@@ -35,11 +35,21 @@ export const Regions = {
       type: Object,
       default: () => ({}),
     },
+    selectable: {
+      type: Boolean,
+      default: true,
+    },
+
+    multipleSelect: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
     return {
       geoJSONAreas: [],
+      selectedAreas: [],
     };
   },
 
@@ -94,14 +104,41 @@ export const Regions = {
           getPolygon: (_json, lnglats) => this._generatePolygon(lnglats),
         });
         geojson.setOptions(areaStyle);
-        geojson.on('click', () => (
-          this.$emit('area-clicked', geoJSON, geojson, this)
-        ));
+        geojson.on('click', () => {
+          if (this.selectable) {
+            this.toggleSelectArea(geojson);
+          }
+          this.$emit('area-clicked', geoJSON, geojson, this);
+        });
         geojson.on('mouseover', () => geojson.setOptions(areaHoverStyle));
-        geojson.on('mouseout', () => geojson.setOptions(areaStyle));
+        geojson.on('mouseout', () => {
+          if (this.selectable && this._isSelected(geojson)) return;
+          geojson.setOptions(areaStyle);
+        });
         geojson.setMap(this.map);
         return geojson;
       });
+    },
+
+    selectArea (area) {
+      if (!this._isSelected(area)) {
+        this._selectArea(area);
+      }
+    },
+
+    unselectArea (area) {
+      this.selectedAreas = _.filter(
+        this.selectedAreas,
+        item => item === area,
+      );
+    },
+
+    toggleSelectArea (area) {
+      if (this._isSelected(area)) {
+        this.unselectArea(area);
+      } else {
+        this._selectArea(area);
+      }
     },
 
     clear () {
@@ -110,12 +147,25 @@ export const Regions = {
         area.clearOverlays();
       });
       this.geoJSONAreas = [];
+      this.selectedAreas = [];
     },
 
     setFitView (area) {
       if (this.map) {
         this.map.setFitView(area);
       }
+    },
+
+    _selectArea (area) {
+      if (this.multipleSelect) {
+        this.selectedAreas.push(area);
+      } else {
+        this.selectedAreas = [area];
+      }
+    },
+
+    _isSelected (area) {
+      return _.includes(this.selectedAreas, area);
     },
 
     _generatePolygon (lnglats) {
