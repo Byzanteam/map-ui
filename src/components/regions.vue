@@ -139,6 +139,13 @@ export const Regions = {
       }
     },
 
+    unselectAll () {
+      _.forEach(this.selectedAreas, ({ geoJSON, shape }) => {
+        shape.setOptions(this._getGeoJSONStyle(geoJSON).areaStyle);
+      });
+      this.selectedAreas = [];
+    },
+
     toggleSelectArea (area) {
       const geoJSONArea = this._findArea(area);
       if (this._isSelected(geoJSONArea)) {
@@ -149,12 +156,12 @@ export const Regions = {
     },
 
     clear () {
-      _.forEach(this.geoJSONAreas, (area) => {
-        area.setMap(null);
-        area.clearOverlays();
+      _.forEach(this.geoJSONAreas, ({ shape }) => {
+        shape.setMap(null);
+        shape.clearOverlays();
       });
       this.geoJSONAreas = [];
-      this.selectedAreas = [];
+      this.unselectAll();
     },
 
     setFitView (area) {
@@ -168,7 +175,8 @@ export const Regions = {
         this.selectedAreas.push(area);
       } else {
         if (this.selectedAreas.length) {
-          this.unselectArea(this.selectedAreas[0]);
+          const { geoJSON, shape } = this.selectedAreas[0];
+          shape.setOptions(this._getGeoJSONStyle(geoJSON).areaStyle);
         }
         this.selectedAreas = [area];
       }
