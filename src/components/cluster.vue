@@ -29,10 +29,25 @@ const DEFAULT_CLUSTER_STYLE = {
   size: 6,
 };
 
+const DEFAULT_INNER_LABEL_STYLE = {
+  fontSize: 12,
+  color: 'rgba(255, 255, 255, 0.2)',
+  fontWeight: 400,
+};
+
 const DEFAULT_BORDER = {
   color: 'rgba(255, 255, 255, 0.2)',
   width: 1,
 };
+
+const INNER_LABERL_FIXED_STYLE = `
+  position: absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
+`;
 
 export default {
   name: 'Cluster',
@@ -64,10 +79,22 @@ export default {
   },
 
   computed: {
+    markerPointStyle () {
+      return {
+        ...DEFAULT_CLUSTER_STYLE,
+        ...this.markerStyle,
+      };
+    },
     markerBorderStyle () {
       return {
         ...DEFAULT_BORDER,
         ...this.borderStyle,
+      };
+    },
+    markerInnerLabelStyle () {
+      return {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...this.innerLabelStyle,
       };
     },
   },
@@ -96,11 +123,13 @@ export default {
         width,
       } = this.markerBorderStyle;
 
-      const clusterSize = size;
+      const { fontSize } = this.markerInnerLabelStyle;
+      const clusterSize = fontSize + (size * 2);
+      const label = this.getInnerLabel(count);
 
       const node = `<div
         style="width: ${clusterSize}px;height: ${clusterSize}px;font-size: 0px;position: relative;">
-        ${count}
+        ${label}
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
             stroke-width="${width}px"
@@ -119,7 +148,30 @@ export default {
         _.sortBy(this.clusterStyleMap, 'value'),
         ({ count }) => cluster_count >= count
       );
-      return currentStyle;
+      return {
+        ...DEFAULT_CLUSTER_STYLE,
+        ...currentStyle,
+      };
+    },
+
+    getInnerLabel (count) {
+      const {
+        fontSize,
+        color,
+        fontWeight,
+      } = this.markerInnerLabelStyle;
+
+      const userSettingStyle = `
+        font-weight: ${fontWeight};
+        color: ${color};
+        font-size:${fontSize}px;
+      `;
+
+      return `<div
+        style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
+      >
+        ${count}
+      </div>`;
     },
   },
 };
