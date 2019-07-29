@@ -116,16 +116,17 @@ export default {
 
     getClusterContent (context) {
       const { count } = context,
-            { color, size } = this._getClusterStyle(count);
+            { color, size, type } = this._getClusterStyle(count);
 
       const {
         color: borderColor,
         width,
       } = this.markerBorderStyle;
 
-      const { fontSize } = this.clusterInnerLabelStyle;
-      const clusterSize = fontSize + (size * 2);
-      const label = this.getInnerLabel(count);
+      const { fontSize } = this.clusterInnerLabelStyle,
+            clusterSize = fontSize + (size * 2),
+            label = this.getInnerLabel(count),
+            icon = type || this.icon;
 
       const node = `<div
         style="width: ${clusterSize}px;height: ${clusterSize}px;font-size: 0px;position: relative;">
@@ -135,7 +136,7 @@ export default {
             stroke-width="${width}px"
             stroke="${borderColor}"
             fill="${color}"
-            d="${ICONS[this.icon].paths}"
+            d="${ICONS[icon].paths}"
           />
         </svg>
       </div>`;
