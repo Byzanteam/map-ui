@@ -91,7 +91,7 @@ export default {
         ...this.borderStyle,
       };
     },
-    markerInnerLabelStyle () {
+    clusterInnerLabelStyle () {
       return {
         ...DEFAULT_INNER_LABEL_STYLE,
         ...this.innerLabelStyle,
@@ -123,7 +123,7 @@ export default {
         width,
       } = this.markerBorderStyle;
 
-      const { fontSize } = this.markerInnerLabelStyle;
+      const { fontSize } = this.clusterInnerLabelStyle;
       const clusterSize = fontSize + (size * 2);
       const label = this.getInnerLabel(count);
 
@@ -159,7 +159,7 @@ export default {
         fontSize,
         color,
         fontWeight,
-      } = this.markerInnerLabelStyle;
+      } = this.clusterInnerLabelStyle;
 
       const userSettingStyle = `
         font-weight: ${fontWeight};
