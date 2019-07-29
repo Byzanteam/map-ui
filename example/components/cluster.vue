@@ -8,6 +8,7 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :cluster-style-map="clusterStyleMap"
+      cluster-key="count"
     />
   </base-map>
 </template>

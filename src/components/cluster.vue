@@ -162,14 +162,14 @@ export default {
         fontWeight,
       } = this.clusterInnerLabelStyle;
 
-      const userSettingStyle = `
+      const labelFontStyle = `
         font-weight: ${fontWeight};
         color: ${color};
         font-size:${fontSize}px;
       `;
 
       return `<div
-        style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
+        style="${INNER_LABERL_FIXED_STYLE}${labelFontStyle}"
       >
         ${count}
       </div>`;
