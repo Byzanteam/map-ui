@@ -1,9 +1,23 @@
+<template>
+  <marker-point
+    :markers="markers"
+    :marker-style-map="markerStyleMap"
+    icon="water-droplet"
+    @markersRendered="renderCluster"
+  />
+</template>
+
 <script>
 import MapMixin from '../mixins/map';
 import Icons from './marker/icons.json';
+import MarkerPoint from '../../src/components/marker';
 
 export default {
   name: 'Cluster',
+
+  components: {
+    MarkerPoint,
+  },
 
   mixins: [MapMixin],
 
@@ -12,15 +26,14 @@ export default {
       type: Array,
       default: () => [],
     },
+    markerStyleMap: {
+      type: Array,
+      default: () => [],
+    },
   },
 
   methods: {
-    mapLoadedFunc () {
-      this.renderCluster();
-    },
-
-    renderCluster () {
-      const markers = this.map.getAllOverlays('marker');
+    renderCluster (markers) {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         const cluster = new AMap.MarkerClusterer(
           this.map,
