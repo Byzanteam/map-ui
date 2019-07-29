@@ -8,6 +8,7 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :cluster-style-map="clusterStyleMap"
+      cluster-key="count"
     />
   </base-map>
 </template>
@@ -15,38 +16,7 @@
 <script>
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
-
-const MARKERS = [
-  {
-    id: 1,
-    location: [116.258446, 37.686622],
-    value: 0,
-    label: '一号点',
-  },
-  {
-    id: 2,
-    location: [113.559954, 22.124049],
-    value: 1.5,
-  },
-  {
-    id: 3,
-    location: [116.366794, 39.915309],
-    value: 2,
-    label: '三号点',
-  },
-  {
-    id: 4,
-    location: [116.486409, 39.921489],
-    value: 2,
-    label: '四号点',
-  },
-  {
-    id: 5,
-    location: [116.286968, 39.863642],
-    value: 5,
-    label: '五号点',
-  },
-];
+import MARKERS from './point.json';
 
 export default {
   components: {
@@ -56,7 +26,7 @@ export default {
 
   data () {
     return {
-      pointData: [],
+      pointData: MARKERS,
       markerStyleMap: [
         { value: 1, color: 'green' },
         { value: 2, color: 'red' },
@@ -64,17 +34,16 @@ export default {
       ],
       clusterStyleMap: [
         {
-          count: 2, color: '#dc7626', size: 6, type: 'triangle',
+          count: 2, color: '#dc7626', size: 10, type: 'triangle',
         },
         {
-          count: 10, color: '#891ba0', size: 8, type: 'circle',
+          count: 6, color: '#891ba0', size: 15, type: 'circle',
+        },
+        {
+          count: 10, color: '#1967ab', size: 15, type: 'pentagram',
         },
       ],
     };
-  },
-
-  mounted () {
-    this.pointData = MARKERS;
   },
 };
 </script>
