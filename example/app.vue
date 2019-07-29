@@ -26,6 +26,11 @@
           airline
         </router-link>
       </li>
+      <li>
+        <router-link to="/cluster">
+          cluster
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
