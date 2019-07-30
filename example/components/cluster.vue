@@ -6,8 +6,8 @@
   >
     <cluster
       :markers="pointData"
-      :marker-style-map="markerStyleMap"
       :cluster-style-map="clusterStyleMap"
+      :inner-label-style="clusterInnerLabelStyle"
       cluster-key="value"
     />
   </base-map>
@@ -27,23 +27,53 @@ export default {
   data () {
     return {
       pointData: MARKERS,
-      markerStyleMap: [
-        { value: 1, color: 'green' },
-        { value: 2, color: 'red' },
-        { value: 3, color: 'black' },
-      ],
+      clusterInnerLabelStyle: {
+        fontSize: 14,
+        fontWeight: 100,
+      },
       clusterStyleMap: [
         {
-          value: 5, color: '#dc7626', size: 10, type: 'triangle',
+          value: 5,
+          color: '#dc7626',
+          size: 5,
+          type: 'circle',
+          borderColor: 'rgba(138, 210, 155, 1)',
+          innerLabelStyle: {
+            color: 'purple',
+          },
         },
         {
-          value: 10, color: '#891ba0', size: 15, type: 'circle',
+          value: 10,
+          color: '#891ba0',
+          size: 10,
+          type: 'circle',
+          borderColor: 'rgba(120, 140, 125, 1)',
+          innerLabelStyle: {
+            fontSize: 14,
+            color: 'blue',
+          },
         },
         {
-          value: 15, color: '#1967ab', size: 15, type: 'pentagram',
+          value: 15,
+          color: '#1967ab',
+          size: 15,
+          type: 'circle',
+          borderColor: 'rgba(189, 145, 215, 1)',
+          innerLabelStyle: {
+            fontSize: 16,
+            color: 'red',
+          },
         },
         {
-          value: 20, color: '#1496ab', size: 15, type: 'pentagram',
+          value: 20,
+          color: '#1496ab',
+          size: 20,
+          type: 'circle',
+          borderColor: 'rgba(189, 215, 205, 1)',
+          innerLabelStyle: {
+            fontSize: 18,
+            color: '#fff',
+          },
         },
       ],
     };
