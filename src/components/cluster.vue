@@ -27,17 +27,14 @@ const DEFAULT_ICON_TYPES = [
 const DEFAULT_CLUSTER_STYLE = {
   color: '#04BF78',
   size: 6,
+  borderColor: 'rgba(255, 255, 255, 0.2)',
+  borderWidth: 1,
 };
 
 const DEFAULT_INNER_LABEL_STYLE = {
   fontSize: 12,
   color: 'rgba(255, 255, 255, 0.2)',
   fontWeight: 400,
-};
-
-const DEFAULT_BORDER = {
-  color: 'rgba(255, 255, 255, 0.2)',
-  width: 1,
 };
 
 const INNER_LABERL_FIXED_STYLE = `
@@ -72,6 +69,14 @@ export default {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
+    innerLabelStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+    clusterStyle: {
+      type: Object,
+      default: () => ({}),
+    },
     clusterStyleMap: {
       type: Array,
       default: () => [],
@@ -83,18 +88,6 @@ export default {
   },
 
   computed: {
-    markerPointStyle () {
-      return {
-        ...DEFAULT_CLUSTER_STYLE,
-        ...this.markerStyle,
-      };
-    },
-    markerBorderStyle () {
-      return {
-        ...DEFAULT_BORDER,
-        ...this.borderStyle,
-      };
-    },
     clusterInnerLabelStyle () {
       return {
         ...DEFAULT_INNER_LABEL_STYLE,
@@ -120,9 +113,18 @@ export default {
 
     getClusterContent (context) {
       const { label, currentStyle } = this._getClusterLabelAndStyle(context);
-      const { color, size, type } = currentStyle;
+      const {
+        color,
+        size,
+        type,
+        borderColor,
+        borderWidth,
+      } = currentStyle;
 
-      const { fontSize } = this.clusterInnerLabelStyle,
+      const { fontSize } = {
+              ...this.innerLabelStyle,
+              ...currentStyle.innerLabelStyle,
+            },
             clusterSize = fontSize + (size * 2),
             icon = type || this.icon;
 
@@ -131,8 +133,8 @@ export default {
         ${label}
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
-            stroke-width="${this.markerBorderStyle.width}px"
-            stroke="${this.markerBorderStyle.color}"
+            stroke-width="${borderWidth}px"
+            stroke="${borderColor}"
             fill="${color}"
             d="${ICONS[icon].paths}"
           />
@@ -152,7 +154,7 @@ export default {
       }, 0);
       if (this.clusterKey) {
         currentStyle = this._getClusterStyle(cluster_value, this.clusterKey);
-        label = this.getInnerLabel(cluster_value);
+        label = this.getInnerLabel(cluster_value, currentStyle);
       } else {
         currentStyle = this._getClusterStyle(context.count, 'count');
         label = this.getInnerLabel(context.count);
@@ -169,16 +171,21 @@ export default {
 
       return {
         ...DEFAULT_CLUSTER_STYLE,
+        ...this.clusterStyle,
         ...currentStyle,
       };
     },
 
-    getInnerLabel (count) {
+    getInnerLabel (count, style = {}) {
+      const cluster_style = {
+        ...this.clusterInnerLabelStyle,
+        ...style.innerLabelStyle,
+      };
       const {
         fontSize,
         color,
         fontWeight,
-      } = this.clusterInnerLabelStyle;
+      } = cluster_style;
 
       const labelFontStyle = `
         font-weight: ${fontWeight};
