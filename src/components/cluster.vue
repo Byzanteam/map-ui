@@ -76,6 +76,10 @@ export default {
       type: Array,
       default: () => [],
     },
+    clusterKey: {
+      type: String,
+      default: '',
+    },
   },
 
   computed: {
@@ -115,17 +119,11 @@ export default {
     },
 
     getClusterContent (context) {
-      const { count } = context,
-            { color, size, type } = this._getClusterStyle(count);
-
-      const {
-        color: borderColor,
-        width,
-      } = this.markerBorderStyle;
+      const { label, currentStyle } = this._getClusterLabelAndStyle(context);
+      const { color, size, type } = currentStyle;
 
       const { fontSize } = this.clusterInnerLabelStyle,
             clusterSize = fontSize + (size * 2),
-            label = this.getInnerLabel(count),
             icon = type || this.icon;
 
       const node = `<div
@@ -133,8 +131,8 @@ export default {
         ${label}
         <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
           <path
-            stroke-width="${width}px"
-            stroke="${borderColor}"
+            stroke-width="${this.markerBorderStyle.width}px"
+            stroke="${this.markerBorderStyle.color}"
             fill="${color}"
             d="${ICONS[icon].paths}"
           />
@@ -144,11 +142,31 @@ export default {
       context.marker.setContent(node);
     },
 
-    _getClusterStyle (cluster_count) {
+    _getClusterLabelAndStyle (context) {
+      let currentStyle,
+          label;
+      const cluster_value = _.reduce(context.markers, (acc, marker) => {
+        let num = acc;
+        num += marker.getExtData()[this.clusterKey];
+        return parseFloat(num.toFixed(2));
+      }, 0);
+      if (this.clusterKey) {
+        currentStyle = this._getClusterStyle(cluster_value, this.clusterKey);
+        label = this.getInnerLabel(cluster_value);
+      } else {
+        currentStyle = this._getClusterStyle(context.count, 'count');
+        label = this.getInnerLabel(context.count);
+      }
+
+      return { label, currentStyle };
+    },
+
+    _getClusterStyle (value, key) {
       const currentStyle = _.findLast(
-        _.sortBy(this.clusterStyleMap, 'value'),
-        ({ count }) => cluster_count >= count
+        _.sortBy(this.clusterStyleMap, key),
+        item => value >= item[key]
       );
+
       return {
         ...DEFAULT_CLUSTER_STYLE,
         ...currentStyle,

@@ -8,7 +8,7 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :cluster-style-map="clusterStyleMap"
-      cluster-key="count"
+      cluster-key="value"
     />
   </base-map>
 </template>
@@ -34,13 +34,16 @@ export default {
       ],
       clusterStyleMap: [
         {
-          count: 2, color: '#dc7626', size: 10, type: 'triangle',
+          value: 5, color: '#dc7626', size: 10, type: 'triangle',
         },
         {
-          count: 6, color: '#891ba0', size: 15, type: 'circle',
+          value: 10, color: '#891ba0', size: 15, type: 'circle',
         },
         {
-          count: 10, color: '#1967ab', size: 15, type: 'pentagram',
+          value: 15, color: '#1967ab', size: 15, type: 'pentagram',
+        },
+        {
+          value: 20, color: '#1496ab', size: 15, type: 'pentagram',
         },
       ],
     };
