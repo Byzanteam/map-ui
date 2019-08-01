@@ -33,7 +33,17 @@ export default {
       },
       clusterStyleMap: [
         {
-          value: 5,
+          value: 1,
+          color: 'red',
+          size: 5,
+          type: 'circle',
+          borderColor: 'rgba(138, 210, 155, 1)',
+          innerLabelStyle: {
+            color: 'purple',
+          },
+        },
+        {
+          value: 2,
           color: '#dc7626',
           size: 5,
           type: 'circle',
@@ -43,7 +53,7 @@ export default {
           },
         },
         {
-          value: 10,
+          value: 5,
           color: '#891ba0',
           size: 10,
           type: 'circle',
@@ -54,7 +64,7 @@ export default {
           },
         },
         {
-          value: 15,
+          value: 10,
           color: '#1967ab',
           size: 15,
           type: 'circle',

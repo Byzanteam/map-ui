@@ -1,7 +1,9 @@
 <template>
   <marker-point
     :markers="markers"
-    :marker-style-map="clusterStyleMap"
+    :marker-style-map="markerStyleMap"
+    :marker-style="markerStyle"
+    :inner-label-style="markerStyle.innerLabelStyle"
     @markersRendered="renderCluster"
   />
 </template>
@@ -88,6 +90,19 @@ export default {
         ...DEFAULT_INNER_LABEL_STYLE,
         ...this.innerLabelStyle,
       };
+    },
+    markerStyle () {
+      let style;
+      if (!this.clusterKey) {
+        style = {
+          ...DEFAULT_CLUSTER_STYLE,
+          ..._.sortBy(this.clusterStyleMap, 'count')[0],
+        };
+      }
+      return style || DEFAULT_CLUSTER_STYLE;
+    },
+    markerStyleMap () {
+      return this.clusterKey ? this.clusterStyleMap : null;
     },
   },
 
