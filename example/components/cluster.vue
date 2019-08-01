@@ -102,8 +102,12 @@ export default {
   computed: {
     pointData2 () {
       return _.map(this.pointData, (point) => {
-        point.location = [point.location[0] + 0.3, point.location[1] + 2];
-        return point;
+        const point2 = {
+          location: [point.location[0] + 0.3, point.location[1] + 0.2],
+          value: point.value,
+          label: point.label,
+        };
+        return point2;
       });
     },
   },

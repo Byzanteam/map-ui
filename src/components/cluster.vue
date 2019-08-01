@@ -95,7 +95,7 @@ export default {
   },
 
   created () {
-    this.$bus.$on('markersRendered', (markers) => {
+    this.$on('markersRendered', (markers) => {
       _.each(markers, (marker) => {
         if (!_.includes(this.markers, marker)) {
           this.markers.push(marker);
