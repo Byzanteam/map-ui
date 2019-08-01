@@ -134,7 +134,7 @@ export const MarkerPoint = {
 
         return marker;
       });
-      this.$emit('markersRendered', this.markerRefs);
+      this.$bus.$emit('markersRendered', this.markerRefs, this);
     },
 
     getMarkerContent (marker) {

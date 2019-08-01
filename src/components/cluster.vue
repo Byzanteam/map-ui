@@ -1,18 +1,13 @@
 <template>
-  <marker-point
-    :markers="markers"
-    :marker-style-map="markerStyleMap"
-    :marker-style="markerStyle"
-    :inner-label-style="markerStyle.innerLabelStyle"
-    @markersRendered="renderCluster"
-  />
+  <div>
+    <slot />
+  </div>
 </template>
 
 <script>
 import _ from 'lodash';
 import MapMixin from '../mixins/map';
 import Icons from './marker/icons.json';
-import MarkerPoint from '../../src/components/marker';
 
 const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
@@ -50,17 +45,9 @@ const INNER_LABERL_FIXED_STYLE = `
 export default {
   name: 'Cluster',
 
-  components: {
-    MarkerPoint,
-  },
-
   mixins: [MapMixin],
 
   props: {
-    markers: {
-      type: Array,
-      default: () => [],
-    },
     icon: {
       type: String,
       default: 'circle',
@@ -84,6 +71,13 @@ export default {
     },
   },
 
+  data () {
+    return {
+      markers: [],
+      cluster: null,
+    };
+  },
+
   computed: {
     clusterInnerLabelStyle () {
       return {
@@ -91,19 +85,23 @@ export default {
         ...this.innerLabelStyle,
       };
     },
-    markerStyle () {
-      let style;
-      if (!this.clusterKey) {
-        style = {
-          ...DEFAULT_CLUSTER_STYLE,
-          ..._.sortBy(this.clusterStyleMap, 'count')[0],
-        };
-      }
-      return style || DEFAULT_CLUSTER_STYLE;
+  },
+
+  watch: {
+    markers () {
+      this.clear();
+      this.renderCluster();
     },
-    markerStyleMap () {
-      return this.clusterKey ? this.clusterStyleMap : null;
-    },
+  },
+
+  created () {
+    this.$bus.$on('markersRendered', (markers) => {
+      _.each(markers, (marker) => {
+        if (!_.includes(this.markers, marker)) {
+          this.markers.push(marker);
+        }
+      });
+    });
   },
 
   methods: {
@@ -114,15 +112,15 @@ export default {
     },
     renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
-        const cluster = new AMap.MarkerClusterer(
+        this.cluster = new AMap.MarkerClusterer(
           this.map,
-          markers,
+          this.markers,
           {
             gridSize: 80,
             renderClusterMarker: this.getClusterContent,
           }
         );
-        cluster.on('click', e => (this.$emit('clusterClick', e)));
+        this.cluster.on('click', e => (this.$emit('clusterClick', e)));
       });
     },
 
