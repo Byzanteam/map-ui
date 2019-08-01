@@ -78,6 +78,7 @@ export const MarkerPoint = {
   data () {
     return {
       markerRefs: [],
+      markerId: new Date().getTime(),
     };
   },
 
@@ -134,7 +135,10 @@ export const MarkerPoint = {
 
         return marker;
       });
-      this.$parent.$emit('markersRendered', this.markerRefs);
+      this.$parent.$emit('markersRendered', {
+        source: this.markerId,
+        payload: this.markerRefs,
+      });
     },
 
     getMarkerContent (marker) {

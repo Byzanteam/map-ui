@@ -73,7 +73,7 @@ export default {
 
   data () {
     return {
-      markers: [],
+      markersGroup: {},
       cluster: null,
     };
   },
@@ -85,6 +85,11 @@ export default {
         ...this.innerLabelStyle,
       };
     },
+    markers () {
+      return Object.values(this.markersGroup).reduce(
+        (acc, cur) => [...acc, ...cur], []
+      );
+    },
   },
 
   watch: {
@@ -95,13 +100,7 @@ export default {
   },
 
   created () {
-    this.$on('markersRendered', (markers) => {
-      _.each(markers, (marker) => {
-        if (!_.includes(this.markers, marker)) {
-          this.markers.push(marker);
-        }
-      });
-    });
+    this.$on('markersRendered', ({ source, payload }) => this.$set(this.markersGroup, source, payload));
   },
 
   methods: {
