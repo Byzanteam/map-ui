@@ -9,19 +9,29 @@
       :cluster-style-map="clusterStyleMap"
       :inner-label-style="clusterInnerLabelStyle"
       cluster-key="value"
-    />
+    >
+      <marker-point
+        :markers="pointData"
+      />
+      <marker-point
+        :markers="pointData2"
+      />
+    </cluster>
   </base-map>
 </template>
 
 <script>
+import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
+import MarkerPoint from '../../src/components/marker';
 import MARKERS from './point.json';
 
 export default {
   components: {
     BaseMap,
     Cluster,
+    MarkerPoint,
   },
 
   data () {
@@ -87,6 +97,15 @@ export default {
         },
       ],
     };
+  },
+
+  computed: {
+    pointData2 () {
+      return _.map(this.pointData, (point) => {
+        point.location = [point.location[0] + 0.3, point.location[1] + 2];
+        return point;
+      });
+    },
   },
 };
 </script>

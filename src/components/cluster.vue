@@ -107,7 +107,12 @@ export default {
   },
 
   methods: {
-    renderCluster (markers) {
+    clear () {
+      if (this.cluster) {
+        this.cluster.clearMarkers();
+      }
+    },
+    renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         const cluster = new AMap.MarkerClusterer(
           this.map,
