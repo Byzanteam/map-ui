@@ -95,7 +95,7 @@ export default {
   watch: {
     markers () {
       this.clear();
-      this.renderCluster();
+      this.updateCluster();
     },
   },
 
@@ -104,10 +104,11 @@ export default {
   },
 
   methods: {
+    mapLoadedFunc () {
+      this.renderCluster();
+    },
     clear () {
-      if (this.cluster) {
-        this.cluster.clearMarkers();
-      }
+      this.cluster && this.cluster.clearMarkers();
     },
     renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
@@ -122,7 +123,9 @@ export default {
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
       });
     },
-
+    updateCluster () {
+      this.cluster.setMarkers(this.markers);
+    },
     getClusterContent (context) {
       const { label, currentStyle } = this._getClusterLabelAndStyle(context);
       const {
