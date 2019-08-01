@@ -5,7 +5,6 @@
     }"
   >
     <cluster
-      :markers="pointData"
       :cluster-style-map="clusterStyleMap"
       :inner-label-style="clusterInnerLabelStyle"
       cluster-key="value"
@@ -43,7 +42,7 @@ export default {
       },
       clusterStyleMap: [
         {
-          value: 1,
+          limit: 1,
           color: 'red',
           size: 5,
           type: 'circle',
@@ -53,7 +52,7 @@ export default {
           },
         },
         {
-          value: 2,
+          limit: 2,
           color: '#dc7626',
           size: 5,
           type: 'circle',
@@ -63,7 +62,7 @@ export default {
           },
         },
         {
-          value: 5,
+          limit: 5,
           color: '#891ba0',
           size: 10,
           type: 'circle',
@@ -74,7 +73,7 @@ export default {
           },
         },
         {
-          value: 10,
+          limit: 10,
           color: '#1967ab',
           size: 15,
           type: 'circle',
@@ -85,7 +84,7 @@ export default {
           },
         },
         {
-          value: 20,
+          limit: 20,
           color: '#1496ab',
           size: 20,
           type: 'circle',

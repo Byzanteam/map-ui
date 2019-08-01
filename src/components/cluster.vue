@@ -67,7 +67,7 @@ export default {
     },
     clusterKey: {
       type: String,
-      default: '',
+      default: 'count',
     },
   },
 
@@ -158,28 +158,26 @@ export default {
     },
 
     _getClusterLabelAndStyle (context) {
-      let currentStyle,
-          label;
-      const cluster_value = _.reduce(context.markers, (acc, marker) => {
-        let num = acc;
-        num += marker.getExtData()[this.clusterKey];
-        return parseFloat(num.toFixed(2));
-      }, 0);
-      if (this.clusterKey) {
-        currentStyle = this._getClusterStyle(cluster_value, this.clusterKey);
+      let currentStyle = this._getClusterStyle(context.count);
+      let label = this.getInnerLabel(context.count, currentStyle);
+
+      if (this.clusterKey !== 'count') {
+        const cluster_value = _.reduce(context.markers, (acc, marker) => {
+          let num = acc;
+          num += marker.getExtData()[this.clusterKey];
+          return parseFloat(num.toFixed(2));
+        }, 0);
+        currentStyle = this._getClusterStyle(cluster_value);
         label = this.getInnerLabel(cluster_value, currentStyle);
-      } else {
-        currentStyle = this._getClusterStyle(context.count, 'count');
-        label = this.getInnerLabel(context.count);
       }
 
       return { label, currentStyle };
     },
 
-    _getClusterStyle (value, key) {
+    _getClusterStyle (value) {
       const currentStyle = _.findLast(
-        _.sortBy(this.clusterStyleMap, key),
-        item => value >= item[key]
+        _.sortBy(this.clusterStyleMap, 'limit'),
+        item => value >= item.limit
       );
 
       return {
@@ -189,7 +187,7 @@ export default {
       };
     },
 
-    getInnerLabel (count, style = {}) {
+    getInnerLabel (count, style) {
       const cluster_style = {
         ...this.clusterInnerLabelStyle,
         ...style.innerLabelStyle,
