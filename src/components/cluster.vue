@@ -105,19 +105,19 @@ export default {
 
   methods: {
     mapLoadedFunc () {
-      this.renderCluster();
+      this._renderCluster();
     },
     clear () {
       this.cluster && this.cluster.clearMarkers();
     },
-    renderCluster () {
+    _renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
           this.map,
           this.markers,
           {
             gridSize: 80,
-            renderClusterMarker: this.getClusterContent,
+            renderClusterMarker: this._getClusterContent,
           }
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
@@ -126,7 +126,7 @@ export default {
     updateCluster () {
       this.cluster.setMarkers(this.markers);
     },
-    getClusterContent (context) {
+    _getClusterContent (context) {
       const { label, currentStyle } = this._getClusterLabelAndStyle(context);
       const {
         color,
@@ -168,14 +168,14 @@ export default {
         const cluster_value = parseFloat(total.toFixed(2));
         const currentStyle = this._getClusterStyle(cluster_value);
         return {
-          label: this.getLabel(cluster_value, currentStyle),
+          label: this._getLabel(cluster_value, currentStyle),
           currentStyle,
         };
       }
 
       const currentStyle = this._getClusterStyle(count);
       return {
-        label: this.getLabel(count, currentStyle),
+        label: this._getLabel(count, currentStyle),
         currentStyle,
       };
     },
@@ -193,7 +193,7 @@ export default {
       };
     },
 
-    getLabel (count, style) {
+    _getLabel (count, style) {
       const {
         fontSize,
         color,
