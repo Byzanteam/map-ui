@@ -78,7 +78,7 @@ export const MarkerPoint = {
   data () {
     return {
       markerRefs: [],
-      markerId: new Date().getTime(),
+      uuid: _.uniqueId(),
     };
   },
 
@@ -136,7 +136,7 @@ export const MarkerPoint = {
         return marker;
       });
       this.$parent.$emit('markersRendered', {
-        source: this.markerId,
+        source: this.uuid,
         payload: this.markerRefs,
       });
     },
