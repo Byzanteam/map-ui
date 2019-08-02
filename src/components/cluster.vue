@@ -86,9 +86,7 @@ export default {
       };
     },
     markers () {
-      return Object.values(this.markersGroup).reduce(
-        (acc, cur) => [...acc, ...cur], []
-      );
+      return _.reduce(this.markersGroup, (acc, cur) => [...acc, ...cur], []);
     },
   },
 
