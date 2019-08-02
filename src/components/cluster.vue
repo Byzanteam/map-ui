@@ -118,7 +118,7 @@ export default {
           {
             gridSize: 80,
             renderClusterMarker: this._getClusterContent,
-          }
+          },
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
       });
@@ -161,10 +161,10 @@ export default {
 
     _getClusterLabelAndStyle ({ count, markers }) {
       if (this.clusterKey) {
-        const total = _.reduce(markers, (acc, marker) => {
-          const sum = acc + marker.getExtData()[this.clusterKey];
-          return sum;
-        }, 0);
+        const total = _.reduce(
+          markers,
+          (acc, marker) => acc + marker.getExtData()[this.clusterKey], 0
+        );
         const cluster_value = parseFloat(total.toFixed(2));
         const currentStyle = this._getClusterStyle(cluster_value);
         return {
