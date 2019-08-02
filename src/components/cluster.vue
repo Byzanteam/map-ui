@@ -67,7 +67,7 @@ export default {
     },
     clusterKey: {
       type: String,
-      default: 'count',
+      default: '',
     },
   },
 
@@ -159,21 +159,25 @@ export default {
       context.marker.setContent(node);
     },
 
-    _getClusterLabelAndStyle (context) {
-      let currentStyle = this._getClusterStyle(context.count);
-      let label = this.getInnerLabel(context.count, currentStyle);
-
-      if (this.clusterKey !== 'count') {
-        const cluster_value = _.reduce(context.markers, (acc, marker) => {
-          let num = acc;
-          num += marker.getExtData()[this.clusterKey];
-          return parseFloat(num.toFixed(2));
+    _getClusterLabelAndStyle ({ count, markers }) {
+      if (this.clusterKey) {
+        const total = _.reduce(markers, (acc, marker) => {
+          const sum = acc + marker.getExtData()[this.clusterKey];
+          return sum;
         }, 0);
-        currentStyle = this._getClusterStyle(cluster_value);
-        label = this.getInnerLabel(cluster_value, currentStyle);
+        const cluster_value = parseFloat(total.toFixed(2));
+        const currentStyle = this._getClusterStyle(cluster_value);
+        return {
+          label: this.getInnerLabel(cluster_value, currentStyle),
+          currentStyle,
+        };
       }
 
-      return { label, currentStyle };
+      const currentStyle = this._getClusterStyle(count);
+      return {
+        label: this.getInnerLabel(count, currentStyle),
+        currentStyle,
+      };
     },
 
     _getClusterStyle (value) {
@@ -190,15 +194,14 @@ export default {
     },
 
     getInnerLabel (count, style) {
-      const cluster_style = {
-        ...this.clusterInnerLabelStyle,
-        ...style.innerLabelStyle,
-      };
       const {
         fontSize,
         color,
         fontWeight,
-      } = cluster_style;
+      } =  {
+        ...this.clusterInnerLabelStyle,
+        ...style.innerLabelStyle,
+      };
 
       const labelFontStyle = `
         font-weight: ${fontWeight};
