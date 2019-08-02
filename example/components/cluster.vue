@@ -6,7 +6,7 @@
   >
     <cluster
       :cluster-style-map="clusterStyleMap"
-      :inner-label-style="clusterInnerLabelStyle"
+      :label-style="clusterLabelStyle"
       cluster-key="value"
     >
       <marker-point
@@ -36,7 +36,7 @@ export default {
   data () {
     return {
       pointData: MARKERS,
-      clusterInnerLabelStyle: {
+      clusterLabelStyle: {
         fontSize: 14,
         fontWeight: 100,
       },
@@ -47,7 +47,7 @@ export default {
           size: 5,
           type: 'circle',
           borderColor: 'rgba(138, 210, 155, 1)',
-          innerLabelStyle: {
+          labelStyle: {
             color: 'purple',
           },
         },
@@ -57,7 +57,7 @@ export default {
           size: 5,
           type: 'circle',
           borderColor: 'rgba(138, 210, 155, 1)',
-          innerLabelStyle: {
+          labelStyle: {
             color: 'purple',
           },
         },
@@ -67,7 +67,7 @@ export default {
           size: 10,
           type: 'circle',
           borderColor: 'rgba(120, 140, 125, 1)',
-          innerLabelStyle: {
+          labelStyle: {
             fontSize: 14,
             color: 'blue',
           },
@@ -78,7 +78,7 @@ export default {
           size: 15,
           type: 'circle',
           borderColor: 'rgba(189, 145, 215, 1)',
-          innerLabelStyle: {
+          labelStyle: {
             fontSize: 16,
             color: 'red',
           },
@@ -89,7 +89,7 @@ export default {
           size: 20,
           type: 'circle',
           borderColor: 'rgba(189, 215, 205, 1)',
-          innerLabelStyle: {
+          labelStyle: {
             fontSize: 18,
             color: '#fff',
           },

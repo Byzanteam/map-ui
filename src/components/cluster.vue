@@ -27,13 +27,13 @@ const DEFAULT_CLUSTER_STYLE = {
   borderWidth: 1,
 };
 
-const DEFAULT_INNER_LABEL_STYLE = {
+const DEFAULT_LABEL_STYLE = {
   fontSize: 12,
   color: 'rgba(255, 255, 255, 0.2)',
   fontWeight: 400,
 };
 
-const INNER_LABERL_FIXED_STYLE = `
+const LABERL_FIXED_STYLE = `
   position: absolute;
   top:50%;
   left:50%;
@@ -53,7 +53,7 @@ export default {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
-    innerLabelStyle: {
+    labelStyle: {
       type: Object,
       default: () => ({}),
     },
@@ -79,10 +79,10 @@ export default {
   },
 
   computed: {
-    clusterInnerLabelStyle () {
+    clusterlabelStyle () {
       return {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...this.innerLabelStyle,
+        ...DEFAULT_LABEL_STYLE,
+        ...this.labelStyle,
       };
     },
     markers () {
@@ -137,11 +137,11 @@ export default {
       } = currentStyle;
 
       const { fontSize } = {
-              ...this.innerLabelStyle,
-              ...currentStyle.innerLabelStyle,
-            },
-            clusterSize = fontSize + (size * 2),
-            icon = type || this.icon;
+        ...this.labelStyle,
+        ...currentStyle.labelStyle,
+      };
+      const clusterSize = fontSize + (size * 2);
+      const icon = type || this.icon;
 
       const node = `<div
         style="width: ${clusterSize}px;height: ${clusterSize}px;font-size: 0px;position: relative;">
@@ -168,14 +168,14 @@ export default {
         const cluster_value = parseFloat(total.toFixed(2));
         const currentStyle = this._getClusterStyle(cluster_value);
         return {
-          label: this.getInnerLabel(cluster_value, currentStyle),
+          label: this.getLabel(cluster_value, currentStyle),
           currentStyle,
         };
       }
 
       const currentStyle = this._getClusterStyle(count);
       return {
-        label: this.getInnerLabel(count, currentStyle),
+        label: this.getLabel(count, currentStyle),
         currentStyle,
       };
     },
@@ -193,14 +193,14 @@ export default {
       };
     },
 
-    getInnerLabel (count, style) {
+    getLabel (count, style) {
       const {
         fontSize,
         color,
         fontWeight,
       } =  {
-        ...this.clusterInnerLabelStyle,
-        ...style.innerLabelStyle,
+        ...this.clusterlabelStyle,
+        ...style.labelStyle,
       };
 
       const labelFontStyle = `
@@ -210,7 +210,7 @@ export default {
       `;
 
       return `<div
-        style="${INNER_LABERL_FIXED_STYLE}${labelFontStyle}"
+        style="${LABERL_FIXED_STYLE}${labelFontStyle}"
       >
         ${count}
       </div>`;
