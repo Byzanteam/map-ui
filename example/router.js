@@ -16,6 +16,7 @@ const router = new VueRouter({
     { path: '/label-marker', component: () => import('./components/label_marker') },
     { path: '/heat-map', component: () => import('./components/heat_map') },
     { path: '/airline', component: () => import('./components/airline') },
+    { path: '/cluster', component: () => import('./components/cluster') },
   ],
 });
 

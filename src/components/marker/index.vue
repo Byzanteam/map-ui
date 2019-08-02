@@ -78,6 +78,7 @@ export const MarkerPoint = {
   data () {
     return {
       markerRefs: [],
+      uuid: _.uniqueId(),
     };
   },
 
@@ -133,6 +134,10 @@ export const MarkerPoint = {
         marker.on('mouseout', e => this.$emit('markerMouseout', e));
 
         return marker;
+      });
+      this.$parent.$emit('markersRendered', {
+        source: this.uuid,
+        payload: this.markerRefs,
       });
     },
 
