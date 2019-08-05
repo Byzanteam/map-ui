@@ -86,7 +86,10 @@ export default {
       };
     },
     markers () {
-      return _.reduce(this.markersGroup, (acc, cur) => [...acc, ...cur], []);
+      return _.transform(
+        this.markersGroup,
+        (acc, cur) => acc.push(...acc, ...cur), []
+      );
     },
   },
 
@@ -108,6 +111,9 @@ export default {
     clear () {
       this.cluster && this.cluster.clearMarkers();
     },
+    updateCluster () {
+      this.cluster.setMarkers(this.markers);
+    },
     _renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
@@ -120,9 +126,6 @@ export default {
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
       });
-    },
-    updateCluster () {
-      this.cluster.setMarkers(this.markers);
     },
     _getClusterContent (context) {
       const { label, currentStyle } = this._getClusterLabelAndStyle(context);
