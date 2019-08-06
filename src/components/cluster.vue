@@ -87,8 +87,7 @@ export default {
     },
     markers () {
       return _.transform(
-        this.markersGroup,
-        (acc, cur) => acc.push(...acc, ...cur), []
+        this.markersGroup, (acc, cur) => acc.push(...acc, ...cur), []
       );
     },
   },
