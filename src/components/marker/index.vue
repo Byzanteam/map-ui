@@ -74,7 +74,7 @@ export const MarkerPoint = {
       default: () => ({}),
     },
     innerLabelStyle: {
-      type: Object,
+      type: [Object, Array],
       default: () => ({}),
     },
   },
@@ -98,14 +98,7 @@ export const MarkerPoint = {
       // 当 zoom 是个确定的数值，匹配的样式只应用当前缩放等级，其他等级marker不显示
       // 当 zoom 是个区间， 匹配的样式应用当前区间等级， 其他等级不显示
       if (this.zoomStyleMap) {
-        const { styleMap } = _.findLast(
-          _.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
-            if (_.isArray(zoom)) {
-              return zoom[0] <= this.zoom && this.zoom <= zoom[1];
-            }
-            return zoom === this.zoom;
-          }
-        ) || {
+        const { styleMap } = this._getZoomMatchStyle(this.zoomStyleMap) || {
           styleMap: [{
             value: _.max(_.map(this.markers, marker => marker.value)),
             color: 'transparent',
@@ -131,6 +124,15 @@ export const MarkerPoint = {
       };
     },
     markerInnerLabelStyle () {
+      if (_.isArray(this.innerLabelStyle)) {
+        const {
+          innerLabelStyle,
+        } = this._getZoomMatchStyle(this.innerLabelStyle) || {};
+        return {
+          ...DEFAULT_INNER_LABEL_STYLE,
+          ...innerLabelStyle,
+        };
+      }
       return {
         ...DEFAULT_INNER_LABEL_STYLE,
         ...this.innerLabelStyle,
@@ -267,6 +269,16 @@ export const MarkerPoint = {
     clear () {
       _.forEach(this.markerRefs, marker => this.map.remove(marker));
       this.markerRefs = [];
+    },
+    _getZoomMatchStyle (configs) {
+      return _.findLast(
+        _.sortBy(configs, 'zoom'), ({ zoom }) => {
+          if (_.isArray(zoom)) {
+            return zoom[0] <= this.zoom && this.zoom <= zoom[1];
+          }
+          return zoom === this.zoom;
+        }
+      );
     },
   },
 };

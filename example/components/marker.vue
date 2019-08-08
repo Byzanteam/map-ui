@@ -8,6 +8,7 @@
       :markers="pointData"
       :default-marker-style-map="markerStyleMap"
       :zoom-style-map="zoomStyleMap"
+      :inner-label-style="markerInnerLabelStyle"
       icon="water-droplet"
       @markerClick="markerClickFunc"
     />
@@ -97,6 +98,21 @@ export default {
             { value: 2, color: 'crimson' },
             { value: 4, color: 'chocolate' },
           ],
+        },
+      ],
+      markerInnerLabelStyle: [
+        {
+          zoom: 5,
+          innerLabelStyle: {
+            fontSize: 18,
+          },
+
+        },
+        {
+          zoom: 7,
+          innerLabelStyle: {
+            fontSize: 12,
+          },
         },
       ],
     };
