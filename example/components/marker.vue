@@ -28,6 +28,16 @@ const MARKERS = [
     id: 2,
     location: [113.559954, 22.124049],
     value: 1.5,
+    label: [
+      {
+        zoom: 5,
+        label: 'zoom5',
+      },
+      {
+        zoom: 7,
+        label: 'zoom7',
+      },
+    ],
   },
   {
     id: 3,

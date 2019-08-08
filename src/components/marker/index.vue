@@ -180,6 +180,7 @@ export const MarkerPoint = {
         width,
       } = this.markerBorderStyle;
 
+      // 当 label 存在时 marker 由 label 的 size 撑开，没有 label 时，由 size 控制
       if (color !== 'transparent' && marker.label) {
         const { size: fontSizePadding } = DEFAULT_MAERKER_POINT_STYLE;
         const { fontSize } = this.markerInnerLabelStyle;
@@ -216,15 +217,21 @@ export const MarkerPoint = {
         font-size:${fontSize}px;
       `;
 
+      // 找到对应 zoom 等级的 label，如果没有默认为最小映射的 label
+      const { label } = _.findLast(
+        _.sortBy(marker.label, 'zoom'),
+        ({ zoom }) => zoom <= this.zoom
+      ) || marker.label[0];
+
       return `<div
         style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
       >
-        ${marker.label}
+        ${label || marker.label}
       </div>`;
     },
 
     /**
-     * 如果设置了映射，小于最小映射的透明色
+     * 如果设置了映射，小于最小映射的为透明色
      */
     getMarkerStyle (marker) {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
