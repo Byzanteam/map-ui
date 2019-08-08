@@ -95,17 +95,24 @@ export const MarkerPoint = {
       }
     },
     zoom () {
+      // 当 zoom 是个确定的数值，匹配的样式只应用当前缩放等级，其他等级marker不显示
+      // 当 zoom 是个区间， 匹配的样式应用当前区间等级， 其他等级不显示
       if (this.zoomStyleMap) {
-        const currentStyleMap = _.findLast(
-          _.sortBy(this.zoomStyleMap, 'zoom'),
-          ({ zoom }) => zoom <= this.zoom
-        ) || {};
-        this.markerStyleMap = {
-          ...this.defaultMarkerStyleMap,
-          ...currentStyleMap.styleMap,
+        const { styleMap } = _.findLast(
+          _.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
+            if (_.isArray(zoom)) {
+              return zoom[0] <= this.zoom && this.zoom <= zoom[1];
+            }
+            return zoom === this.zoom;
+          }
+        ) || {
+          styleMap: [{
+            value: _.max(_.map(this.markers, marker => marker.value)),
+            color: 'transparent',
+          }],
         };
+        this.markerStyleMap = styleMap;
       }
-      this.clear();
       this.setMarkerData(this.markers);
     },
   },

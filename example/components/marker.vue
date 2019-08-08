@@ -90,6 +90,14 @@ export default {
             { value: 4, color: 'blue' },
           ],
         },
+        {
+          zoom: [8, 10],
+          styleMap: [
+            { value: 0, color: 'cadetblue' },
+            { value: 2, color: 'crimson' },
+            { value: 4, color: 'chocolate' },
+          ],
+        },
       ],
     };
   },
