@@ -6,7 +6,8 @@
   >
     <marker-point
       :markers="pointData"
-      :marker-style-map="markerStyleMap"
+      :default-marker-style-map="markerStyleMap"
+      :zoom-style-map="zoomStyleMap"
       icon="water-droplet"
       @markerClick="markerClickFunc"
     />
@@ -58,8 +59,27 @@ export default {
     return {
       pointData: [],
       markerStyleMap: [
-        { value: 1, color: 'green' },
-        { value: 2, color: 'red' },
+        { value: 1, color: '#9dd891' },
+        { value: 2, color: '#9dd891' },
+        { value: 4, color: '#91a3d8' },
+      ],
+      zoomStyleMap: [
+        {
+          zoom: 5,
+          styleMap: [
+            { value: 1, color: 'green' },
+            { value: 2, color: 'red' },
+            { value: 4, color: 'blue' },
+          ],
+        },
+        {
+          zoom: 7,
+          styleMap: [
+            { value: 0, color: 'purple' },
+            { value: 2, color: 'yellow' },
+            { value: 4, color: 'blue' },
+          ],
+        },
       ],
     };
   },

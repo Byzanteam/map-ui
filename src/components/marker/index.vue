@@ -61,9 +61,13 @@ export const MarkerPoint = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
-    markerStyleMap: {
+    defaultMarkerStyleMap: {
       type: Array,
       default: () => DEFAULT_STYLE_MAP,
+    },
+    zoomStyleMap: {
+      type: Array,
+      default: () => null,
     },
     borderStyle: {
       type: Object,
@@ -78,6 +82,8 @@ export const MarkerPoint = {
   data () {
     return {
       markerRefs: [],
+      markerStyleMap: this.defaultMarkerStyleMap,
+      zoom: 3,
       uuid: _.uniqueId(),
     };
   },
@@ -87,6 +93,20 @@ export const MarkerPoint = {
       if (this.map) {
         this.setMarkerData(current);
       }
+    },
+    zoom () {
+      if (this.zoomStyleMap) {
+        const currentStyleMap = _.findLast(
+          _.sortBy(this.zoomStyleMap, 'zoom'),
+          ({ zoom }) => zoom <= this.zoom
+        ) || {};
+        this.markerStyleMap = {
+          ...this.defaultMarkerStyleMap,
+          ...currentStyleMap.styleMap,
+        };
+      }
+      this.clear();
+      this.setMarkerData(this.markers);
     },
   },
 
@@ -113,7 +133,12 @@ export const MarkerPoint = {
 
   methods: {
     mapLoadedFunc () {
+      this.zoom = this.map.getZoom();
+
       this.renderMarkers(this.markers);
+      this.map.on('zoomchange', () => {
+        this.zoom = this.map.getZoom();
+      });
     },
 
     renderMarkers (data) {
