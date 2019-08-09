@@ -9,7 +9,7 @@
       :default-marker-style-map="markerStyleMap"
       :zoom-style-map="zoomStyleMap"
       :inner-label-style="markerInnerLabelStyle"
-      icon="water-droplet"
+      :icons="icon"
       @markerClick="markerClickFunc"
     />
   </base-map>
@@ -113,6 +113,16 @@ export default {
           innerLabelStyle: {
             fontSize: 12,
           },
+        },
+      ],
+      icon: [
+        {
+          zoom: 5,
+          icon: 'triangle',
+        },
+        {
+          zoom: 7,
+          icon: 'hexagon',
         },
       ],
     };

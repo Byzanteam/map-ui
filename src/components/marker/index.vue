@@ -56,10 +56,11 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
-    icon: {
-      type: String,
+    icons: {
+      type: [String, Array],
       default: 'circle',
-      validator: value => DEFAULT_ICON_TYPES.includes(value),
+      validator: value => DEFAULT_ICON_TYPES.includes(value)
+        || _.isArray(value),
     },
     defaultMarkerStyleMap: {
       type: Array,
@@ -137,6 +138,14 @@ export const MarkerPoint = {
         ...DEFAULT_INNER_LABEL_STYLE,
         ...this.innerLabelStyle,
       };
+    },
+    icon () {
+      if (_.isArray(this.icons)) {
+        // 找到对应 zoom 等级的 icon，如果没有默认为 circle
+        const { icon } = this._getZoomMatchStyle(this.icons) || { icon: 'circle' };
+        return icon;
+      }
+      return this.icons;
     },
   },
 
