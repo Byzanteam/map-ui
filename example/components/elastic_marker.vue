@@ -12,8 +12,8 @@
 </template>
 
 <script>
-import ElasticMarker from '../../src/components/marker';
 import BaseMap from '../../src/components/map.vue';
+import ElasticMarker from '../../src/components/marker/elastic_marker.vue';
 
 const MARKERS = [
   {
