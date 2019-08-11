@@ -1,6 +1,7 @@
 <template>
   <marker-point
     ref="markerPointRef"
+    :markers="markers"
     :marker-style-map="markerStyleMap"
     :inner-label-style="innerLabelStyle"
     :icon="icon"
@@ -71,9 +72,9 @@ export default {
         this.zoom = this.map.getZoom();
       });
     },
-    _getZoomMatchStyle (configs) {
+    _getZoomMatchStyle () {
       return _.findLast(
-        _.sortBy(configs, 'zoom'), ({ zoom }) => {
+        _.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
           if (_.isArray(zoom)) {
             return zoom[0] <= this.zoom && this.zoom <= zoom[1];
           }
