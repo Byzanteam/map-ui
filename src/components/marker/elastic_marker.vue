@@ -35,9 +35,22 @@ export default {
     return {
       zoom: 1,
       markerStyleMap: [],
-      innerLabelStyle: {},
-      icon: 'circle',
+      innerLabelStyle: null,
+      icon: null,
     };
+  },
+
+  computed: {
+    hiddenStyle () {
+      return {
+        styleMap: [{
+          value: _.max(_.map(this.markers, marker => marker.value)),
+          color: 'transparent',
+        }],
+        innerLabelStyle: {},
+        icon: 'circle',
+      };
+    },
   },
 
   watch: {
@@ -48,14 +61,7 @@ export default {
         styleMap,
         innerLabelStyle,
         icon,
-      } = this._getZoomMatchStyle(this.zoomStyleMap) || {
-        styleMap: [{
-          value: _.max(_.map(this.markers, marker => marker.value)),
-          color: 'transparent',
-        }],
-        innerLabelStyle: {},
-        icon: 'circle',
-      };
+      } = this._getZoomMatchStyle(this.zoomStyleMap) || this.hiddenStyle;
       this.markerStyleMap = styleMap;
       this.innerLabelStyle = innerLabelStyle;
       this.icon = icon;
