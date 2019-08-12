@@ -74,24 +74,21 @@ export default {
   methods: {
     mapLoadedFunc () {
       this.zoom = this.map.getZoom();
+      this._zoomChangedFunc();
+    },
+    _zoomChangedFunc () {
       this.map.on('zoomchange', () => {
         this.zoom = this.map.getZoom();
       });
     },
     _getZoomMatchStyle () {
-      return _.findLast(
-        _.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
-          if (_.isArray(zoom)) {
-            return zoom[0] <= this.zoom && this.zoom <= zoom[1];
-          }
-          return zoom === this.zoom;
+      return _.findLast(_.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
+        if (_.isArray(zoom)) {
+          return zoom[0] <= this.zoom && this.zoom <= zoom[1];
         }
-      );
+        return zoom === this.zoom;
+      });
     },
   },
 };
 </script>
-
-<style>
-
-</style>
