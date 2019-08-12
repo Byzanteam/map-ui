@@ -7,6 +7,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/elastic_marker">
+          elastic_marker
+        </router-link>
+      </li>
+      <li>
         <router-link to="/regions">
           regions
         </router-link>
