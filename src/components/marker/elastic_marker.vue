@@ -70,13 +70,13 @@ export default {
 
   methods: {
     mapLoadedFunc () {
-      this.zoom = this.map.getZoom();
-      this._zoomChangedFunc();
-    },
-    _zoomChangedFunc () {
+      this.changeZoom();
       this.map.on('zoomchange', () => {
-        this.zoom = this.map.getZoom();
+        this.changeZoom();
       });
+    },
+    changeZoom () {
+      this.zoom = this.map.getZoom();
     },
     _getZoomMatchStyle () {
       return _.findLast(_.sortBy(this.zoomStyleMap, 'zoom'), ({ zoom }) => {
