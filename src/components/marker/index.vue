@@ -84,9 +84,16 @@ export const MarkerPoint = {
 
   watch: {
     markers (current) {
-      if (this.map) {
-        this.setMarkerData(current);
-      }
+      this.setMarkerData(current);
+    },
+    markerStyleMap () {
+      this.setMarkerData(this.markers);
+    },
+    innerLabelStyle () {
+      this.setMarkerData(this.markers);
+    },
+    icon () {
+      this.setMarkerData(this.markers);
     },
   },
 
@@ -221,8 +228,10 @@ export const MarkerPoint = {
     },
 
     setMarkerData (data) {
-      this.clear();
-      this.renderMarkers(data);
+      if (this.map) {
+        this.clear();
+        this.renderMarkers(data);
+      }
     },
 
     clear () {

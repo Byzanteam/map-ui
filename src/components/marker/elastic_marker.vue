@@ -65,9 +65,6 @@ export default {
       this.markerStyleMap = styleMap;
       this.innerLabelStyle = innerLabelStyle;
       this.icon = icon;
-      this.$nextTick(() => {
-        this.$refs.markerPointRef.setMarkerData(this.markers);
-      });
     },
   },
 
