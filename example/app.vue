@@ -36,6 +36,11 @@
           cluster
         </router-link>
       </li>
+      <li>
+        <router-link to="/svg-marker">
+          svgMarker
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>

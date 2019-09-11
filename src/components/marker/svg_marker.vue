@@ -4,9 +4,9 @@ import MapMixin from '../../mixins/map';
 
 const MARKER_STYLE = {
   shape: 'Circle',
-  height: 40,
+  height: 24,
   strokeWidth: 1,
-  strokeColor: '#ccc',
+  strokeColor: 'rgba(255, 255, 255, 0.2)',
   fillColor: '#04BF78',
 };
 
