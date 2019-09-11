@@ -14,13 +14,19 @@ const MARKER_STYLE = {
   fillColor: '#04BF78',
 };
 
-const DEFAULT_SHAPE_TYPES = [
+const MAPUI_SVG = [
   'Circle',
-  'Triangle',
   'FivePointsStar',
   'WaterDrop',
+];
+
+const CUSTOM_SVG = [
+  'Triangle',
+  'TriangleDown',
   'Hexagon',
 ];
+
+const DEFAULT_SHAPE_TYPES = MAPUI_SVG.concat(CUSTOM_SVG);
 
 const LABEL_STYLE = {
   fontSize: 12,
@@ -72,6 +78,7 @@ export default {
         });
       }
     },
+
     renderMarkers (markers) {
       _.each(markers, (marker) => {
         const shape = this._renderShape();
@@ -87,27 +94,29 @@ export default {
         ));
       });
     },
-    customShape () {
-      const { utils, icon } = this;
-      const TriangleShape = function (options) {
-        const opts = utils.extend({
-          ...MARKER_STYLE,
-          color: MARKER_STYLE.fillColor,
-        }, options);
 
-        TriangleShape.__super__.constructor.call(this, opts);
-      };
-      utils.inherit(TriangleShape, this.SvgMarker.Shape.BaseShape);
-      utils.extend(TriangleShape.prototype, {
-        getInnerHTML (params) {
-          const {
-            width,
-            height,
-            strokeWidth,
-            strokeColor,
-            color,
-          } = params;
-          return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="${width}px" height="${height}px">
+    customShape () {
+      const { utils } = this;
+      _.each(CUSTOM_SVG, (icon) => {
+        const CustomShape = function (options) {
+          const opts = utils.extend({
+            ...MARKER_STYLE,
+            color: MARKER_STYLE.fillColor,
+          }, options);
+
+          CustomShape.__super__.constructor.call(this, opts);
+        };
+        utils.inherit(CustomShape, this.SvgMarker.Shape.BaseShape);
+        utils.extend(CustomShape.prototype, {
+          getInnerHTML (params) {
+            const {
+              width,
+              height,
+              strokeWidth,
+              strokeColor,
+              color,
+            } = params;
+            return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="${width}px" height="${height}px">
                     <path
                       stroke-width="${strokeWidth}px"
                       stroke="${strokeColor}"
@@ -115,18 +124,24 @@ export default {
                       d="${ICONS[_.kebabCase(icon)].paths}"
                     />
                   </svg>`;
-        },
-        getOffset () {
+          },
+          getOffset () {
           // 定位点默认在图形中部:
-          return [-this.getWidth() / 2, -this.getHeight() / 2];
-        },
+            return [-this.getWidth() / 2, -this.getHeight() / 2];
+          },
+        });
+        // this.$set(this.SvgMarker.Shape, icon, CustomShape);
+        const newProperty = {};
+        newProperty[icon] = CustomShape;
+        utils.extend(this.SvgMarker.Shape, newProperty);
       });
-      utils.extend(this.SvgMarker.Shape, { Triangle: TriangleShape });
       this.renderMarkers(this.markers);
     },
+
     _renderShape () {
       return new this.SvgMarker.Shape[this.icon](MARKER_STYLE);
     },
+
     _getLabelStyle (marker, shape) {
       const labelCenter = shape.getCenter();
       return {
