@@ -7,6 +7,7 @@
   >
     <svg-marker
       :markers="pointData"
+      icon="Triangle"
     />
   </base-map>
 </template>

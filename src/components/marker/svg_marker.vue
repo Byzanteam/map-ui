@@ -1,9 +1,13 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
+import Icons from './icons.json';
+
+const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
 const MARKER_STYLE = {
   shape: 'Circle',
+  width: 24,
   height: 24,
   strokeWidth: 1,
   strokeColor: 'rgba(255, 255, 255, 0.2)',
@@ -35,7 +39,7 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    shape: {
+    icon: {
       type: String,
       default: 'Circle',
       validator: value => DEFAULT_SHAPE_TYPES.includes(value),
@@ -45,6 +49,8 @@ export default {
   data () {
     return {
       markerRefs: [],
+      SvgMarker: null,
+      utils: null,
     };
   },
 
@@ -56,18 +62,20 @@ export default {
           please set use-map-ui property on base-map
         `);
       } else {
-        AMapUI.loadUI(['overlay/SvgMarker'], (SvgMarker) => {
+        AMapUI.loadUI(['../lib/utils', 'overlay/SvgMarker'], (utils, SvgMarker) => {
           if (!SvgMarker.supportSvg) {
             return window.console.error('当前环境不支持SVG');
           }
-          this.renderMarkers(this.markers, SvgMarker);
+          this.SvgMarker = SvgMarker;
+          this.utils = utils;
+          this.customShape();
         });
       }
     },
-    renderMarkers (markers, SvgMarker) {
-      _.each(this.markers, (marker) => {
-        const shape = new SvgMarker.Shape[this.shape](MARKER_STYLE);
-        this.markerRefs.push(new SvgMarker(
+    renderMarkers (markers) {
+      _.each(markers, (marker) => {
+        const shape = this._renderShape();
+        this.markerRefs.push(new this.SvgMarker(
           shape,
           {
             map: this.map,
@@ -78,6 +86,46 @@ export default {
           }
         ));
       });
+    },
+    customShape () {
+      const { utils, icon } = this;
+      const TriangleShape = function (options) {
+        const opts = utils.extend({
+          ...MARKER_STYLE,
+          color: MARKER_STYLE.fillColor,
+        }, options);
+
+        TriangleShape.__super__.constructor.call(this, opts);
+      };
+      utils.inherit(TriangleShape, this.SvgMarker.Shape.BaseShape);
+      utils.extend(TriangleShape.prototype, {
+        getInnerHTML (params) {
+          const {
+            width,
+            height,
+            strokeWidth,
+            strokeColor,
+            color,
+          } = params;
+          return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="${width}px" height="${height}px">
+                    <path
+                      stroke-width="${strokeWidth}px"
+                      stroke="${strokeColor}"
+                      fill="${color}"
+                      d="${ICONS[_.kebabCase(icon)].paths}"
+                    />
+                  </svg>`;
+        },
+        getOffset () {
+          // 定位点默认在图形中部:
+          return [-this.getWidth() / 2, -this.getHeight() / 2];
+        },
+      });
+      utils.extend(this.SvgMarker.Shape, { Triangle: TriangleShape });
+      this.renderMarkers(this.markers);
+    },
+    _renderShape () {
+      return new this.SvgMarker.Shape[this.icon](MARKER_STYLE);
     },
     _getLabelStyle (marker, shape) {
       const labelCenter = shape.getCenter();
