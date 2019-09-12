@@ -13,8 +13,16 @@ const MARKER_SHAPES = [
 
 const LABEL_STYLE = {
   fontSize: 12,
+  padding: 0,
+  offset: [12, 12],
+  fontWeight: 400,
   color: 'rgba(255, 255, 255, 0.2)',
 };
+
+const DEFAULT_MAERKER_POINT_STYLE = {
+  size: 6,
+};
+
 export default {
   mixins: [MapMixin],
 
@@ -64,7 +72,6 @@ export default {
         this.markerRefs.push(
           new this.SimpleMarker({
             iconStyle: this._getMarkerContent(marker),
-            offset: new AMap.Pixel(-10, -10),
             map: this.map,
             showPositionPoint: true,
             position: marker.location,
@@ -75,8 +82,18 @@ export default {
 
     _getMarkerContent (marker) {
       const textContent = this._getTextContent(marker);
+      const {
+        padding,
+        offset,
+        fontWeight,
+      } = { ...this.LABEL_STYLE, ...this.labelStyle };
       return `<div class="clip-marker-content">
-        <div class="clip-marker-text-content">${textContent}</div>
+        <div
+          class="clip-marker-text-content"
+          style="padding: ${padding}px; left:${offset[0]}px; top:${offset[1]}px; font-weight: ${fontWeight}"
+        >
+          ${textContent}
+        </div>
         <img style="width:80px; height: 80px" src="${marker.img}" class="clip-${marker.icon}"/>
       </div>`;
     },
@@ -87,9 +104,10 @@ export default {
         return _.reduce(labels, (acc, label) => {
           const style = {
             ...LABEL_STYLE,
+            ...this.labelStyle,
             ...label.style,
           };
-          return `${acc}<div style="font-size:${style.fontSize}px; color: ${style.color}; position: relative;">${label.text}</div>`;
+          return `${acc}<div style="font-size:${style.fontSize}px; color: ${style.color}; font-weight: ${style.fontWeight}"; position: relative;">${label.text}</div>`;
         }, '');
       }
     },

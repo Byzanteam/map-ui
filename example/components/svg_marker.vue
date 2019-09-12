@@ -7,9 +7,7 @@
   >
     <simple-marker
       :markers="pointData"
-      :label-style="{
-        color: 'red'
-      }"
+      :label-style="labelStyle"
       icon="TriangleDown"
     />
   </base-map>
@@ -79,6 +77,13 @@ export default {
       pointData: MARKERS,
       markerStyle: {
         shape: 'WaterDrop',
+      },
+      labelStyle: {
+        padding: 10,
+        offset: [10, 10],
+        color: 'purple',
+        fontSize: 13,
+        fontweight: 500,
       },
     };
   },
