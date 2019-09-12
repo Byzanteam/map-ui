@@ -7,9 +7,10 @@
   >
     <simple-marker
       :markers="pointData"
-      :label-style="labelStyle"
+      :marker-label-style="markerLabelStyle"
       :marker-style="markerStyle"
-      icon="TriangleDown"
+      :marker-style-map="markerStyleMap"
+      icon="star"
     />
   </base-map>
 </template>
@@ -23,47 +24,35 @@ const MARKERS = [
     id: 1,
     location: [116.258446, 38.686622],
     value: 0,
-    label: [
+    labelStyles: [
       {
-        style: {
-          color: 'blue',
-          fontSize: 14,
-        },
-        text: '一号点',
+        color: 'blue',
+        fontSize: 14,
       },
       {
-        style: {
-          color: 'red',
-          fontSize: 12,
-        },
-        text: '描述',
+        color: 'red',
+        fontSize: 12,
       },
     ],
+    label: ['一号点', '描述'],
     img: 'http://img.sccnn.com/bimg/337/35663.jpg',
-    icon: 'hexagon',
   },
   {
     id: 2,
     location: [113.559954, 23.124049],
     value: 1.5,
-    label: [
+    labelStyles: [
       {
-        style: {
-          color: '#4196ff',
-          fontSize: 14,
-        },
-        text: '二号点',
+        color: '#4196ff',
+        fontSize: 14,
       },
       {
-        style: {
-          color: '#ff8441',
-          fontSize: 12,
-        },
-        text: '描述',
+        color: '#ff8441',
+        fontSize: 12,
       },
     ],
+    label: ['二号点', '描述'],
     img: 'http://photocdn.sohu.com/20130925/Img387224863.jpg',
-    icon: 'star',
   },
   {
     id: 3,
@@ -84,6 +73,13 @@ const MARKERS = [
     value: 5,
     label: '五号点',
   },
+  {
+    id: 6,
+    location: [116.286968, 39.863642],
+    value: 20,
+    label: ['六号点特别长', '描述也很长', '这排用默认字体样式'],
+    img: 'http://static01.lvye.com/portal/201604/28/093110pb7151d134r1rvet.jpg',
+  },
 ];
 
 export default {
@@ -99,12 +95,59 @@ export default {
         icon: 'triangle-down',
         size: 80,
       },
-      labelStyle: {
+      markerLabelStyle: {
         padding: 10,
         color: 'purple',
         fontSize: 13,
         fontweight: 500,
       },
+      markerStyleMap: [
+        {
+          value: 1,
+          icon: 'star',
+          labelStyles: [
+            {
+              color: 'blue',
+              fontSize: 15,
+            },
+            {
+              color: 'red',
+              fontSize: 17,
+            },
+          ],
+        },
+        {
+          value: 4,
+          icon: 'triangleDown',
+          labelStyles: [
+            {
+              color: 'blue',
+              fontSize: 20,
+            },
+            {
+              color: 'red',
+              fontSize: 30,
+            },
+          ],
+        },
+        {
+          value: 10,
+          icon: 'triangleDown',
+          size: 200,
+          labelStyles: [
+            {
+              color: '#b70019',
+              fontSize: 50,
+              fontweight: 900,
+            },
+            {
+              color: '#9e0693',
+              fontSize: 90,
+              fontweight: 900,
+            },
+          ],
+        },
+      ],
     };
   },
 };

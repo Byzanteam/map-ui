@@ -3,15 +3,15 @@ import _ from 'lodash';
 import MapMixin from '../../mixins/map';
 
 const MARKER_SHAPES = [
-  'Circle',
-  'FivePointsStar',
-  'WaterDrop',
-  'Triangle',
-  'TriangleDown',
-  'Hexagon',
+  'circle',
+  'star',
+  'waterDrop',
+  'triangle',
+  'triangleDown',
+  'hexagon',
 ];
 
-const LABEL_STYLE = {
+const DEFAULT_LABEL_STYLE = {
   fontSize: 12,
   padding: 10,
   fontWeight: 400,
@@ -34,13 +34,17 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    labelStyle: {
+    markerLabelStyle: {
       type: Object,
       default: () => ({}),
     },
+    markerStyleMap: {
+      type: Array,
+      default: () => null,
+    },
     icon: {
       type: String,
-      default: 'Circle',
+      default: 'circle',
       validator: value => MARKER_SHAPES.includes(value),
     },
   },
@@ -50,6 +54,21 @@ export default {
       markerRefs: [],
       SimpleMarker: null,
     };
+  },
+
+  computed: {
+    markerPointStyle () {
+      return {
+        ...DEFAULT_MAERKER_POINT_STYLE,
+        ...this.markerStyle,
+      };
+    },
+    innerLabelStyle () {
+      return {
+        ...DEFAULT_LABEL_STYLE,
+        ...this.markerLabelStyle,
+      };
+    },
   },
 
   methods: {
@@ -79,40 +98,64 @@ export default {
     },
 
     _getMarkerContent (marker) {
-      const textContent = this._getTextContent(marker);
+      const {
+        size: markerSize,
+        icon,
+        img,
+        labelStyles,
+      } = this._getMarkerStyle(marker);
+      const textContent = this._getTextContent(marker, labelStyles);
       const {
         padding,
         offset = [],
-        fontWeight,
-      } = { ...LABEL_STYLE, ...this.labelStyle, ...marker.labelStyle };
-      const { size: markerSize } = {
-        ...DEFAULT_MAERKER_POINT_STYLE,
-        ...this.markerStyle,
-        ...marker.style,
-      };
+      } = this.innerLabelStyle;
+
       return `<div class="clip-marker-content">
         <div
           class="clip-marker-text-content"
-          style="padding: ${padding}px; left: ${offset[0]}px; top: ${offset[1]}px; font-weight: ${fontWeight}"
+          style="padding: ${padding}px; left: ${offset[0]}px; top: ${offset[1]}px;"
         >
           ${textContent}
         </div>
-        <img style="width: ${markerSize}px; height: ${markerSize}px" src="${marker.img}" class="clip-${marker.icon}"/>
+        <img style="width: ${markerSize}px; height: ${markerSize}px" src="${img || marker.img}" class="clip-${icon || this.icon}"/>
       </div>`;
     },
 
-    _getTextContent (marker) {
-      const labels = marker.label;
-      if (_.isArray(labels)) {
-        return _.reduce(labels, (acc, label) => {
-          const style = {
-            ...LABEL_STYLE,
-            ...this.labelStyle,
-            ...label.style,
+    _getMarkerStyle (marker) {
+      if (!this.markerStyleMap || !_.isNumber(marker.value)) {
+        return this.markerPointStyle;
+      }
+
+      const currentStyle = _.findLast(
+        _.sortBy(this.markerStyleMap, 'value'),
+        ({ value }) => marker.value >= value
+      );
+
+      return {
+        size: this.markerPointStyle.size,
+        ...currentStyle,
+      };
+    },
+
+    _getTextContent (marker, styles = []) {
+      const { label } = marker;
+      const { labelStyles = [] } = marker;
+      if (_.isArray(label)) {
+        return _.reduce(label, (acc, item, key) => {
+          const {
+            fontSize,
+            color,
+            fontWeight,
+          } = {
+            ...this.innerLabelStyle,
+            ...labelStyles[key],
+            ...styles[key],
           };
-          return `${acc}<div style="font-size:${style.fontSize}px; color: ${style.color}; font-weight: ${style.fontWeight}"; position: relative;">${label.text}</div>`;
+          return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
       }
+      const { fontSize, color, fontWeight } = this.innerLabelStyle;
+      return `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
     },
   },
 
@@ -134,6 +177,10 @@ export default {
   white-space: nowrap;
 }
 
+.clip-waterDrop {
+  clip-path: path('M12 24C6 17.45 3 12.29 3 8.5 3 2.82 6.04 0 12 0s9 2.82 9 8.5c0 3.79-3 8.95-9 15.5z');
+}
+
 .clip-star {
   transition: 0.4s cubic-bezier(1, -1, 0, 2);
   clip-path: polygon(
@@ -153,7 +200,7 @@ export default {
   clip-path: polygon(50% 0%, 0 70%, 100% 70%);
 }
 
-.clip-triangle-down {
+.clip-triangleDown {
   clip-path: polygon(100% 30%, 0 30%, 50% 100%);
 }
 
