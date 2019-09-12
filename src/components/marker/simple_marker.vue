@@ -13,14 +13,13 @@ const MARKER_SHAPES = [
 
 const LABEL_STYLE = {
   fontSize: 12,
-  padding: 0,
-  offset: [12, 12],
+  padding: 10,
   fontWeight: 400,
   color: 'rgba(255, 255, 255, 0.2)',
 };
 
 const DEFAULT_MAERKER_POINT_STYLE = {
-  size: 6,
+  size: 24,
 };
 
 export default {
@@ -73,7 +72,6 @@ export default {
           new this.SimpleMarker({
             iconStyle: this._getMarkerContent(marker),
             map: this.map,
-            showPositionPoint: true,
             position: marker.location,
           })
         );
@@ -84,17 +82,22 @@ export default {
       const textContent = this._getTextContent(marker);
       const {
         padding,
-        offset,
+        offset = [],
         fontWeight,
-      } = { ...this.LABEL_STYLE, ...this.labelStyle };
+      } = { ...LABEL_STYLE, ...this.labelStyle, ...marker.labelStyle };
+      const { size: markerSize } = {
+        ...DEFAULT_MAERKER_POINT_STYLE,
+        ...this.markerStyle,
+        ...marker.style,
+      };
       return `<div class="clip-marker-content">
         <div
           class="clip-marker-text-content"
-          style="padding: ${padding}px; left:${offset[0]}px; top:${offset[1]}px; font-weight: ${fontWeight}"
+          style="padding: ${padding}px; left: ${offset[0]}px; top: ${offset[1]}px; font-weight: ${fontWeight}"
         >
           ${textContent}
         </div>
-        <img style="width:80px; height: 80px" src="${marker.img}" class="clip-${marker.icon}"/>
+        <img style="width: ${markerSize}px; height: ${markerSize}px" src="${marker.img}" class="clip-${marker.icon}"/>
       </div>`;
     },
 
@@ -125,11 +128,21 @@ export default {
 .clip-marker-text-content {
   position: absolute;
   z-index: 2;
+  transform: translate(-50%, -50%);
+  top: 50%;
+  left: 50%;
+  white-space: nowrap;
 }
 
 .clip-star {
   transition: 0.4s cubic-bezier(1, -1, 0, 2);
-  clip-path: polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%);
+  clip-path: polygon(
+    50% 0%, 61% 35%,
+    98% 35%, 68% 57%,
+    79% 91%, 50% 70%,
+    21% 91%, 32% 57%,
+    2% 35%, 39% 35%
+  );
 }
 
 .clip-circle {
@@ -145,10 +158,24 @@ export default {
 }
 
 .clip-hexagon {
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
 }
 
 .clip-water {
-  clip-path: polygon(50% 0%, 100% 25%, 100% 75%, 50% 100%, 0% 75%, 0% 25%);
+  clip-path: polygon(
+    50% 0%,
+    100% 25%,
+    100% 75%,
+    50% 100%,
+    0% 75%,
+    0% 25%
+  );
 }
 </style>

@@ -8,6 +8,7 @@
     <simple-marker
       :markers="pointData"
       :label-style="labelStyle"
+      :marker-style="markerStyle"
       icon="TriangleDown"
     />
   </base-map>
@@ -38,19 +39,38 @@ const MARKERS = [
         text: '描述',
       },
     ],
-    img: 'http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg',
-    icon: 'star',
+    img: 'http://img.sccnn.com/bimg/337/35663.jpg',
+    icon: 'hexagon',
   },
   {
     id: 2,
     location: [113.559954, 23.124049],
     value: 1.5,
+    label: [
+      {
+        style: {
+          color: '#4196ff',
+          fontSize: 14,
+        },
+        text: '二号点',
+      },
+      {
+        style: {
+          color: '#ff8441',
+          fontSize: 12,
+        },
+        text: '描述',
+      },
+    ],
+    img: 'http://photocdn.sohu.com/20130925/Img387224863.jpg',
+    icon: 'star',
   },
   {
     id: 3,
     location: [116.366794, 40.915309],
     value: 2,
     label: '三号点',
+    img: 'http://static01.lvye.com/portal/201604/28/093110pb7151d134r1rvet.jpg',
   },
   {
     id: 4,
@@ -76,11 +96,11 @@ export default {
     return {
       pointData: MARKERS,
       markerStyle: {
-        shape: 'WaterDrop',
+        icon: 'triangle-down',
+        size: 80,
       },
       labelStyle: {
         padding: 10,
-        offset: [10, 10],
         color: 'purple',
         fontSize: 13,
         fontweight: 500,
