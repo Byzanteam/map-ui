@@ -5,23 +5,43 @@
     }"
     use-map-ui
   >
-    <svg-marker
+    <simple-marker
       :markers="pointData"
-      icon="Hexagon"
+      :label-style="{
+        color: 'red'
+      }"
+      icon="TriangleDown"
     />
   </base-map>
 </template>
 
 <script>
 import BaseMap from '../../src/components/map.vue';
-import SvgMarker from '../../src/components/marker/svg_marker';
+import SimpleMarker from '../../src/components/marker/simple_marker';
 
 const MARKERS = [
   {
     id: 1,
     location: [116.258446, 38.686622],
     value: 0,
-    label: '一号点',
+    label: [
+      {
+        style: {
+          color: 'blue',
+          fontSize: 14,
+        },
+        text: '一号点',
+      },
+      {
+        style: {
+          color: 'red',
+          fontSize: 12,
+        },
+        text: '描述',
+      },
+    ],
+    img: 'http://pic25.nipic.com/20121112/9252150_150552938000_2.jpg',
+    icon: 'star',
   },
   {
     id: 2,
@@ -51,7 +71,7 @@ const MARKERS = [
 export default {
   components: {
     BaseMap,
-    SvgMarker,
+    SimpleMarker,
   },
 
   data () {

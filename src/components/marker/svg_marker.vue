@@ -45,6 +45,10 @@ export default {
       type: Object,
       default: () => ({}),
     },
+    labelStyle: {
+      type: Object,
+      default: () => ({}),
+    },
     icon: {
       type: String,
       default: 'Circle',
@@ -148,6 +152,7 @@ export default {
         innerHTML: marker.label || '',
         style: {
           top: `${labelCenter[1] - 9}px`,
+          ...this.labelStyle,
           ...LABEL_STYLE,
         },
       };
