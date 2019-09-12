@@ -37,8 +37,8 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/svg-marker">
-          svgMarker
+        <router-link to="/simple-marker">
+          simpleMarker
         </router-link>
       </li>
     </ul>
