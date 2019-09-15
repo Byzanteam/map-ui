@@ -10,7 +10,7 @@
       :marker-label-style="markerLabelStyle"
       :marker-style="markerStyle"
       :marker-style-map="markerStyleMap"
-      icon="star"
+      icon="waterDrop"
     />
   </base-map>
 </template>
@@ -133,7 +133,7 @@ export default {
         {
           value: 10,
           icon: 'triangleDown',
-          size: 200,
+          size: 80,
           labelStyles: [
             {
               color: '#b70019',

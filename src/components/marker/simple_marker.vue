@@ -11,6 +11,15 @@ const MARKER_SHAPES = [
   'hexagon',
 ];
 
+const CLIP_PATH_MAP = {
+  circle: '<circle cx="50" cy="50" r="50"></circle>',
+  star: '<polygon points="50 0, 61 35, 98 35, 68 57,79 91, 50 70, 21 91, 32 57, 2 35, 39 35"></polygon>',
+  waterDrop: '<path d="M12 24C6 17.45 3 12.29 3 8.5 3 2.82 6.04 0 12 0s9 2.82 9 8.5c0 3.79-3 8.95-9 15.5z"></path>',
+  triangle: '<polygon points="50 0, 0 70, 100 70"></polygon>',
+  triangleDown: '<polygon points="100 30, 0 30, 50 100"></polygon>',
+  hexagon: '<polygon points="50 0, 100 25, 100 75, 50 100, 0 75, 0 25"></polygon>',
+};
+
 const DEFAULT_LABEL_STYLE = {
   fontSize: 12,
   padding: 10,
@@ -117,7 +126,14 @@ export default {
         >
           ${textContent}
         </div>
-        <img style="width: ${markerSize}px; height: ${markerSize}px" src="${img || marker.img}" class="clip-${icon || this.icon}"/>
+        <div style="width: ${markerSize}px; height: ${markerSize}px;">
+          <img style="width: ${markerSize * 2}px; height: ${markerSize * 2}px;" src="${img || marker.img}" class="clip-${icon || this.icon}">
+          <svg width="0" height="0">
+            <defs>
+              <clipPath id=clippath${icon || this.icon}>${CLIP_PATH_MAP[icon || this.icon]}</clipPath>
+            </defs>
+          </svg>
+        </div>
       </div>`;
     },
 
@@ -178,51 +194,26 @@ export default {
 }
 
 .clip-waterDrop {
-  clip-path: path('M12 24C6 17.45 3 12.29 3 8.5 3 2.82 6.04 0 12 0s9 2.82 9 8.5c0 3.79-3 8.95-9 15.5z');
+  clip-path: url(#clippathwaterDrop);
 }
 
 .clip-star {
-  transition: 0.4s cubic-bezier(1, -1, 0, 2);
-  clip-path: polygon(
-    50% 0%, 61% 35%,
-    98% 35%, 68% 57%,
-    79% 91%, 50% 70%,
-    21% 91%, 32% 57%,
-    2% 35%, 39% 35%
-  );
+  clip-path: url(#clippathstar);
 }
 
 .clip-circle {
-  clip-path: circle(50% at 50% 50%);
+  clip-path: url(#clippathcircle);
 }
 
 .clip-triangle {
-  clip-path: polygon(50% 0%, 0 70%, 100% 70%);
+  clip-path: url(#clippathtriangle);
 }
 
 .clip-triangleDown {
-  clip-path: polygon(100% 30%, 0 30%, 50% 100%);
+  clip-path: url(#clippathtriangleDown);
 }
 
 .clip-hexagon {
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
-}
-
-.clip-water {
-  clip-path: polygon(
-    50% 0%,
-    100% 25%,
-    100% 75%,
-    50% 100%,
-    0% 75%,
-    0% 25%
-  );
+  clip-path: url(#clippathhexagon);
 }
 </style>
