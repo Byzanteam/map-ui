@@ -36,7 +36,7 @@ const DEFAULT_INNER_LABEL_STYLE = {
   fontSize: 12,
   color: 'rgba(255, 255, 255, 0.2)',
   fontWeight: 400,
-  padding: 4,
+  padding: [2, 4],
   offset: [0, 0],
 };
 
@@ -139,7 +139,7 @@ export const MarkerPoint = {
       if (!data.length) return;
 
       this.markerRefs = data.map((item) => {
-        const { color, labelStyles } = this.getMarkerStyle(item);
+        const { color, innerLabelStyles } = this.getMarkerStyle(item);
         if (color === 'transparent') return;
         const shape = this._renderShape(item);
         const marker = new this.SvgMarker(
@@ -148,7 +148,7 @@ export const MarkerPoint = {
             map: this.map,
             position: item.location,
             containerClassNames: `shape-${this.icon}`,
-            iconLabel: this._getTextContent(item, labelStyles),
+            iconLabel: this._getTextContent(item, innerLabelStyles),
           },
         );
 
@@ -164,8 +164,8 @@ export const MarkerPoint = {
       });
     },
 
-    _getTextContent (marker, labelStyles = []) {
-      const { label = '', labelStyles: markerLabelStyle = [] } = marker;
+    _getTextContent (marker, innerLabelStyles = []) {
+      const { label = '', innerLabelStyles: markerLabelStyle = [] } = marker;
       const { padding, offset } = this.markerInnerLabelStyle;
       let content;
       if (_.isArray(label)) {
@@ -177,7 +177,7 @@ export const MarkerPoint = {
           } = {
             ...this.markerInnerLabelStyle,
             ...markerLabelStyle[key],
-            ...labelStyles[key],
+            ...innerLabelStyles[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
@@ -188,7 +188,7 @@ export const MarkerPoint = {
       return {
         innerHTML: `<div
                       class="clip-marker-text-content"
-                      style="padding: ${padding}px; white-space: nowrap;"
+                      style="padding: ${padding[0]}px ${padding[1]}px; white-space: nowrap;"
                     >${content}</div>`,
         style: {
           top: `${offset[1]}px`,
@@ -273,10 +273,8 @@ export const MarkerPoint = {
       );
 
       return {
-        ...{
-          color: 'transparent',
-          size: this.markerPointStyle.size,
-        },
+        color: 'transparent',
+        size: this.markerPointStyle.size,
         ...currentStyle,
       };
     },

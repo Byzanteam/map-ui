@@ -23,7 +23,7 @@ const MARKERS = [
     id: 1,
     location: [116.258446, 37.686622],
     value: 0,
-    labelStyles: [
+    innerLabelStyles: [
       {
         color: 'blue',
         fontSize: 14,
@@ -50,7 +50,7 @@ const MARKERS = [
     id: 4,
     location: [116.486409, 39.921489],
     value: 2,
-    labelStyles: [
+    innerLabelStyles: [
       {
         color: 'blue',
         fontSize: 14,
@@ -66,7 +66,7 @@ const MARKERS = [
     id: 5,
     location: [116.286968, 39.883742],
     value: 3,
-    label: '五号点',
+    label: ['五号点', '描述'],
   },
   {
     id: 5,
@@ -86,16 +86,17 @@ export default {
     return {
       pointData: [],
       innerLabelStyle: {
-        padding: 10,
+        padding: [2, 4],
         color: 'orange',
         fontSize: 16,
+        offset: [0, 10],
       },
       markerStyleMap: [
         {
           value: 1,
           color: 'green',
           icon: 'Circle',
-          labelStyles: [
+          innerLabelStyles: [
             {
               color: '#b70019',
               fontSize: 50,
@@ -119,7 +120,7 @@ export default {
           color: 'blue',
           icon: 'WaterDrop',
           size: 40,
-          labelStyles: [
+          innerLabelStyles: [
             {
               color: 'purple',
               fontSize: 12,
@@ -129,6 +130,16 @@ export default {
               fontSize: 14,
             },
           ],
+          innerLabelStyle: {
+            padding: [6, 10],
+          },
+        },
+        {
+          value: 4,
+          innerLabelStyle: {
+            padding: [6, 10],
+            offset: [10, 10],
+          },
         },
       ],
     };
