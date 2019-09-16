@@ -36,16 +36,8 @@ const DEFAULT_INNER_LABEL_STYLE = {
   fontSize: 12,
   color: 'rgba(255, 255, 255, 0.2)',
   fontWeight: 400,
+  padding: 4,
 };
-
-const INNER_LABERL_FIXED_STYLE = `
-  position: absolute;
-  top:50%;
-  left:50%;
-  transform:translate(-50%, -50%);
-  width:auto;
-  white-space:nowrap;
-`;
 
 export const MarkerPoint = {
   name: 'MarkerPoint',
@@ -146,16 +138,16 @@ export const MarkerPoint = {
       if (!data.length) return;
 
       this.markerRefs = data.map((item) => {
-        const shape = this._renderShape();
+        const { color } = this.getMarkerStyle(item);
+        if (color === 'transparent') return;
+        const shape = this._renderShape(item);
         const marker = new this.SvgMarker(
           shape,
           {
             map: this.map,
             position: item.location,
-            containerClassNames: `shape-${item.icon}`,
+            containerClassNames: `shape-${this.icon}`,
             iconLabel: this._getTextContent(item, shape),
-            extData: item,
-            offset: new AMap.Pixel(0, 0),
           }
         );
 
@@ -204,82 +196,6 @@ export const MarkerPoint = {
         style: {
           top: `${labelCenter[1]}px`,
         },
-      };
-    },
-
-    getMarkerContent (marker) {
-      const {
-        color,
-        size,
-      } = this.getMarkerStyle(marker);
-
-      let markerSize = size;
-
-      const {
-        color: borderColor,
-        width,
-      } = this.markerBorderStyle;
-
-      if (color !== 'transparent' && marker.label) {
-        const { size: fontSizePadding } = DEFAULT_MAERKER_POINT_STYLE;
-        const { fontSize } = this.markerInnerLabelStyle;
-        // label = this.getInnerLabel(marker);
-        markerSize = fontSize + (fontSizePadding * 2);
-      }
-      const node = `<div
-        style="width: ${markerSize}px;height: ${markerSize}px;font-size: 0px;position: relative;">
-        <svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
-          <path
-            stroke-width="${width}px"
-            stroke="${borderColor}"
-            fill="${color}"
-            d="${ICONS[_.kebabCase(this.icon)].paths}"
-          />
-        </svg>
-      </div>`;
-
-      return node;
-    },
-
-    getInnerLabel (marker) {
-      const {
-        fontSize,
-        color,
-        fontWeight,
-      } = this.markerInnerLabelStyle;
-
-      const userSettingStyle = `
-        font-weight: ${fontWeight};
-        color: ${color};
-        font-size:${fontSize}px;
-      `;
-
-      return `<div
-        style="${INNER_LABERL_FIXED_STYLE}${userSettingStyle}"
-      >
-        ${marker.label}
-      </div>`;
-    },
-
-    /**
-     * 如果设置了映射，小于最小映射的透明色
-     */
-    getMarkerStyle (marker) {
-      if (!this.markerStyleMap || !_.isNumber(marker.value)) {
-        return this.markerPointStyle;
-      }
-
-      const currentStyle = _.findLast(
-        _.sortBy(this.markerStyleMap, 'value'),
-        ({ value }) => marker.value >= value
-      );
-
-      return {
-        ...{
-          color: 'transparent',
-          size: this.markerPointStyle.size,
-        },
-        ...currentStyle,
       };
     },
 
@@ -335,8 +251,45 @@ export const MarkerPoint = {
       this.markerRefs = [];
     },
 
-    _renderShape () {
-      return new this.SvgMarker.Shape[this.icon](DEFAULT_MAERKER_POINT_STYLE);
+    /**
+     * 如果设置了映射，小于最小映射的透明色
+     */
+    getMarkerStyle (marker) {
+      if (!this.markerStyleMap || !_.isNumber(marker.value)) {
+        return this.markerPointStyle;
+      }
+
+      const currentStyle = _.findLast(
+        _.sortBy(this.markerStyleMap, 'value'),
+        ({ value }) => marker.value >= value
+      );
+
+      return {
+        ...{
+          color: 'transparent',
+          size: this.markerPointStyle.size,
+        },
+        ...currentStyle,
+      };
+    },
+
+    _renderShape (marker) {
+      const {
+        color,
+        size,
+      } = this.getMarkerStyle(marker);
+
+      const {
+        color: borderColor,
+        width,
+      } = this.markerBorderStyle;
+
+      return new this.SvgMarker.Shape[this.icon]({
+        height: size,
+        strokeWidth: width,
+        strokeColor: borderColor,
+        fillColor: color,
+      });
     },
   },
 };

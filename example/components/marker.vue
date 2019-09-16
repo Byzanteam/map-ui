@@ -49,13 +49,23 @@ const MARKERS = [
     id: 4,
     location: [116.486409, 39.921489],
     value: 2,
+    labelStyles: [
+      {
+        color: 'blue',
+        fontSize: 14,
+      },
+      {
+        color: 'red',
+        fontSize: 12,
+      },
+    ],
     label: '四号点',
   },
   {
     id: 5,
     location: [116.286968, 39.863642],
     value: 5,
-    label: '五号点',
+    label: ['五号点', '描述'],
   },
 ];
 
@@ -69,8 +79,8 @@ export default {
     return {
       pointData: [],
       markerStyleMap: [
-        { value: 1, color: 'green' },
-        { value: 2, color: 'red' },
+        { value: 1, color: 'green', icon: 'Circle' },
+        { value: 2, color: 'red', icon: 'FivePointsStar' },
       ],
     };
   },
