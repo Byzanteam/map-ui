@@ -141,15 +141,13 @@ export const MarkerPoint = {
       this.markerRefs = _.map(data, (item) => {
         const markerStyle = this.getMarkerStyle(item);
         if (markerStyle) {
-          const { innerLabelStyles } = markerStyle;
-          const shape = this._renderShape(item);
+          const shape = this._renderShape(markerStyle);
           const marker = new this.SvgMarker(
             shape,
             {
               map: this.map,
               position: item.location,
-              containerClassNames: `shape-${this.icon}`,
-              iconLabel: this._getTextContent(item, innerLabelStyles),
+              iconLabel: this._getLabelContent(item, markerStyle),
             },
           );
           marker.on('click', e => this.$emit('markerClick', e));
@@ -252,7 +250,7 @@ export const MarkerPoint = {
       }
     },
 
-    _getTextContent (marker, innerLabelStyles = []) {
+    _getLabelContent (marker, { innerLabelStyles = [] }) {
       const { label = '', innerLabelStyles: markerLabelStyle = [] } = marker;
       const { padding, offset } = this.markerInnerLabelStyle;
       let content;
@@ -285,13 +283,13 @@ export const MarkerPoint = {
       };
     },
 
-    _renderShape (marker) {
+    _renderShape (markerStyle) {
       const {
         color,
         size,
         icon,
         borderStyle,
-      } = this.getMarkerStyle(marker);
+      } = markerStyle;
 
       const {
         color: borderColor,
