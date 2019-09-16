@@ -3,11 +3,12 @@
     :map-options="{
       zoom: 4
     }"
+    use-map-ui
   >
     <marker-point
       :markers="pointData"
       :marker-style-map="markerStyleMap"
-      icon="water-droplet"
+      icon="WaterDrop"
       @markerClick="markerClickFunc"
     />
   </base-map>
@@ -21,7 +22,17 @@ const MARKERS = [
     id: 1,
     location: [116.258446, 37.686622],
     value: 0,
-    label: '一号点',
+    labelStyles: [
+      {
+        color: 'blue',
+        fontSize: 14,
+      },
+      {
+        color: 'red',
+        fontSize: 12,
+      },
+    ],
+    label: ['一号点', '描述'],
   },
   {
     id: 2,
