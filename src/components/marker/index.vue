@@ -165,39 +165,6 @@ export const MarkerPoint = {
       });
     },
 
-    _getTextContent (marker, innerLabelStyles = []) {
-      const { label = '', innerLabelStyles: markerLabelStyle = [] } = marker;
-      const { padding, offset } = this.markerInnerLabelStyle;
-      let content;
-      if (_.isArray(label)) {
-        content = _.reduce(label, (acc, item, key) => {
-          const {
-            fontSize,
-            color,
-            fontWeight,
-          } = {
-            ...this.markerInnerLabelStyle,
-            ...markerLabelStyle[key],
-            ...innerLabelStyles[key],
-          };
-          return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
-        }, '');
-      } else {
-        const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
-        content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
-      }
-      return {
-        innerHTML: `<div
-                      class="clip-marker-text-content"
-                      style="padding: ${padding[0]}px ${padding[1]}px; white-space: nowrap;"
-                    >${content}</div>`,
-        style: {
-          top: `${offset[1]}px`,
-          left: `${offset[0]}px`,
-        },
-      };
-    },
-
     customShape () {
       const { utils } = this;
       _.each(CUSTOM_SVG, (icon) => {
@@ -256,7 +223,11 @@ export const MarkerPoint = {
     },
 
     clear () {
-      _.forEach(this.markerRefs, marker => this.map.remove(marker));
+      _.forEach(this.markerRefs, (marker) => {
+        if (marker) {
+          this.map.remove(marker);
+        }
+      });
       this.markerRefs = [];
     },
 
@@ -279,6 +250,39 @@ export const MarkerPoint = {
           ...currentStyle,
         };
       }
+    },
+
+    _getTextContent (marker, innerLabelStyles = []) {
+      const { label = '', innerLabelStyles: markerLabelStyle = [] } = marker;
+      const { padding, offset } = this.markerInnerLabelStyle;
+      let content;
+      if (_.isArray(label)) {
+        content = _.reduce(label, (acc, item, key) => {
+          const {
+            fontSize,
+            color,
+            fontWeight,
+          } = {
+            ...this.markerInnerLabelStyle,
+            ...markerLabelStyle[key],
+            ...innerLabelStyles[key],
+          };
+          return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
+        }, '');
+      } else {
+        const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
+        content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
+      }
+      return {
+        innerHTML: `<div
+                      class="clip-marker-text-content"
+                      style="padding: ${padding[0]}px ${padding[1]}px; white-space: nowrap;"
+                    >${content}</div>`,
+        style: {
+          top: `${offset[1]}px`,
+          left: `${offset[0]}px`,
+        },
+      };
     },
 
     _renderShape (marker) {
