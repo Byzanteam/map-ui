@@ -37,6 +37,7 @@ const DEFAULT_INNER_LABEL_STYLE = {
   color: 'rgba(255, 255, 255, 0.2)',
   fontWeight: 400,
   padding: 4,
+  offset: [0, 0],
 };
 
 export const MarkerPoint = {
@@ -147,8 +148,8 @@ export const MarkerPoint = {
             map: this.map,
             position: item.location,
             containerClassNames: `shape-${this.icon}`,
-            iconLabel: this._getTextContent(item, shape, labelStyles),
-          }
+            iconLabel: this._getTextContent(item, labelStyles),
+          },
         );
 
         marker.on('click', e => this.$emit('markerClick', e));
@@ -163,10 +164,9 @@ export const MarkerPoint = {
       });
     },
 
-    _getTextContent (marker, shape, labelStyles = []) {
-      const labelCenter = shape.getCenter();
+    _getTextContent (marker, labelStyles = []) {
       const { label = '', labelStyles: markerLabelStyle = [] } = marker;
-      const { padding } = this.markerInnerLabelStyle;
+      const { padding, offset } = this.markerInnerLabelStyle;
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
@@ -191,7 +191,8 @@ export const MarkerPoint = {
                       style="padding: ${padding}px; white-space: nowrap;"
                     >${content}</div>`,
         style: {
-          top: `${labelCenter[1]}px`,
+          top: `${offset[1]}px`,
+          left: `${offset[0]}px`,
         },
       };
     },
@@ -225,7 +226,17 @@ export const MarkerPoint = {
                   </svg>`;
           },
           getOffset () {
-          // 定位点默认在图形中部:
+            // 计算三角形容器实际的高度， 0.4是实际的高度和设置的高度值的差的倍数
+            const diff = (this.getHeight() * 0.4);
+            // 定位点在底部
+            if (icon === 'TriangleDown') {
+              return [-this.getWidth() / 2, -(this.getHeight() - diff / 2)];
+            }
+            // 定位点在顶部
+            if (icon === 'Triangle') {
+              return [-this.getWidth() / 2, -diff / 2];
+            }
+            // 定位点默认在图形中部:
             return [-this.getWidth() / 2, -this.getHeight() / 2];
           },
         });
@@ -283,6 +294,7 @@ export const MarkerPoint = {
       } = this.markerBorderStyle;
 
       return new this.SvgMarker.Shape[icon || this.icon]({
+        width: size,
         height: size,
         strokeWidth: width,
         strokeColor: borderColor,

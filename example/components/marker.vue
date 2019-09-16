@@ -8,6 +8,7 @@
     <marker-point
       :markers="pointData"
       :marker-style-map="markerStyleMap"
+      :inner-label-style="innerLabelStyle"
       icon="WaterDrop"
       @markerClick="markerClickFunc"
     />
@@ -63,9 +64,15 @@ const MARKERS = [
   },
   {
     id: 5,
+    location: [116.286968, 39.883742],
+    value: 3,
+    label: '五号点',
+  },
+  {
+    id: 5,
     location: [116.286968, 39.863642],
     value: 5,
-    label: ['五号点', '描述'],
+    label: ['六号点', '描述'],
   },
 ];
 
@@ -78,6 +85,11 @@ export default {
   data () {
     return {
       pointData: [],
+      innerLabelStyle: {
+        padding: 10,
+        color: 'orange',
+        fontSize: 16,
+      },
       markerStyleMap: [
         {
           value: 1,
@@ -101,9 +113,15 @@ export default {
           color: 'red',
           icon: 'FivePointsStar',
           size: 40,
+        },
+        {
+          value: 3,
+          color: 'blue',
+          icon: 'WaterDrop',
+          size: 40,
           labelStyles: [
             {
-              color: 'blue',
+              color: 'purple',
               fontSize: 12,
             },
             {
