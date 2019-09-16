@@ -175,40 +175,10 @@ export const MarkerPoint = {
           CustomShape.__super__.constructor.call(this, opts);
         };
         utils.inherit(CustomShape, this.SvgMarker.Shape.BaseShape);
-        utils.extend(CustomShape.prototype, {
-          getInnerHTML (params) {
-            const {
-              strokeWidth,
-              strokeColor,
-              color,
-            } = params;
-            return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
-                    <path
-                      stroke-width="${strokeWidth}px"
-                      stroke="${strokeColor}"
-                      fill="${color}"
-                      d="${ICONS[_.kebabCase(icon)].paths}"
-                    />
-                  </svg>`;
-          },
-          getOffset () {
-            // 计算三角形容器实际的高度， 0.4是实际的高度和设置的高度值的差的倍数
-            const diff = (this.getHeight() * 0.4);
-            // 定位点在底部
-            if (icon === 'TriangleDown') {
-              return [-(this.getWidth() / 2), -(this.getHeight() - (diff / 2))];
-            }
-            // 定位点在顶部
-            if (icon === 'Triangle') {
-              return [-(this.getWidth() / 2), -(diff / 2)];
-            }
-            // 定位点默认在图形中部:
-            return [-(this.getWidth() / 2), -(this.getHeight() / 2)];
-          },
-        });
-        const newProperty = {};
-        newProperty[icon] = CustomShape;
-        utils.extend(this.SvgMarker.Shape, newProperty);
+        this._generateCustomShapeDom(CustomShape, icon);
+        const newShape = {};
+        newShape[icon] = CustomShape;
+        utils.extend(this.SvgMarker.Shape, newShape);
       });
       this.renderMarkers(this.markers);
     },
@@ -248,6 +218,40 @@ export const MarkerPoint = {
           ...currentStyle,
         };
       }
+    },
+
+    _generateCustomShapeDom (CustomShape, icon) {
+      this.utils.extend(CustomShape.prototype, {
+        getInnerHTML (params) {
+          const {
+            strokeWidth,
+            strokeColor,
+            color,
+          } = params;
+          return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
+                    <path
+                      stroke-width="${strokeWidth}px"
+                      stroke="${strokeColor}"
+                      fill="${color}"
+                      d="${ICONS[_.kebabCase(icon)].paths}"
+                    />
+                  </svg>`;
+        },
+        getOffset () {
+          // 计算三角形容器实际的高度， 0.4是实际的高度和设置的高度值的差的倍数
+          const diff = (this.getHeight() * 0.4);
+          // 定位点在底部
+          if (icon === 'TriangleDown') {
+            return [-(this.getWidth() / 2), -(this.getHeight() - (diff / 2))];
+          }
+          // 定位点在顶部
+          if (icon === 'Triangle') {
+            return [-(this.getWidth() / 2), -(diff / 2)];
+          }
+          // 定位点默认在图形中部:
+          return [-(this.getWidth() / 2), -(this.getHeight() / 2)];
+        },
+      });
     },
 
     _getLabelContent (marker, { innerLabelStyles = [] }) {
