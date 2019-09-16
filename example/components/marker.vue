@@ -23,16 +23,6 @@ const MARKERS = [
     id: 1,
     location: [116.258446, 37.686622],
     value: 0,
-    innerLabelStyles: [
-      {
-        color: 'blue',
-        fontSize: 14,
-      },
-      {
-        color: 'red',
-        fontSize: 12,
-      },
-    ],
     label: ['一号点', '描述'],
   },
   {
@@ -50,16 +40,6 @@ const MARKERS = [
     id: 4,
     location: [116.486409, 39.921489],
     value: 2,
-    innerLabelStyles: [
-      {
-        color: 'blue',
-        fontSize: 14,
-      },
-      {
-        color: 'red',
-        fontSize: 12,
-      },
-    ],
     label: '四号点',
   },
   {
@@ -87,27 +67,39 @@ export default {
       pointData: [],
       innerLabelStyle: {
         padding: [2, 4],
-        color: 'orange',
-        fontSize: 16,
         offset: [0, 10],
+        textStyles: [
+          {
+
+            color: 'orange',
+            fontSize: 16,
+
+          },
+          {
+            color: 'red',
+            fontSize: 12,
+          },
+        ],
       },
       markerStyleMap: [
         {
           value: 1,
           color: 'green',
           icon: 'Circle',
-          innerLabelStyles: [
-            {
-              color: '#b70019',
-              fontSize: 50,
-              fontweight: 500,
-            },
-            {
-              color: '#9e0693',
-              fontSize: 90,
-              fontweight: 600,
-            },
-          ],
+          innerLabelStyle: {
+            textStyles: [
+              {
+                color: '#b70019',
+                fontSize: 50,
+                fontweight: 500,
+              },
+              {
+                color: '#9e0693',
+                fontSize: 90,
+                fontweight: 600,
+              },
+            ],
+          },
         },
         {
           value: 2,
@@ -124,16 +116,18 @@ export default {
           color: 'blue',
           icon: 'WaterDrop',
           size: 40,
-          innerLabelStyles: [
-            {
-              color: 'purple',
-              fontSize: 12,
-            },
-            {
-              color: 'red',
-              fontSize: 14,
-            },
-          ],
+          innerLabelStyle: {
+            textStyles: [
+              {
+                color: 'purple',
+                fontSize: 12,
+              },
+              {
+                color: 'red',
+                fontSize: 14,
+              },
+            ],
+          },
         },
         {
           value: 4,

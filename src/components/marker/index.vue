@@ -254,9 +254,14 @@ export const MarkerPoint = {
       });
     },
 
-    _getLabelContent (marker, { innerLabelStyles = [] }) {
-      const { label = '', innerLabelStyles: markerLabelStyle = [] } = marker;
-      const { padding, offset } = this.markerInnerLabelStyle;
+    _getLabelContent (marker, markerStyle) {
+      const { label = '' } = marker;
+      const {
+        padding,
+        offset,
+        textStyles: markerTextStyles = [],
+      } = this.markerInnerLabelStyle;
+      const { textStyles = [] } = markerStyle.innerLabelStyle || {};
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
@@ -266,8 +271,8 @@ export const MarkerPoint = {
             fontWeight,
           } = {
             ...this.markerInnerLabelStyle,
-            ...markerLabelStyle[key],
-            ...innerLabelStyles[key],
+            ...markerTextStyles[key],
+            ...textStyles[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
