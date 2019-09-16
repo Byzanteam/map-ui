@@ -7,7 +7,7 @@ import Icons from './icons.json';
 const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
 const DEFAULT_MAERKER_POINT_STYLE = {
-  fillColor: '#04BF78',
+  color: '#04BF78',
   size: 24,
 };
 
@@ -139,8 +139,9 @@ export const MarkerPoint = {
       if (!data.length) return;
 
       this.markerRefs = data.map((item) => {
-        const { color, innerLabelStyles } = this.getMarkerStyle(item);
-        if (color === 'transparent') return;
+        const markerStyle = this.getMarkerStyle(item);
+        if (!markerStyle) return;
+        const { innerLabelStyles } = markerStyle;
         const shape = this._renderShape(item);
         const marker = new this.SvgMarker(
           shape,
@@ -203,7 +204,7 @@ export const MarkerPoint = {
         const CustomShape = function (options) {
           const opts = utils.extend({
             ...DEFAULT_MAERKER_POINT_STYLE,
-            color: DEFAULT_MAERKER_POINT_STYLE.fillColor,
+            color: DEFAULT_MAERKER_POINT_STYLE.color,
           }, options);
 
           CustomShape.__super__.constructor.call(this, opts);
@@ -272,11 +273,12 @@ export const MarkerPoint = {
         ({ value }) => marker.value >= value
       );
 
-      return {
-        color: 'transparent',
-        size: this.markerPointStyle.size,
-        ...currentStyle,
-      };
+      if (currentStyle) {
+        return {
+          ...this.markerPointStyle,
+          ...currentStyle,
+        };
+      }
     },
 
     _renderShape (marker) {
@@ -284,12 +286,16 @@ export const MarkerPoint = {
         color,
         size,
         icon,
+        borderStyle,
       } = this.getMarkerStyle(marker);
 
       const {
         color: borderColor,
         width,
-      } = this.markerBorderStyle;
+      } = {
+        ...this.markerBorderStyle,
+        ...borderStyle,
+      };
 
       return new this.SvgMarker.Shape[icon || this.icon]({
         width: size,

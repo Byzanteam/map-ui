@@ -114,6 +114,10 @@ export default {
           color: 'red',
           icon: 'FivePointsStar',
           size: 40,
+          borderStyle: {
+            width: 3,
+            color: 'blue',
+          },
         },
         {
           value: 3,
@@ -130,15 +134,12 @@ export default {
               fontSize: 14,
             },
           ],
-          innerLabelStyle: {
-            padding: [6, 10],
-          },
         },
         {
           value: 4,
-          innerLabelStyle: {
-            padding: [6, 10],
-            offset: [10, 10],
+          borderStyle: {
+            width: 3,
+            color: 'orange',
           },
         },
       ],
