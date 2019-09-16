@@ -8,7 +8,7 @@ const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
 const DEFAULT_MAERKER_POINT_STYLE = {
   fillColor: '#04BF78',
-  size: 6,
+  size: 24,
 };
 
 const MAPUI_SVG = [
@@ -138,7 +138,7 @@ export const MarkerPoint = {
       if (!data.length) return;
 
       this.markerRefs = data.map((item) => {
-        const { color } = this.getMarkerStyle(item);
+        const { color, labelStyles } = this.getMarkerStyle(item);
         if (color === 'transparent') return;
         const shape = this._renderShape(item);
         const marker = new this.SvgMarker(
@@ -147,7 +147,7 @@ export const MarkerPoint = {
             map: this.map,
             position: item.location,
             containerClassNames: `shape-${this.icon}`,
-            iconLabel: this._getTextContent(item, shape),
+            iconLabel: this._getTextContent(item, shape, labelStyles),
           }
         );
 
@@ -163,13 +163,10 @@ export const MarkerPoint = {
       });
     },
 
-    _getTextContent (marker, shape, styles = []) {
+    _getTextContent (marker, shape, labelStyles = []) {
       const labelCenter = shape.getCenter();
-      const { label = '' } = marker;
-      const { labelStyles = [] } = marker;
-      const {
-        padding,
-      } = this.markerInnerLabelStyle;
+      const { label = '', labelStyles: markerLabelStyle = [] } = marker;
+      const { padding } = this.markerInnerLabelStyle;
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
@@ -179,8 +176,8 @@ export const MarkerPoint = {
             fontWeight,
           } = {
             ...this.markerInnerLabelStyle,
+            ...markerLabelStyle[key],
             ...labelStyles[key],
-            ...styles[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
@@ -277,6 +274,7 @@ export const MarkerPoint = {
       const {
         color,
         size,
+        icon,
       } = this.getMarkerStyle(marker);
 
       const {
@@ -284,7 +282,7 @@ export const MarkerPoint = {
         width,
       } = this.markerBorderStyle;
 
-      return new this.SvgMarker.Shape[this.icon]({
+      return new this.SvgMarker.Shape[icon || this.icon]({
         height: size,
         strokeWidth: width,
         strokeColor: borderColor,

@@ -79,8 +79,39 @@ export default {
     return {
       pointData: [],
       markerStyleMap: [
-        { value: 1, color: 'green', icon: 'Circle' },
-        { value: 2, color: 'red', icon: 'FivePointsStar' },
+        {
+          value: 1,
+          color: 'green',
+          icon: 'Circle',
+          labelStyles: [
+            {
+              color: '#b70019',
+              fontSize: 50,
+              fontweight: 500,
+            },
+            {
+              color: '#9e0693',
+              fontSize: 90,
+              fontweight: 600,
+            },
+          ],
+        },
+        {
+          value: 2,
+          color: 'red',
+          icon: 'FivePointsStar',
+          size: 40,
+          labelStyles: [
+            {
+              color: 'blue',
+              fontSize: 12,
+            },
+            {
+              color: 'red',
+              fontSize: 14,
+            },
+          ],
+        },
       ],
     };
   },
