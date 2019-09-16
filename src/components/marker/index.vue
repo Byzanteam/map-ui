@@ -138,26 +138,26 @@ export const MarkerPoint = {
     renderMarkers (data) {
       if (!data.length) return;
 
-      this.markerRefs = data.map((item) => {
+      this.markerRefs = _.map(data, (item) => {
         const markerStyle = this.getMarkerStyle(item);
-        if (!markerStyle) return;
-        const { innerLabelStyles } = markerStyle;
-        const shape = this._renderShape(item);
-        const marker = new this.SvgMarker(
-          shape,
-          {
-            map: this.map,
-            position: item.location,
-            containerClassNames: `shape-${this.icon}`,
-            iconLabel: this._getTextContent(item, innerLabelStyles),
-          },
-        );
+        if (markerStyle) {
+          const { innerLabelStyles } = markerStyle;
+          const shape = this._renderShape(item);
+          const marker = new this.SvgMarker(
+            shape,
+            {
+              map: this.map,
+              position: item.location,
+              containerClassNames: `shape-${this.icon}`,
+              iconLabel: this._getTextContent(item, innerLabelStyles),
+            },
+          );
+          marker.on('click', e => this.$emit('markerClick', e));
+          marker.on('mouseover', e => this.$emit('markerMouseover', e));
+          marker.on('mouseout', e => this.$emit('markerMouseout', e));
 
-        marker.on('click', e => this.$emit('markerClick', e));
-        marker.on('mouseover', e => this.$emit('markerMouseover', e));
-        marker.on('mouseout', e => this.$emit('markerMouseout', e));
-
-        return marker;
+          return marker;
+        }
       });
       this.$parent.$emit('markersRendered', {
         source: this.uuid,
@@ -231,14 +231,14 @@ export const MarkerPoint = {
             const diff = (this.getHeight() * 0.4);
             // 定位点在底部
             if (icon === 'TriangleDown') {
-              return [-this.getWidth() / 2, -(this.getHeight() - diff / 2)];
+              return [-(this.getWidth() / 2), -(this.getHeight() - (diff / 2))];
             }
             // 定位点在顶部
             if (icon === 'Triangle') {
-              return [-this.getWidth() / 2, -diff / 2];
+              return [-(this.getWidth() / 2), -(diff / 2)];
             }
             // 定位点默认在图形中部:
-            return [-this.getWidth() / 2, -this.getHeight() / 2];
+            return [-(this.getWidth() / 2), -(this.getHeight() / 2)];
           },
         });
         const newProperty = {};
