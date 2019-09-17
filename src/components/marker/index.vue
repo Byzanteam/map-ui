@@ -138,7 +138,7 @@ export const MarkerPoint = {
     renderMarkers (data) {
       if (!data.length) return;
 
-      this.markerRefs = _.map(data, (item) => {
+      _.forEach(data, (item) => {
         const markerStyle = this.getMarkerStyle(item);
         if (markerStyle) {
           const shape = this._renderShape(markerStyle);
@@ -154,7 +154,7 @@ export const MarkerPoint = {
           marker.on('mouseover', e => this.$emit('markerMouseover', e));
           marker.on('mouseout', e => this.$emit('markerMouseout', e));
 
-          return marker;
+          this.markerRefs.push(marker);
         }
       });
       this.$parent.$emit('markersRendered', {
@@ -165,11 +165,10 @@ export const MarkerPoint = {
 
     customShape () {
       const { utils } = this;
-      _.each(CUSTOM_SVG, (icon) => {
+      _.forEach(CUSTOM_SVG, (icon) => {
         const CustomShape = function (options) {
           const opts = utils.extend({
             ...DEFAULT_MAERKER_POINT_STYLE,
-            color: DEFAULT_MAERKER_POINT_STYLE.color,
           }, options);
 
           CustomShape.__super__.constructor.call(this, opts);
@@ -192,9 +191,7 @@ export const MarkerPoint = {
 
     clear () {
       _.forEach(this.markerRefs, (marker) => {
-        if (marker) {
-          this.map.remove(marker);
-        }
+        this.map.remove(marker);
       });
       this.markerRefs = [];
     },
