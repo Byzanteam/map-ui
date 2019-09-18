@@ -3,6 +3,7 @@
     :map-options="{
       zoom: 4
     }"
+    use-map-ui
   >
     <cluster
       :cluster-style-map="clusterStyleMap"
@@ -45,7 +46,7 @@ export default {
           limit: 1,
           color: 'red',
           size: 5,
-          type: 'circle',
+          type: 'Circle',
           borderColor: 'rgba(138, 210, 155, 1)',
           labelStyle: {
             color: 'purple',
@@ -55,7 +56,7 @@ export default {
           limit: 2,
           color: '#dc7626',
           size: 5,
-          type: 'circle',
+          type: 'Circle',
           borderColor: 'rgba(138, 210, 155, 1)',
           labelStyle: {
             color: 'purple',
@@ -65,7 +66,7 @@ export default {
           limit: 5,
           color: '#891ba0',
           size: 10,
-          type: 'circle',
+          type: 'Circle',
           borderColor: 'rgba(120, 140, 125, 1)',
           labelStyle: {
             fontSize: 14,
@@ -76,7 +77,7 @@ export default {
           limit: 10,
           color: '#1967ab',
           size: 15,
-          type: 'circle',
+          type: 'Circle',
           borderColor: 'rgba(189, 145, 215, 1)',
           labelStyle: {
             fontSize: 16,
@@ -87,7 +88,7 @@ export default {
           limit: 20,
           color: '#1496ab',
           size: 20,
-          type: 'circle',
+          type: 'Circle',
           borderColor: 'rgba(189, 215, 205, 1)',
           labelStyle: {
             fontSize: 18,

@@ -57,19 +57,13 @@ export const MarkerPoint = {
     },
     icon: {
       type: String,
-      default: 'circle',
+      default: 'Circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
     innerLabelStyle: {
       type: Object,
       default: () => ({}),
     },
-  },
-
-  data () {
-    return {
-      uuid: _.uniqueId(),
-    };
   },
 
   computed: {
@@ -87,9 +81,13 @@ export const MarkerPoint = {
     },
   },
 
+  created () {
+    this.renderMarker(this.marker);
+  },
+
   watch: {
     marker () {
-      this.renderMarker();
+      this.renderMarker(this.marker);
     },
   },
 
@@ -106,14 +104,16 @@ export const MarkerPoint = {
             return window.console.error('当前环境不支持SVG');
           }
           this.SvgMarker = SvgMarker;
-          this.renderMarker();
+          this.$emit('markerReady');
         });
       }
     },
 
-    renderMarker () {
-      if (this.markerPointStyle.color !== 'transparent') {
-        const shape = this._getShape();
+    renderMarker (item, markerStyle = {}) {
+      this.marker = item;
+      const { color } = { ...this.markerPointStyle, ...markerStyle };
+      if (color !== 'transparent') {
+        const shape = this._getShape(markerStyle);
         const marker = new this.SvgMarker(
           shape,
           {
@@ -165,14 +165,14 @@ export const MarkerPoint = {
       };
     },
 
-    _getShape () {
+    _getShape (markerStyle) {
       const {
         color,
         size,
         icon,
         strokeColor,
         strokeWidth,
-      } = this.markerPointStyle;
+      } = { ...this.markerPointStyle, ...markerStyle };
 
       const currentIcon = icon || this.icon;
 
@@ -198,6 +198,7 @@ export const MarkerPoint = {
         offset: this._getShapeOffset(currentIcon, size),
       });
     },
+
     _getShapeOffset (icon, size) {
       if (_.includes(POSITION_TOP_ICON, icon)) {
         return [-(size / 2), 0];

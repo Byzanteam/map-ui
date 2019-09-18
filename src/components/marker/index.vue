@@ -1,18 +1,14 @@
 <template>
-  <div>
-    <basic-marker
-      v-for="(marker, index) in markers"
-      :key="index"
-      :marker="marker"
-      :marker-style="getMarkerStyle(marker)"
-      :icon="icon"
-      :inner-label-style="innerLabelStyle"
-      @markerCreated="markerCreatedFunc"
-      @markerClick="markerClickFunc"
-      @markerMouseover="markerMouseoverFunc"
-      @markerMouseout="markerMouseoutFunc"
-    />
-  </div>
+  <basic-marker
+    ref="markerRef"
+    :icon="icon"
+    :inner-label-style="innerLabelStyle"
+    @markerReady="markerReadyFunc"
+    @markerCreated="markerCreatedFunc"
+    @markerClick="markerClickFunc"
+    @markerMouseover="markerMouseoverFunc"
+    @markerMouseout="markerMouseoutFunc"
+  />
 </template>
 
 <script>
@@ -63,6 +59,7 @@ export default {
   data () {
     return {
       markerRefs: [],
+      uuid: _.uniqueId(),
     };
   },
 
@@ -82,12 +79,17 @@ export default {
   },
 
   methods: {
-    markerCreatedFunc (marker) {
-      this.markerRefs.push(marker);
+    markerReadyFunc () {
+      _.forEach(this.markers, (marker) => {
+        this.$refs.markerRef.renderMarker(marker, this.getMarkerStyle(marker));
+      });
       this.$parent.$emit('markersRendered', {
         source: this.uuid,
         payload: this.markerRefs,
       });
+    },
+    markerCreatedFunc (marker) {
+      this.markerRefs.push(marker);
     },
 
     clear () {
