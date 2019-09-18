@@ -81,10 +81,6 @@ export const MarkerPoint = {
     },
   },
 
-  created () {
-    this.renderMarker(this.marker);
-  },
-
   watch: {
     marker () {
       this.renderMarker(this.marker);
@@ -104,13 +100,14 @@ export const MarkerPoint = {
             return window.console.error('当前环境不支持SVG');
           }
           this.SvgMarker = SvgMarker;
+          this.renderMarker(this.marker);
           this.$emit('markerReady');
         });
       }
     },
 
     renderMarker (item, markerStyle = {}) {
-      this.marker = item;
+      if (_.isEmpty(item)) return;
       const { color } = { ...this.markerPointStyle, ...markerStyle };
       if (color !== 'transparent') {
         const shape = this._getShape(markerStyle);
@@ -118,8 +115,8 @@ export const MarkerPoint = {
           shape,
           {
             map: this.map,
-            position: this.marker.location,
-            iconLabel: this._getLabelContent(shape),
+            position: item.location,
+            iconLabel: this._getLabelContent(shape, item.label),
           },
         );
         marker.on('click', e => this.$emit('markerClick', e));
@@ -129,8 +126,7 @@ export const MarkerPoint = {
       }
     },
 
-    _getLabelContent (shape) {
-      const { label = '' } = this.marker;
+    _getLabelContent (shape, label = '') {
       const labelCenter = shape.getCenter();
       const {
         padding,
