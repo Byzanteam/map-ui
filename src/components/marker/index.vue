@@ -1,48 +1,39 @@
+<template>
+  <div>
+    <basic-marker
+      v-for="(marker, index) in markers"
+      :key="index"
+      :marker="marker"
+      :marker-style="getMarkerStyle(marker)"
+      :icon="icon"
+      :inner-label-style="innerLabelStyle"
+      @markerCreated="markerCreatedFunc"
+      @markerClick="markerClickFunc"
+      @markerMouseover="markerMouseoverFunc"
+      @markerMouseout="markerMouseoutFunc"
+    />
+  </div>
+</template>
+
 <script>
 import _ from 'lodash';
-
 import MapMixin from '../../mixins/map';
-import Icons from './icons.json';
+import BasicMarker from './marker';
 
-const { icons: [{ icons: ICONS }], size: [SIZE] } = Icons;
 
-const DEFAULT_MAERKER_POINT_STYLE = {
-  color: '#04BF78',
-  size: 24,
-};
-
-const MAPUI_SVG = [
+const DEFAULT_ICON_TYPES = [
   'Circle',
   'FivePointsStar',
   'WaterDrop',
-];
-
-const CUSTOM_SVG = [
   'Triangle',
   'TriangleDown',
   'Hexagon',
 ];
 
-const DEFAULT_ICON_TYPES = MAPUI_SVG.concat(CUSTOM_SVG);
-
-const DEFAULT_STYLE_MAP = null;
-
-const DEFAULT_BORDER = {
-  color: 'rgba(255, 255, 255, 0.2)',
-  width: 1,
-};
-
-const DEFAULT_INNER_LABEL_STYLE = {
-  fontSize: 12,
-  color: 'rgba(255, 255, 255, 0.2)',
-  fontWeight: 400,
-  padding: [2, 4],
-  offset: [0, 0],
-};
-
-export const MarkerPoint = {
-  name: 'MarkerPoint',
-
+export default {
+  components: {
+    BasicMarker,
+  },
   mixins: [MapMixin],
 
   props: {
@@ -54,18 +45,14 @@ export const MarkerPoint = {
       type: Object,
       default: () => ({}),
     },
+    markerStyleMap: {
+      type: Array,
+      default: () => null,
+    },
     icon: {
       type: String,
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
-    },
-    markerStyleMap: {
-      type: Array,
-      default: () => DEFAULT_STYLE_MAP,
-    },
-    borderStyle: {
-      type: Object,
-      default: () => ({}),
     },
     innerLabelStyle: {
       type: Object,
@@ -76,123 +63,39 @@ export const MarkerPoint = {
   data () {
     return {
       markerRefs: [],
-      uuid: _.uniqueId(),
     };
   },
 
   watch: {
-    markers (current) {
-      this.setMarkerData(current);
+    markers () {
+      this.clear();
     },
     markerStyleMap () {
-      this.setMarkerData(this.markers);
+      this.clear();
     },
     innerLabelStyle () {
-      this.setMarkerData(this.markers);
+      this.clear();
     },
     icon () {
-      this.setMarkerData(this.markers);
-    },
-  },
-
-  computed: {
-    markerPointStyle () {
-      return {
-        ...DEFAULT_MAERKER_POINT_STYLE,
-        ...this.markerStyle,
-      };
-    },
-    markerBorderStyle () {
-      return {
-        ...DEFAULT_BORDER,
-        ...this.borderStyle,
-      };
-    },
-    markerInnerLabelStyle () {
-      return {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...this.innerLabelStyle,
-      };
+      this.clear();
     },
   },
 
   methods: {
-    sourceReadyFunc () {
-      if (typeof AMapUI === 'undefined') {
-        window.console.error(`AMapUI not found:
-          svgMarker component required AMapUI
-          please set use-map-ui property on base-map
-        `);
-      } else {
-        AMapUI.loadUI(['../lib/utils', 'overlay/SvgMarker'], (utils, SvgMarker) => {
-          if (!SvgMarker.supportSvg) {
-            return window.console.error('当前环境不支持SVG');
-          }
-          this.SvgMarker = SvgMarker;
-          this.utils = utils;
-          this.customShape();
-        });
-      }
-    },
-
-    renderMarkers (data) {
-      if (!data.length) return;
-
-      _.forEach(data, (item) => {
-        const markerStyle = this.getMarkerStyle(item);
-        if (markerStyle) {
-          const shape = this._renderShape(markerStyle);
-          const marker = new this.SvgMarker(
-            shape,
-            {
-              map: this.map,
-              position: item.location,
-              iconLabel: this._getLabelContent(item, markerStyle),
-            },
-          );
-          marker.on('click', e => this.$emit('markerClick', e));
-          marker.on('mouseover', e => this.$emit('markerMouseover', e));
-          marker.on('mouseout', e => this.$emit('markerMouseout', e));
-
-          this.markerRefs.push(marker);
-        }
-      });
+    markerCreatedFunc (marker) {
+      this.markerRefs.push(marker);
       this.$parent.$emit('markersRendered', {
         source: this.uuid,
         payload: this.markerRefs,
       });
     },
 
-    customShape () {
-      const { utils } = this;
-      _.forEach(CUSTOM_SVG, (icon) => {
-        const CustomShape = function (options) {
-          const opts = utils.extend({
-            ...DEFAULT_MAERKER_POINT_STYLE,
-          }, options);
-
-          CustomShape.__super__.constructor.call(this, opts);
-        };
-        utils.inherit(CustomShape, this.SvgMarker.Shape.BaseShape);
-        this._generateCustomShapeDom(CustomShape, icon);
-        const newShape = {};
-        newShape[icon] = CustomShape;
-        utils.extend(this.SvgMarker.Shape, newShape);
-      });
-      this.renderMarkers(this.markers);
-    },
-
-    setMarkerData (data) {
-      if (this.map) {
-        this.clear();
-        this.renderMarkers(data);
-      }
-    },
-
     clear () {
-      _.forEach(this.markerRefs, (marker) => {
-        this.map.remove(marker);
-      });
+      if (this.map) {
+        _.forEach(this.markerRefs, (marker) => {
+          this.map.remove(marker);
+        });
+      }
       this.markerRefs = [];
     },
 
@@ -201,7 +104,7 @@ export const MarkerPoint = {
      */
     getMarkerStyle (marker) {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
-        return this.markerPointStyle;
+        return this.markerStyle;
       }
 
       const currentStyle = _.findLast(
@@ -209,112 +112,20 @@ export const MarkerPoint = {
         ({ value }) => marker.value >= value
       );
 
-      if (currentStyle) {
-        return {
-          ...this.markerPointStyle,
-          ...currentStyle,
-        };
-      }
-    },
-
-    _generateCustomShapeDom (CustomShape, icon) {
-      this.utils.extend(CustomShape.prototype, {
-        getInnerHTML (params) {
-          const {
-            strokeWidth,
-            strokeColor,
-            color,
-          } = params;
-          return `<svg viewBox="0 0 ${SIZE} ${SIZE}" width="100%" height="100%">
-                    <path
-                      stroke-width="${strokeWidth}px"
-                      stroke="${strokeColor}"
-                      fill="${color}"
-                      d="${ICONS[_.kebabCase(icon)].paths}"
-                    />
-                  </svg>`;
-        },
-        getOffset () {
-          // 计算三角形容器实际的高度， 0.4是实际的高度和设置的高度值的差的倍数
-          const diff = (this.getHeight() * 0.4);
-          // 定位点在底部
-          if (icon === 'TriangleDown') {
-            return [-(this.getWidth() / 2), -(this.getHeight() - (diff / 2))];
-          }
-          // 定位点在顶部
-          if (icon === 'Triangle') {
-            return [-(this.getWidth() / 2), -(diff / 2)];
-          }
-          // 定位点默认在图形中部:
-          return [-(this.getWidth() / 2), -(this.getHeight() / 2)];
-        },
-      });
-    },
-
-    _getLabelContent (marker, markerStyle) {
-      const { label = '' } = marker;
-      const {
-        padding,
-        offset,
-        textStyles: markerTextStyles = [],
-      } = this.markerInnerLabelStyle;
-      const { textStyles = [] } = markerStyle.innerLabelStyle || {};
-      let content;
-      if (_.isArray(label)) {
-        content = _.reduce(label, (acc, item, key) => {
-          const {
-            fontSize,
-            color,
-            fontWeight,
-          } = {
-            ...this.markerInnerLabelStyle,
-            ...markerTextStyles[key],
-            ...textStyles[key],
-          };
-          return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
-        }, '');
-      } else {
-        const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
-        content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
-      }
       return {
-        innerHTML: `<div
-                      class="clip-marker-text-content"
-                      style="padding: ${padding[0]}px ${padding[1]}px; white-space: nowrap;"
-                    >${content}</div>`,
-        style: {
-          top: `${offset[1]}px`,
-          left: `${offset[0]}px`,
-        },
+        color: 'transparent',
+        ...currentStyle,
       };
     },
-
-    _renderShape (markerStyle) {
-      const {
-        color,
-        size,
-        icon,
-        borderStyle,
-      } = markerStyle;
-
-      const {
-        color: borderColor,
-        width,
-      } = {
-        ...this.markerBorderStyle,
-        ...borderStyle,
-      };
-
-      return new this.SvgMarker.Shape[icon || this.icon]({
-        width: size,
-        height: size,
-        strokeWidth: width,
-        strokeColor: borderColor,
-        fillColor: color,
-      });
+    markerClickFunc (marker) {
+      this.$emit('markerClick', marker);
+    },
+    markerMouseoverFunc (marker) {
+      this.$emit('markerMouseover', marker);
+    },
+    markerMouseoutFunc (marker) {
+      this.$emit('markerMouseout', marker);
     },
   },
 };
-
-export default MarkerPoint;
 </script>
