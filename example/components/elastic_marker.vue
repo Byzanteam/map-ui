@@ -3,6 +3,7 @@
     :map-options="{
       zoom: 4
     }"
+    use-map-ui
   >
     <elastic-marker
       :markers="pointData"
@@ -69,7 +70,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'circle',
+          icon: 'Circle',
         },
         {
           zoom: 7,
@@ -83,7 +84,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'triangle',
+          icon: 'Triangle',
         },
         {
           zoom: [8, 10],
@@ -97,7 +98,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'hexagon',
+          icon: 'Hexagon',
         },
       ],
     };

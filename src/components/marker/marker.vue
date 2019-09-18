@@ -87,6 +87,12 @@ export const MarkerPoint = {
     },
   },
 
+  data () {
+    return {
+      SvgMarker: null,
+    };
+  },
+
   methods: {
     sourceReadyFunc () {
       if (typeof AMapUI === 'undefined') {

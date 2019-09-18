@@ -65,21 +65,24 @@ export default {
 
   watch: {
     markers () {
-      this.clear();
+      this.setData();
     },
     markerStyleMap () {
-      this.clear();
+      this.setData();
     },
     innerLabelStyle () {
-      this.clear();
+      this.setData();
     },
     icon () {
-      this.clear();
+      this.setData();
     },
   },
 
   methods: {
     markerReadyFunc () {
+      this.renderMarkers();
+    },
+    renderMarkers () {
       _.forEach(this.markers, (marker) => {
         this.$refs.markerRef.renderMarker(marker, this.getMarkerStyle(marker));
       });
@@ -90,6 +93,11 @@ export default {
     },
     markerCreatedFunc (marker) {
       this.markerRefs.push(marker);
+    },
+
+    setData () {
+      this.clear();
+      this.renderMarkers();
     },
 
     clear () {
