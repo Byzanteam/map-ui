@@ -2,8 +2,8 @@
 import _ from 'lodash';
 
 import MapMixin from '../../mixins/map';
-import './iconfont/iconfont';
-import './iconfont/icon.scss';
+import '../../iconfont/iconfont';
+import '../../iconfont/icon.scss';
 
 
 const DEFAULT_MAERKER_POINT_STYLE = {
