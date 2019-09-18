@@ -1,3 +1,4 @@
+/* eslint-disable */
 !(function (d) {
   let e,
       n = `<svg>
