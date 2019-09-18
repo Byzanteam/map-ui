@@ -47,7 +47,7 @@ export const MarkerPoint = {
   mixins: [MapMixin],
 
   props: {
-    marker: {
+    point: {
       type: Object,
       default: () => ({}),
     },
@@ -82,14 +82,24 @@ export const MarkerPoint = {
   },
 
   watch: {
-    marker () {
-      this.renderMarker(this.marker);
+    point () {
+      this.setData();
+    },
+    markerStyleMap () {
+      this.setData();
+    },
+    innerLabelStyle () {
+      this.setData();
+    },
+    icon () {
+      this.setData();
     },
   },
 
   data () {
     return {
       SvgMarker: null,
+      marker: null,
     };
   },
 
@@ -106,33 +116,44 @@ export const MarkerPoint = {
             return window.console.error('当前环境不支持SVG');
           }
           this.SvgMarker = SvgMarker;
-          this.renderMarker(this.marker);
-          this.$emit('markerReady');
+          this.renderMarker();
         });
       }
     },
 
-    renderMarker (item, markerStyle = {}) {
-      if (_.isEmpty(item)) return;
-      const { color } = { ...this.markerPointStyle, ...markerStyle };
+    renderMarker () {
+      if (_.isEmpty(this.point)) return;
+      const { color } = this.markerPointStyle;
       if (color !== 'transparent') {
-        const shape = this._getShape(markerStyle);
-        const marker = new this.SvgMarker(
+        const shape = this._getShape(this.markerStyle);
+        this.marker = new this.SvgMarker(
           shape,
           {
             map: this.map,
-            position: item.location,
-            iconLabel: this._getLabelContent(shape, item.label),
+            position: this.point.location,
+            iconLabel: this._getLabelContent(shape),
           },
         );
-        marker.on('click', e => this.$emit('markerClick', e));
-        marker.on('mouseover', e => this.$emit('markerMouseover', e));
-        marker.on('mouseout', e => this.$emit('markerMouseout', e));
-        this.$emit('markerCreated', marker);
+        this.marker.on('click', e => this.$emit('markerClick', e));
+        this.marker.on('mouseover', e => this.$emit('markerMouseover', e));
+        this.marker.on('mouseout', e => this.$emit('markerMouseout', e));
+        this.$emit('markerCreated', this.marker);
       }
     },
 
-    _getLabelContent (shape, label = '') {
+    setData () {
+      this.clear();
+      this.renderMarker();
+    },
+
+    clear () {
+      if (this.map && this.marker) {
+        this.map.remove(this.marker);
+      }
+    },
+
+    _getLabelContent (shape) {
+      const { label = '' } = this.point;
       const labelCenter = shape.getCenter();
       const {
         padding,

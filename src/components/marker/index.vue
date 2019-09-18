@@ -1,9 +1,10 @@
 <template>
   <basic-marker
     ref="markerRef"
+    :point="marker"
     :icon="icon"
     :inner-label-style="innerLabelStyle"
-    @markerReady="markerReadyFunc"
+    :marker-style="markerPointStyle"
     @markerCreated="markerCreatedFunc"
     @markerClick="markerClickFunc"
     @markerMouseover="markerMouseoverFunc"
@@ -33,9 +34,9 @@ export default {
   mixins: [MapMixin],
 
   props: {
-    markers: {
-      type: Array,
-      default: () => [],
+    marker: {
+      type: Object,
+      default: () => ({}),
     },
     markerStyle: {
       type: Object,
@@ -56,76 +57,40 @@ export default {
     },
   },
 
-  data () {
-    return {
-      markerRefs: [],
-      uuid: _.uniqueId(),
-    };
-  },
-
-  watch: {
-    markers () {
-      this.setData();
-    },
-    markerStyleMap () {
-      this.setData();
-    },
-    innerLabelStyle () {
-      this.setData();
-    },
-    icon () {
-      this.setData();
+  computed: {
+    markerPointStyle () {
+      return {
+        ...this.markerStyle,
+        ...this.getMarkerStyle(),
+      };
     },
   },
 
   methods: {
-    markerReadyFunc () {
-      this.renderMarkers();
-    },
-    renderMarkers () {
-      _.forEach(this.markers, (marker) => {
-        this.$refs.markerRef.renderMarker(marker, this.getMarkerStyle(marker));
-      });
-      this.$parent.$emit('markersRendered', {
-        source: this.uuid,
-        payload: this.markerRefs,
-      });
-    },
     markerCreatedFunc (marker) {
-      this.markerRefs.push(marker);
-    },
-
-    setData () {
-      this.clear();
-      this.renderMarkers();
-    },
-
-    clear () {
-      if (this.map) {
-        _.forEach(this.markerRefs, (marker) => {
-          this.map.remove(marker);
-        });
-      }
-      this.markerRefs = [];
+      this.$emit('markerCreated', marker);
     },
 
     /**
      * 如果设置了映射，小于最小映射的透明色
      */
-    getMarkerStyle (marker) {
-      if (!this.markerStyleMap || !_.isNumber(marker.value)) {
+    getMarkerStyle () {
+      if (!this.markerStyleMap || !_.isNumber(this.marker.value)) {
         return this.markerStyle;
       }
 
       const currentStyle = _.findLast(
         _.sortBy(this.markerStyleMap, 'value'),
-        ({ value }) => marker.value >= value
+        ({ value }) => this.marker.value >= value
       );
 
       return {
         color: 'transparent',
         ...currentStyle,
       };
+    },
+    clear () {
+      this.$refs.markerRef.clear();
     },
     markerClickFunc (marker) {
       this.$emit('markerClick', marker);
