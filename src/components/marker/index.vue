@@ -51,7 +51,7 @@ export default {
     },
     icon: {
       type: String,
-      default: 'circle',
+      default: 'Circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
     innerLabelStyle: {

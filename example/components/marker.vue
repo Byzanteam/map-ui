@@ -85,7 +85,10 @@ export default {
         {
           value: 1,
           color: 'green',
-          icon: 'Circle',
+          icon: 'Triangle',
+          size: 80,
+          strokeWidth: 10,
+          strokeColor: 'blue',
           innerLabelStyle: {
             textStyles: [
               {
@@ -107,7 +110,7 @@ export default {
           icon: 'FivePointsStar',
           size: 40,
           strokeWidth: 3,
-          strokeColor: 'blue',
+          strokeColor: 'purple',
         },
         {
           value: 3,
