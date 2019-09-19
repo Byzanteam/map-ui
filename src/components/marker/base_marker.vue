@@ -92,7 +92,7 @@ export const MarkerPoint = {
       };
       const {
         padding,
-        offset = [],
+        offset = [labelCenter[1], 0],
         textStyles = [],
       } = innerLabelStyle;
       let content;
@@ -109,13 +109,12 @@ export const MarkerPoint = {
         content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
       }
       return {
-        innerHTML: `<div
-                      class="clip-marker-text-content"
-                      style="padding: ${padding[0]}px ${padding[1]}px; white-space: nowrap;"
-                    >${content}</div>`,
+        innerHTML: content,
         style: {
-          top: `${offset[1] || labelCenter[1]}px`,
-          left: `${offset[0] || 0}px`,
+          top: `${offset[1]}px`,
+          left: `${offset[0]}px`,
+          padding: `${padding[0]}px ${padding[1]}px`,
+          'white-space': 'nowrap',
         },
       };
     },
