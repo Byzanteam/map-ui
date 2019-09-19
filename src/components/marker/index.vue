@@ -130,7 +130,7 @@ export default {
         return {
           icon: this.icon,
           ...this.markerPointStyle,
-          innerLabelStyle: { ...this.markerInnerLabelStyle },
+          innerLabelStyle: this.markerInnerLabelStyle,
         };
       }
 
