@@ -19,6 +19,12 @@ const POSITION_CENTER_ICON = [
   'fivePointsStar',
 ];
 
+const DEFAULT_ICON_TYPES = [].concat(
+  POSITION_TOP_ICON,
+  POSITION_BOTTOM_ICON,
+  POSITION_CENTER_ICON
+);
+
 const DEFAULT_MAERKER_POINT_STYLE = {
   color: '#04BF78',
   size: 24,
@@ -33,7 +39,7 @@ const DEFAULT_INNER_LABEL_STYLE = {
   padding: [2, 4],
 };
 
-const DEFAULT_ICON = 'Circle';
+const DEFAULT_ICON = 'circle';
 
 export const MarkerPoint = {
   name: 'BaseMarker',
@@ -77,8 +83,8 @@ export const MarkerPoint = {
         },
       );
       marker.on('click', e => this.$emit('marker-clicked', e));
-      marker.on('mouseover', e => this.$emit('marker-mouseovered', e));
-      marker.on('mouseout', e => this.$emit('marker-mouseouted', e));
+      marker.on('mouseover', e => this.$emit('marker-mouseover', e));
+      marker.on('mouseout', e => this.$emit('marker-mouseout', e));
       return marker;
     },
 
@@ -131,6 +137,12 @@ export const MarkerPoint = {
         ...markerStyle,
       };
 
+      if (!_.includes(DEFAULT_ICON_TYPES, icon)) {
+        throw new Error(`icon not found:
+          choose one of [triangle, waterDrop, triangleDown, hexagon, circle, fivePointsStar]
+        `);
+      }
+
       const IconShape = this.SvgMarker.Shape[_.upperFirst(icon)];
       if (IconShape) {
         return new IconShape({
@@ -156,11 +168,11 @@ export const MarkerPoint = {
       if (_.includes(POSITION_TOP_ICON, icon)) {
         return [-(size / 2), 0];
       }
-      if (_.includes(POSITION_CENTER_ICON, icon)) {
-        return [-(size / 2), -(size / 2)];
-      }
       if (_.includes(POSITION_BOTTOM_ICON, icon)) {
         return [-(size / 2), -size];
+      }
+      if (_.includes(POSITION_CENTER_ICON, icon)) {
+        return [-(size / 2), -(size / 2)];
       }
     },
   },

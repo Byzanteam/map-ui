@@ -3,8 +3,8 @@
     ref="markerRef"
     @markerReady="markerReadyFunc"
     @marker-clicked="markerClickedFunc"
-    @marker-mouseovered="markerMouseoveredFunc"
-    @marker-mouseouted="markerMouseoutedFunc"
+    @marker-mouseover="markerMouseoverFunc"
+    @marker-mouseout="markerMouseoutFunc"
   />
 </template>
 
@@ -115,6 +115,7 @@ export default {
         };
       }
     },
+
     clear () {
       _.forEach(this.markerRefs, (marker) => {
         if (marker) {
@@ -123,20 +124,24 @@ export default {
       });
       this.markerRefs = [];
     },
+
     setMarkerData (data) {
       if (this.map) {
         this.clear();
         this.renderMarkers(data);
       }
     },
+
     markerClickedFunc (marker) {
       this.$emit('marker-clicked', marker);
     },
-    markerMouseoveredFunc (marker) {
-      this.$emit('marker-mouseovered', marker);
+
+    markerMouseoverFunc (marker) {
+      this.$emit('marker-mouseover', marker);
     },
-    markerMouseoutedFunc (marker) {
-      this.$emit('marker-mouseouted', marker);
+
+    markerMouseoutFunc (marker) {
+      this.$emit('marker-mouseout', marker);
     },
   },
 };
