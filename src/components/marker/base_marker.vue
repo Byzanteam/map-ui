@@ -39,16 +39,48 @@ const DEFAULT_INNER_LABEL_STYLE = {
   padding: [2, 4],
 };
 
-const DEFAULT_ICON = 'circle';
-
 export const MarkerPoint = {
   name: 'BaseMarker',
 
   mixins: [MapMixin],
 
+  props: {
+    point: {
+      type: Object,
+      default: () => ({}),
+    },
+    markerStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+    icon: {
+      type: String,
+      default: 'circle',
+    },
+    innerLabelStyle: {
+      type: Object,
+      default: () => ({}),
+    },
+  },
+
+  watch: {
+    point (current) {
+      this.setMarkerData(current);
+    },
+    markerStyle () {
+      this.setMarkerData(this.point);
+    },
+    innerLabelStyle () {
+      this.setMarkerData(this.point);
+    },
+    icon () {
+      this.setMarkerData(this.point);
+    },
+  },
+
   data () {
     return {
-      SvgMarker: null,
+      marker: null,
     };
   },
 
@@ -65,36 +97,39 @@ export const MarkerPoint = {
             return window.console.error('当前环境不支持SVG');
           }
           this.SvgMarker = SvgMarker;
-          this.$emit('markerReady');
+          this.renderMarker(this.point);
         });
       }
     },
 
-    renderMarker (point, markerStyle) {
-      if (!this.SvgMarker || _.isEmpty(point)) return;
-      const shape = this._getShape(markerStyle);
-      const marker = new this.SvgMarker(
+    renderMarker (item) {
+      if (_.isEmpty(item) || this.markerStyle.color === 'transparent') {
+        this.$emit('markerRendered');
+        return;
+      }
+      const shape = this._getShape();
+      this.marker = new this.SvgMarker(
         shape,
         {
           map: this.map,
-          position: point.location,
-          iconLabel: this._getLabelContent(point, shape, markerStyle),
-          extData: point,
+          position: item.location,
+          iconLabel: this._getLabelContent(shape),
+          extData: item,
         },
       );
-      marker.on('click', e => this.$emit('marker-clicked', e));
-      marker.on('mouseover', e => this.$emit('marker-mouseover', e));
-      marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-      return marker;
+      this.marker.on('click', e => this.$emit('marker-clicked', e));
+      this.marker.on('mouseover', e => this.$emit('marker-mouseover', e));
+      this.marker.on('mouseout', e => this.$emit('marker-mouseout', e));
+      this.$emit('markerRendered', this.marker);
     },
 
-    _getLabelContent (marker, shape, markerStyle) {
-      const { label = '' } = marker;
+    _getLabelContent (shape) {
+      const { label = '' } = this.point;
       if (!label) return;
       const labelCenter = shape.getCenter();
       const innerLabelStyle = {
         ...DEFAULT_INNER_LABEL_STYLE,
-        ...markerStyle.innerLabelStyle,
+        ...this.innerLabelStyle,
       };
       const {
         padding,
@@ -125,25 +160,38 @@ export const MarkerPoint = {
       };
     },
 
-    _getShape (markerStyle) {
+    setMarkerData () {
+      if (this.map && this.SvgMarker) {
+        this.clear();
+        this.renderMarker(this.point);
+      }
+    },
+
+    clear () {
+      if (this.marker) {
+        this.map.remove(this.marker);
+      }
+      this.marker = null;
+    },
+
+    _getShape () {
       const {
         color,
         size,
-        icon = DEFAULT_ICON,
         strokeColor,
         strokeWidth,
       } = {
         ...DEFAULT_MAERKER_POINT_STYLE,
-        ...markerStyle,
+        ...this.markerStyle,
       };
 
-      if (!_.includes(DEFAULT_ICON_TYPES, icon)) {
+      if (!_.includes(DEFAULT_ICON_TYPES, this.icon)) {
         throw new Error(`icon not found:
           choose one of [triangle, waterDrop, triangleDown, hexagon, circle, fivePointsStar]
         `);
       }
 
-      const IconShape = this.SvgMarker.Shape[_.upperFirst(icon)];
+      const IconShape = this.SvgMarker.Shape[_.upperFirst(this.icon)];
       if (IconShape) {
         return new IconShape({
           width: size,
@@ -154,13 +202,13 @@ export const MarkerPoint = {
         });
       }
       return new this.SvgMarker.Shape.IconFont({
-        icon: `icon-${icon}`,
+        icon: `icon-${this.icon}`,
         width: size,
         height: size,
         strokeWidth,
         strokeColor,
         fillColor: color,
-        offset: this._getShapeOffset(icon, size),
+        offset: this._getShapeOffset(this.icon, size),
       });
     },
 

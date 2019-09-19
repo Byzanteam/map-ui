@@ -1,11 +1,19 @@
 <template>
-  <base-marker
-    ref="markerRef"
-    @markerReady="markerReadyFunc"
-    @marker-clicked="markerClickedFunc"
-    @marker-mouseover="markerMouseoverFunc"
-    @marker-mouseout="markerMouseoutFunc"
-  />
+  <div>
+    <base-marker
+      v-for="(marker, index) in markers"
+      :key="index"
+      ref="markerRef"
+      :marker-style="getMarkerStyle(marker)"
+      :inner-label-style="getInnerLabelStyle(marker)"
+      :icon="getIcon(marker)"
+      :point="marker"
+      @markerRendered="markerRenderedFunc"
+      @marker-clicked="markerClickedFunc"
+      @marker-mouseover="markerMouseoverFunc"
+      @marker-mouseout="markerMouseoutFunc"
+    />
+  </div>
 </template>
 
 <script>
@@ -48,53 +56,48 @@ export default {
     return {
       markerRefs: [],
       uuid: _.uniqueId('marker_'),
+      count: 0,
     };
   },
 
   watch: {
-    markers (current) {
-      this.setMarkerData(current);
+    markers () {
+      this.clear();
     },
-    markerStyleMap () {
-      this.setMarkerData(this.markers);
-    },
-    innerLabelStyle () {
-      this.setMarkerData(this.markers);
+    markerStyle () {
+      this.clear();
     },
     icon () {
-      this.setMarkerData(this.markers);
+      this.clear();
+    },
+    markerStyleMap () {
+      this.clear();
+    },
+    innerLabelStyle () {
+      this.clear();
     },
   },
 
   methods: {
-    markerReadyFunc () {
-      this.renderMarkers(this.markers);
-    },
-
-    renderMarkers (data) {
-      if (!data.length) return;
-      this.markerRefs = _.map(data, (item) => {
-        const markerStyle = this.getMarkerStyle(item);
-        if (!markerStyle) return;
-        const marker = this.$refs.markerRef.renderMarker(item, markerStyle);
-        return marker;
-      });
-      this.$parent.$emit('markersRendered', {
-        source: this.uuid,
-        payload: this.markerRefs,
-      });
+    markerRenderedFunc (marker) {
+      this.count += 1;
+      if (marker) {
+        this.markerRefs.push(marker);
+      }
+      if (this.count === this.markers.length) {
+        this.$parent.$emit('markersRendered', {
+          source: this.uuid,
+          payload: this.markerRefs,
+        });
+      }
     },
 
     /**
-     * 如果设置了映射，小于最小映射的返回undefined
+     * 如果设置了映射，小于最小映射的透明色
      */
     getMarkerStyle (marker) {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
-        return {
-          icon: this.icon,
-          ...this.markerStyle,
-          innerLabelStyle: this.innerLabelStyle,
-        };
+        return this.markerStyle;
       }
 
       const currentStyle = _.findLast(
@@ -102,34 +105,41 @@ export default {
         ({ value }) => marker.value >= value
       );
 
-      if (currentStyle) {
-        const { innerLabelStyle = {} } = currentStyle;
-        return {
-          icon: this.icon,
-          ...this.markerStyle,
-          ...currentStyle,
-          innerLabelStyle: {
-            ...this.innerLabelStyle,
-            ...innerLabelStyle,
-          },
-        };
+      return {
+        color: 'transparent',
+        ...this.markerStyle,
+        ...currentStyle,
+      };
+    },
+
+    getInnerLabelStyle (marker) {
+      const markerStyle = this.getMarkerStyle(marker);
+      if (!markerStyle) {
+        return this.innerLabelStyle;
       }
+      const { innerLabelStyle = {} } = markerStyle;
+      return {
+        ...this.innerLabelStyle,
+        ...innerLabelStyle,
+      };
+    },
+
+    getIcon (marker) {
+      const markerStyle = this.getMarkerStyle(marker);
+      if (!markerStyle) {
+        return this.icon;
+      }
+      const { icon } = this.getMarkerStyle(marker);
+      return icon || this.icon;
     },
 
     clear () {
-      _.forEach(this.markerRefs, (marker) => {
+      _.forEach(this.$refs.markerRef, (marker) => {
         if (marker) {
-          this.map.remove(marker);
+          marker.clear();
         }
       });
       this.markerRefs = [];
-    },
-
-    setMarkerData (data) {
-      if (this.map) {
-        this.clear();
-        this.renderMarkers(data);
-      }
     },
 
     markerClickedFunc (marker) {
