@@ -87,15 +87,15 @@ export const MarkerPoint = {
       const { label = '' } = marker;
       if (!label) return;
       const labelCenter = shape.getCenter();
-      const { innerLabelStyle } = markerStyle;
+      const innerLabelStyle = {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...markerStyle.innerLabelStyle,
+      };
       const {
         padding,
         offset = [],
         textStyles = [],
-      } = {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...innerLabelStyle,
-      };
+      } = innerLabelStyle;
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
@@ -147,7 +147,6 @@ export const MarkerPoint = {
         });
       }
       return new this.SvgMarker.Shape.IconFont({
-        symbolJs: null,
         icon: `icon-${_.camelCase(currentIcon)}`,
         width: size,
         height: size,

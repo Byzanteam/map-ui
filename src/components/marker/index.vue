@@ -13,20 +13,6 @@ import _ from 'lodash';
 import MapMixin from '../../mixins/map';
 import BasicMarker from './marker';
 
-const DEFAULT_MAERKER_POINT_STYLE = {
-  color: '#04BF78',
-  size: 24,
-  strokeColor: 'rgba(255, 255, 255, 0.2)',
-  strokeWidth: 1,
-};
-
-const DEFAULT_INNER_LABEL_STYLE = {
-  fontSize: 12,
-  color: 'rgba(255, 255, 255, 0.2)',
-  fontWeight: 400,
-  padding: [2, 4],
-};
-
 const DEFAULT_STYLE_MAP = null;
 
 
@@ -76,21 +62,6 @@ export default {
     };
   },
 
-  computed: {
-    markerPointStyle () {
-      return {
-        ...DEFAULT_MAERKER_POINT_STYLE,
-        ...this.markerStyle,
-      };
-    },
-    markerInnerLabelStyle () {
-      return {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...this.innerLabelStyle,
-      };
-    },
-  },
-
   watch: {
     markers (current) {
       this.setMarkerData(current);
@@ -132,8 +103,8 @@ export default {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
         return {
           icon: this.icon,
-          ...this.markerPointStyle,
-          innerLabelStyle: this.markerInnerLabelStyle,
+          ...this.markerStyle,
+          innerLabelStyle: this.innerLabelStyle,
         };
       }
 
@@ -146,10 +117,10 @@ export default {
         const { innerLabelStyle = [] } = currentStyle;
         return {
           icon: this.icon,
-          ...this.markerPointStyle,
+          ...this.markerStyle,
           ...currentStyle,
           innerLabelStyle: {
-            ...this.markerInnerLabelStyle,
+            ...this.innerLabelStyle,
             ...innerLabelStyle,
           },
         };
