@@ -5,14 +5,6 @@ import MapMixin from '../../mixins/map';
 import '../../iconfont/iconfont';
 import '../../iconfont/icon.scss';
 
-
-const DEFAULT_MAERKER_POINT_STYLE = {
-  color: '#04BF78',
-  size: 24,
-  strokeColor: 'rgba(255, 255, 255, 0.2)',
-  strokeWidth: 1,
-};
-
 const POSITION_TOP_ICON = [
   'Triangle',
 ];
@@ -33,13 +25,6 @@ const DEFAULT_ICON_TYPES = [].concat(
   POSITION_BOTTOM_ICON,
   POSITION_CENTER_ICON
 );
-
-const DEFAULT_INNER_LABEL_STYLE = {
-  fontSize: 12,
-  color: 'rgba(255, 255, 255, 0.2)',
-  fontWeight: 400,
-  padding: [2, 4],
-};
 
 export const MarkerPoint = {
   name: 'BasicMarker',
@@ -66,21 +51,6 @@ export const MarkerPoint = {
     },
   },
 
-  computed: {
-    markerPointStyle () {
-      return {
-        ...DEFAULT_MAERKER_POINT_STYLE,
-        ...this.markerStyle,
-      };
-    },
-    markerInnerLabelStyle () {
-      return {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...this.innerLabelStyle,
-      };
-    },
-  },
-
   watch: {
     point () {
       this.setData();
@@ -99,7 +69,6 @@ export const MarkerPoint = {
   data () {
     return {
       SvgMarker: null,
-      marker: null,
     };
   },
 
@@ -116,64 +85,49 @@ export const MarkerPoint = {
             return window.console.error('当前环境不支持SVG');
           }
           this.SvgMarker = SvgMarker;
-          this.renderMarker();
+          this.$emit('markerReady');
         });
       }
     },
 
-    renderMarker () {
-      if (_.isEmpty(this.point)) return;
-      const { color } = this.markerPointStyle;
-      if (color !== 'transparent') {
-        const shape = this._getShape();
-        this.marker = new this.SvgMarker(
-          shape,
-          {
-            map: this.map,
-            position: this.point.location,
-            iconLabel: this._getLabelContent(shape),
-          },
-        );
-        this.marker.on('click', e => this.$emit('markerClick', e));
-        this.marker.on('mouseover', e => this.$emit('markerMouseover', e));
-        this.marker.on('mouseout', e => this.$emit('markerMouseout', e));
-        this.$emit('markerCreated', this.marker);
-      }
+    renderMarker (point, markerStyle) {
+      if (!this.SvgMarker) return;
+      const shape = this._getShape(markerStyle);
+      const marker = new this.SvgMarker(
+        shape,
+        {
+          map: this.map,
+          position: point.location,
+          iconLabel: this._getLabelContent(point, shape, markerStyle),
+          extData: point,
+        },
+      );
+      marker.on('click', e => this.$emit('markerClick', e));
+      marker.on('mouseover', e => this.$emit('markerMouseover', e));
+      marker.on('mouseout', e => this.$emit('markerMouseout', e));
+      return marker;
     },
 
-    setData () {
-      this.clear();
-      this.renderMarker();
-    },
-
-    clear () {
-      if (this.map && this.marker) {
-        this.map.remove(this.marker);
-      }
-    },
-
-    _getLabelContent (shape) {
-      const { label = '' } = this.point;
+    _getLabelContent (marker, shape, markerStyle) {
+      const { label = '' } = marker;
       const labelCenter = shape.getCenter();
+      const { innerLabelStyle } = markerStyle;
       const {
         padding,
         offset = [],
         textStyles = [],
-      } = {
-        ...this.markerInnerLabelStyle,
-        ...this.markerPointStyle.innerLabelStyle,
-      };
+      } = innerLabelStyle;
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
           const { fontSize, color, fontWeight } = {
-            ...this.markerInnerLabelStyle,
+            ...innerLabelStyle,
             ...textStyles[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
       } else {
-        const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
+        const { fontSize, color, fontWeight } = innerLabelStyle;
         content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
       }
       return {
@@ -188,18 +142,16 @@ export const MarkerPoint = {
       };
     },
 
-    _getShape () {
+    _getShape (markerStyle) {
       const {
         color,
         size,
         icon,
         strokeColor,
         strokeWidth,
-      } = this.markerPointStyle;
+      } = markerStyle;
 
-      const currentIcon = icon || this.icon;
-
-      const IconShape = this.SvgMarker.Shape[currentIcon];
+      const IconShape = this.SvgMarker.Shape[icon];
 
       if (IconShape) {
         return new IconShape({
@@ -212,13 +164,13 @@ export const MarkerPoint = {
       }
       return new this.SvgMarker.Shape.IconFont({
         symbolJs: null,
-        icon: `icon-${_.camelCase(currentIcon)}`,
+        icon: `icon-${_.camelCase(icon)}`,
         width: size,
         height: size,
         strokeWidth,
         strokeColor,
         fillColor: color,
-        offset: this._getShapeOffset(currentIcon, size),
+        offset: this._getShapeOffset(icon, size),
       });
     },
 

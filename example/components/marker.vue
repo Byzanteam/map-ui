@@ -6,10 +6,7 @@
     use-map-ui
   >
     <marker-point
-      v-for="(marker, index) in pointData"
-      ref="markerRef"
-      :key="index"
-      :marker="marker"
+      :markers="pointData"
       :marker-style-map="markerStyleMap"
       :inner-label-style="innerLabelStyle"
       icon="WaterDrop"
@@ -20,7 +17,6 @@
 </template>
 
 <script>
-import _ from 'lodash';
 import MarkerPoint from '../../src/components/marker';
 import BaseMap from '../../src/components/map.vue';
 
@@ -156,12 +152,6 @@ export default {
     },
     markerCreatedFunc (marker) {
       this.markerRefs.push(marker);
-    },
-    clear () {
-      _.each(this.$refs.markerRef, (marker) => {
-        marker.clear();
-      });
-      this.pointData = [];
     },
     changeMarkers () {
       this.pointData = [

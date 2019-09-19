@@ -100,7 +100,9 @@ export default {
   },
 
   created () {
-    this.$on('markersRendered', ({ source, payload }) => this.$set(this.markersGroup, source, payload));
+    this.$on('markersRendered', ({ source, payload }) => {
+      this.$set(this.markersGroup, source, payload);
+    });
   },
 
   methods: {
