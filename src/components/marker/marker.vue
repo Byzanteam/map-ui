@@ -20,51 +20,10 @@ const POSITION_CENTER_ICON = [
   'FivePointsStar',
 ];
 
-const DEFAULT_ICON_TYPES = [].concat(
-  POSITION_TOP_ICON,
-  POSITION_BOTTOM_ICON,
-  POSITION_CENTER_ICON
-);
-
 export const MarkerPoint = {
   name: 'BasicMarker',
 
   mixins: [MapMixin],
-
-  props: {
-    point: {
-      type: Object,
-      default: () => ({}),
-    },
-    markerStyle: {
-      type: Object,
-      default: () => ({}),
-    },
-    icon: {
-      type: String,
-      default: 'Circle',
-      validator: value => DEFAULT_ICON_TYPES.includes(value),
-    },
-    innerLabelStyle: {
-      type: Object,
-      default: () => ({}),
-    },
-  },
-
-  watch: {
-    point () {
-      this.setData();
-    },
-    markerStyleMap () {
-      this.setData();
-    },
-    innerLabelStyle () {
-      this.setData();
-    },
-    icon () {
-      this.setData();
-    },
-  },
 
   data () {
     return {

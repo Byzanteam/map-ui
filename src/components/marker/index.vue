@@ -2,7 +2,6 @@
   <basic-marker
     ref="markerRef"
     @markerReady="markerReadyFunc"
-    @markerCreated="markerCreatedFunc"
     @markerClick="markerClickFunc"
     @markerMouseover="markerMouseoverFunc"
     @markerMouseout="markerMouseoutFunc"
@@ -106,9 +105,6 @@ export default {
   },
 
   methods: {
-    markerCreatedFunc (marker) {
-      this.$emit('markerCreated', marker);
-    },
     markerReadyFunc () {
       this.renderMarkers();
     },

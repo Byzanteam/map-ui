@@ -11,7 +11,6 @@
       :inner-label-style="innerLabelStyle"
       icon="WaterDrop"
       @markerClick="markerClickFunc"
-      @markerCreated="markerCreatedFunc"
     />
   </base-map>
 </template>
@@ -149,9 +148,6 @@ export default {
   methods: {
     markerClickFunc () {
       this.pointData = [];
-    },
-    markerCreatedFunc (marker) {
-      this.markerRefs.push(marker);
     },
     changeMarkers () {
       this.pointData = [
