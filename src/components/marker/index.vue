@@ -118,8 +118,8 @@ export const MarkerPoint = {
       }
     },
 
-    renderMarker (item) {
-      if (_.isEmpty(item) || this.markerStyle.color === 'transparent') {
+    renderMarker (data) {
+      if (_.isEmpty(data) || this.markerStyle.color === 'transparent') {
         this.$emit('marker-rendered');
         return;
       }
@@ -128,9 +128,9 @@ export const MarkerPoint = {
         shape,
         {
           map: this.map,
-          position: item.location,
+          position: data.location,
           iconLabel: this._getLabelContent(shape),
-          extData: item,
+          extData: data,
         },
       );
       this.marker.on('click', e => this.$emit('marker-clicked', e));
@@ -175,10 +175,10 @@ export const MarkerPoint = {
       };
     },
 
-    setMarkerData () {
+    setMarkerData (data) {
       if (this.map && this.SvgMarker) {
         this.clear();
-        this.renderMarker(this.point);
+        this.renderMarker(data);
       }
     },
 
@@ -214,18 +214,18 @@ export const MarkerPoint = {
         strokeWidth,
         strokeColor,
         fillColor: color,
-        offset: this._getShapeOffset(this.icon, size),
+        offset: this._getShapeOffset(size),
       });
     },
 
-    _getShapeOffset (icon, size) {
+    _getShapeOffset (size) {
       let offset = [];
       switch (true) {
-        case _.includes(POSITION_TOP_ICON, icon): {
+        case _.includes(POSITION_TOP_ICON, this.icon): {
           offset = [-(size / 2), 0];
           break;
         }
-        case _.includes(POSITION_BOTTOM_ICON, icon): {
+        case _.includes(POSITION_BOTTOM_ICON, this.icon): {
           offset = [-(size / 2), -size];
           break;
         }

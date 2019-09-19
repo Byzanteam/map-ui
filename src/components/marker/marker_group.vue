@@ -18,7 +18,6 @@
 
 <script>
 import _ from 'lodash';
-import MapMixin from '../../mixins/map';
 import MarkerPonit from './index';
 
 const DEFAULT_STYLE_MAP = null;
@@ -27,7 +26,6 @@ export const MarkerGroup =  {
   components: {
     MarkerPonit,
   },
-  mixins: [MapMixin],
 
   props: {
     markers: {
