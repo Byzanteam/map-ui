@@ -2,13 +2,13 @@
   <div class="marker-group">
     <marker-ponit
       v-for="(marker, index) in markers"
-      :key="index"
       ref="markerRef"
+      :key="index"
       :marker-style="getMarkerStyle(marker)"
       :inner-label-style="getInnerLabelStyle(marker)"
       :icon="getIcon(marker)"
       :point="marker"
-      @markerRendered="markerRenderedFunc"
+      @marker-rendered="markerRenderedFunc"
       @marker-clicked="markerClickedFunc"
       @marker-mouseover="markerMouseoverFunc"
       @marker-mouseout="markerMouseoutFunc"
@@ -113,10 +113,7 @@ export const MarkerGroup =  {
     },
 
     getInnerLabelStyle (marker) {
-      const markerStyle = this.getMarkerStyle(marker);
-      if (!markerStyle) {
-        return this.innerLabelStyle;
-      }
+      const markerStyle = this.getMarkerStyle(marker) || {};
       const { innerLabelStyle = {} } = markerStyle;
       return {
         ...this.innerLabelStyle,
@@ -125,19 +122,13 @@ export const MarkerGroup =  {
     },
 
     getIcon (marker) {
-      const markerStyle = this.getMarkerStyle(marker);
-      if (!markerStyle) {
-        return this.icon;
-      }
-      const { icon } = this.getMarkerStyle(marker);
+      const { icon } = this.getMarkerStyle(marker) || {};
       return icon || this.icon;
     },
 
     clear () {
       _.forEach(this.$refs.markerRef, (marker) => {
-        if (marker) {
-          marker.clear();
-        }
+        marker.clear();
       });
       this.markerRefs = [];
     },

@@ -40,7 +40,7 @@ const DEFAULT_INNER_LABEL_STYLE = {
 };
 
 export const MarkerPoint = {
-  name: 'BaseMarker',
+  name: 'MarkerPoint',
 
   mixins: [MapMixin],
 
@@ -56,6 +56,7 @@ export const MarkerPoint = {
     icon: {
       type: String,
       default: 'circle',
+      validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
     innerLabelStyle: {
       type: Object,
@@ -75,6 +76,21 @@ export const MarkerPoint = {
     },
     icon () {
       this.setMarkerData(this.point);
+    },
+  },
+
+  computed: {
+    markerPointStyle () {
+      return {
+        ...DEFAULT_MAERKER_POINT_STYLE,
+        ...this.markerStyle,
+      };
+    },
+    markerInnerLabelStyle () {
+      return {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...this.innerLabelStyle,
+      };
     },
   },
 
@@ -104,7 +120,7 @@ export const MarkerPoint = {
 
     renderMarker (item) {
       if (_.isEmpty(item) || this.markerStyle.color === 'transparent') {
-        this.$emit('markerRendered');
+        this.$emit('marker-rendered');
         return;
       }
       const shape = this._getShape();
@@ -120,35 +136,34 @@ export const MarkerPoint = {
       this.marker.on('click', e => this.$emit('marker-clicked', e));
       this.marker.on('mouseover', e => this.$emit('marker-mouseover', e));
       this.marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-      this.$emit('markerRendered', this.marker);
+      this.$emit('marker-rendered', this.marker);
     },
 
     _getLabelContent (shape) {
       const { label = '' } = this.point;
       if (!label) return;
+
       const labelCenter = shape.getCenter();
-      const innerLabelStyle = {
-        ...DEFAULT_INNER_LABEL_STYLE,
-        ...this.innerLabelStyle,
-      };
       const {
         padding,
         offset = [labelCenter[1], 0],
         textStyles = [],
-      } = innerLabelStyle;
+      } = this.markerInnerLabelStyle;
+
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
           const { fontSize, color, fontWeight } = {
-            ...innerLabelStyle,
+            ...this.markerInnerLabelStyle,
             ...textStyles[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');
       } else {
-        const { fontSize, color, fontWeight } = innerLabelStyle;
+        const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
         content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
       }
+
       return {
         innerHTML: content,
         style: {
@@ -180,16 +195,7 @@ export const MarkerPoint = {
         size,
         strokeColor,
         strokeWidth,
-      } = {
-        ...DEFAULT_MAERKER_POINT_STYLE,
-        ...this.markerStyle,
-      };
-
-      if (!_.includes(DEFAULT_ICON_TYPES, this.icon)) {
-        throw new Error(`icon not found:
-          choose one of [triangle, waterDrop, triangleDown, hexagon, circle, fivePointsStar]
-        `);
-      }
+      } = this.markerPointStyle;
 
       const IconShape = this.SvgMarker.Shape[_.upperFirst(this.icon)];
       if (IconShape) {
