@@ -20,6 +20,22 @@ const POSITION_CENTER_ICON = [
   'FivePointsStar',
 ];
 
+const DEFAULT_MAERKER_POINT_STYLE = {
+  color: '#04BF78',
+  size: 24,
+  strokeColor: 'rgba(255, 255, 255, 0.2)',
+  strokeWidth: 1,
+};
+
+const DEFAULT_INNER_LABEL_STYLE = {
+  fontSize: 12,
+  color: 'rgba(255, 255, 255, 0.2)',
+  fontWeight: 400,
+  padding: [2, 4],
+};
+
+const DEFAULT_ICON = 'Circle';
+
 export const MarkerPoint = {
   name: 'BasicMarker',
 
@@ -50,7 +66,7 @@ export const MarkerPoint = {
     },
 
     renderMarker (point, markerStyle) {
-      if (!this.SvgMarker) return;
+      if (!this.SvgMarker || _.isEmpty(point)) return;
       const shape = this._getShape(markerStyle);
       const marker = new this.SvgMarker(
         shape,
@@ -69,13 +85,17 @@ export const MarkerPoint = {
 
     _getLabelContent (marker, shape, markerStyle) {
       const { label = '' } = marker;
+      if (!label) return;
       const labelCenter = shape.getCenter();
       const { innerLabelStyle } = markerStyle;
       const {
         padding,
         offset = [],
         textStyles = [],
-      } = innerLabelStyle;
+      } = {
+        ...DEFAULT_INNER_LABEL_STYLE,
+        ...innerLabelStyle,
+      };
       let content;
       if (_.isArray(label)) {
         content = _.reduce(label, (acc, item, key) => {
@@ -108,9 +128,14 @@ export const MarkerPoint = {
         icon,
         strokeColor,
         strokeWidth,
-      } = markerStyle;
+      } = {
+        ...DEFAULT_MAERKER_POINT_STYLE,
+        ...markerStyle,
+      };
 
-      const IconShape = this.SvgMarker.Shape[icon];
+      const currentIcon = icon || DEFAULT_ICON;
+
+      const IconShape = this.SvgMarker.Shape[currentIcon];
 
       if (IconShape) {
         return new IconShape({
@@ -123,13 +148,13 @@ export const MarkerPoint = {
       }
       return new this.SvgMarker.Shape.IconFont({
         symbolJs: null,
-        icon: `icon-${_.camelCase(icon)}`,
+        icon: `icon-${_.camelCase(currentIcon)}`,
         width: size,
         height: size,
         strokeWidth,
         strokeColor,
         fillColor: color,
-        offset: this._getShapeOffset(icon, size),
+        offset: this._getShapeOffset(currentIcon, size),
       });
     },
 

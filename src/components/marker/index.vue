@@ -112,7 +112,7 @@ export default {
     renderMarkers () {
       this.markerRefs = _.map(this.markers, (item) => {
         const markerStyle = this.getMarkerStyle(item);
-        if (_.isEmpty(item) || !markerStyle) return;
+        if (!markerStyle) return;
         const marker = this.$refs.markerRef.renderMarker(item, markerStyle);
         return marker;
       });
