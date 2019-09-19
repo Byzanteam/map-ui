@@ -5,7 +5,7 @@
     }"
     use-map-ui
   >
-    <marker-point
+    <marker-group
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :inner-label-style="innerLabelStyle"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import MarkerPoint from '../../src/components/marker';
+import MarkerGroup from '../../src/components/marker/marker_group';
 import BaseMap from '../../src/components/map.vue';
 
 const MARKERS = [
@@ -59,7 +59,7 @@ const MARKERS = [
 
 export default {
   components: {
-    MarkerPoint,
+    MarkerGroup,
     BaseMap,
   },
 

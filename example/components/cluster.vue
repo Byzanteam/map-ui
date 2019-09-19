@@ -10,10 +10,10 @@
       :label-style="clusterLabelStyle"
       cluster-key="value"
     >
-      <marker-point
+      <marker-group
         :markers="pointData"
       />
-      <marker-point
+      <marker-group
         :markers="pointData2"
       />
     </cluster>
@@ -24,14 +24,14 @@
 import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
-import MarkerPoint from '../../src/components/marker';
+import MarkerGroup from '../../src/components/marker/marker_group';
 import MARKERS from './point.json';
 
 export default {
   components: {
     BaseMap,
     Cluster,
-    MarkerPoint,
+    MarkerGroup,
   },
 
   data () {

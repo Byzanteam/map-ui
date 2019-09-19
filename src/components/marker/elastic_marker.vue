@@ -1,5 +1,5 @@
 <template>
-  <marker-point
+  <marker-group
     ref="markerPointRef"
     :markers="markers"
     :marker-style-map="markerStyleMap"
@@ -11,11 +11,11 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
-import MarkerPoint from './index.vue';
+import MarkerGroup from './marker_group.vue';
 
 export default {
   components: {
-    MarkerPoint,
+    MarkerGroup,
   },
 
   mixins: [MapMixin],
