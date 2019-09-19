@@ -1,23 +1,22 @@
 <script>
 import _ from 'lodash';
-
 import MapMixin from '../../mixins/map';
 import '../../iconfont/iconfont';
 import '../../iconfont/icon.scss';
 
 const POSITION_TOP_ICON = [
-  'Triangle',
+  'triangle',
 ];
 
 const POSITION_BOTTOM_ICON = [
-  'WaterDrop',
-  'TriangleDown',
+  'waterDrop',
+  'triangleDown',
 ];
 
 const POSITION_CENTER_ICON = [
-  'Hexagon',
-  'Circle',
-  'FivePointsStar',
+  'hexagon',
+  'circle',
+  'fivePointsStar',
 ];
 
 const DEFAULT_MAERKER_POINT_STYLE = {
@@ -37,7 +36,7 @@ const DEFAULT_INNER_LABEL_STYLE = {
 const DEFAULT_ICON = 'Circle';
 
 export const MarkerPoint = {
-  name: 'BasicMarker',
+  name: 'BaseMarker',
 
   mixins: [MapMixin],
 
@@ -77,9 +76,9 @@ export const MarkerPoint = {
           extData: point,
         },
       );
-      marker.on('click', e => this.$emit('markerClick', e));
-      marker.on('mouseover', e => this.$emit('markerMouseover', e));
-      marker.on('mouseout', e => this.$emit('markerMouseout', e));
+      marker.on('click', e => this.$emit('marker-clicked', e));
+      marker.on('mouseover', e => this.$emit('marker-mouseovered', e));
+      marker.on('mouseout', e => this.$emit('marker-mouseouted', e));
       return marker;
     },
 
@@ -125,7 +124,7 @@ export const MarkerPoint = {
       const {
         color,
         size,
-        icon,
+        icon = DEFAULT_ICON,
         strokeColor,
         strokeWidth,
       } = {
@@ -133,10 +132,7 @@ export const MarkerPoint = {
         ...markerStyle,
       };
 
-      const currentIcon = icon || DEFAULT_ICON;
-
-      const IconShape = this.SvgMarker.Shape[currentIcon];
-
+      const IconShape = this.SvgMarker.Shape[_.upperFirst(icon)];
       if (IconShape) {
         return new IconShape({
           width: size,
@@ -147,13 +143,13 @@ export const MarkerPoint = {
         });
       }
       return new this.SvgMarker.Shape.IconFont({
-        icon: `icon-${_.camelCase(currentIcon)}`,
+        icon: `icon-${icon}`,
         width: size,
         height: size,
         strokeWidth,
         strokeColor,
         fillColor: color,
-        offset: this._getShapeOffset(currentIcon, size),
+        offset: this._getShapeOffset(icon, size),
       });
     },
 
@@ -168,6 +164,10 @@ export const MarkerPoint = {
         return [-(size / 2), -size];
       }
     },
+  },
+
+  render () {
+    return null;
   },
 };
 

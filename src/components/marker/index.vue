@@ -1,5 +1,5 @@
 <template>
-  <basic-marker
+  <base-marker
     ref="markerRef"
     @markerReady="markerReadyFunc"
     @marker-clicked="markerClickedFunc"
@@ -11,23 +11,13 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
-import BasicMarker from './marker';
+import BaseMarker from './base_marker';
 
 const DEFAULT_STYLE_MAP = null;
 
-
-const DEFAULT_ICON_TYPES = [
-  'Circle',
-  'FivePointsStar',
-  'WaterDrop',
-  'Triangle',
-  'TriangleDown',
-  'Hexagon',
-];
-
 export default {
   components: {
-    BasicMarker,
+    BaseMarker,
   },
   mixins: [MapMixin],
 
@@ -42,8 +32,7 @@ export default {
     },
     icon: {
       type: String,
-      default: 'Circle',
-      validator: value => DEFAULT_ICON_TYPES.includes(value),
+      default: 'circle',
     },
     markerStyleMap: {
       type: Array,
@@ -97,7 +86,7 @@ export default {
     },
 
     /**
-     * 如果设置了映射，小于最小映射的透明色
+     * 如果设置了映射，小于最小映射的返回undefined
      */
     getMarkerStyle (marker) {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
@@ -114,7 +103,7 @@ export default {
       );
 
       if (currentStyle) {
-        const { innerLabelStyle = [] } = currentStyle;
+        const { innerLabelStyle = {} } = currentStyle;
         return {
           icon: this.icon,
           ...this.markerStyle,
