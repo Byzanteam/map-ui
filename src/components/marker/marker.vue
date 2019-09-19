@@ -125,7 +125,7 @@ export const MarkerPoint = {
       if (_.isEmpty(this.point)) return;
       const { color } = this.markerPointStyle;
       if (color !== 'transparent') {
-        const shape = this._getShape(this.markerStyle);
+        const shape = this._getShape();
         this.marker = new this.SvgMarker(
           shape,
           {
@@ -188,14 +188,14 @@ export const MarkerPoint = {
       };
     },
 
-    _getShape (markerStyle) {
+    _getShape () {
       const {
         color,
         size,
         icon,
         strokeColor,
         strokeWidth,
-      } = { ...this.markerPointStyle, ...markerStyle };
+      } = this.markerPointStyle;
 
       const currentIcon = icon || this.icon;
 
