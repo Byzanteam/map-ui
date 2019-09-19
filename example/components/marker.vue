@@ -149,45 +149,6 @@ export default {
     markerClickFunc () {
       this.pointData = [];
     },
-    changeMarkers () {
-      this.pointData = [
-        {
-          id: 1,
-          location: [117.258446, 38.686622],
-          value: 0,
-          label: ['测试', '描述123221'],
-        },
-        {
-          id: 2,
-          location: [114.559954, 23.124049],
-          value: 3,
-        },
-        {
-          id: 3,
-          location: [116.366794, 39.915309],
-          value: 5,
-          label: '不是',
-        },
-        {
-          id: 4,
-          location: [116.386409, 39.921489],
-          value: 2,
-          label: '测试',
-        },
-        {
-          id: 5,
-          location: [116.886968, 39.983742],
-          value: 3,
-          label: ['是吗', '不是'],
-        },
-        {
-          id: 5,
-          location: [116.286968, 39.903642],
-          value: 5,
-          label: ['是吗', '是的'],
-        },
-      ];
-    },
   },
 };
 </script>

@@ -27,6 +27,8 @@ const DEFAULT_INNER_LABEL_STYLE = {
   padding: [2, 4],
 };
 
+const DEFAULT_STYLE_MAP = null;
+
 
 const DEFAULT_ICON_TYPES = [
   'Circle',
@@ -52,14 +54,14 @@ export default {
       type: Object,
       default: () => ({}),
     },
-    markerStyleMap: {
-      type: Array,
-      default: () => null,
-    },
     icon: {
       type: String,
       default: 'Circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
+    },
+    markerStyleMap: {
+      type: Array,
+      default: () => DEFAULT_STYLE_MAP,
     },
     innerLabelStyle: {
       type: Object,
@@ -90,27 +92,28 @@ export default {
   },
 
   watch: {
-    markers () {
-      this.setData();
+    markers (current) {
+      this.setMarkerData(current);
     },
     markerStyleMap () {
-      this.setData();
+      this.setMarkerData(this.markers);
     },
     innerLabelStyle () {
-      this.setData();
+      this.setMarkerData(this.markers);
     },
     icon () {
-      this.setData();
+      this.setMarkerData(this.markers);
     },
   },
 
   methods: {
     markerReadyFunc () {
-      this.renderMarkers();
+      this.renderMarkers(this.markers);
     },
 
-    renderMarkers () {
-      this.markerRefs = _.map(this.markers, (item) => {
+    renderMarkers (data) {
+      if (!data.length) return;
+      this.markerRefs = _.map(data, (item) => {
         const markerStyle = this.getMarkerStyle(item);
         if (!markerStyle) return;
         const marker = this.$refs.markerRef.renderMarker(item, markerStyle);
@@ -154,15 +157,17 @@ export default {
     },
     clear () {
       _.forEach(this.markerRefs, (marker) => {
-        if (this.map && marker) {
+        if (marker) {
           this.map.remove(marker);
         }
       });
       this.markerRefs = [];
     },
-    setData () {
-      this.clear();
-      this.renderMarkers();
+    setMarkerData (data) {
+      if (this.map) {
+        this.clear();
+        this.renderMarkers(data);
+      }
     },
     markerClickFunc (marker) {
       this.$emit('markerClick', marker);
