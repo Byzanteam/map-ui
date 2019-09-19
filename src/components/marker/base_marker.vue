@@ -165,15 +165,22 @@ export const MarkerPoint = {
     },
 
     _getShapeOffset (icon, size) {
-      if (_.includes(POSITION_TOP_ICON, icon)) {
-        return [-(size / 2), 0];
+      let offset = [];
+      switch (true) {
+        case _.includes(POSITION_TOP_ICON, icon): {
+          offset = [-(size / 2), 0];
+          break;
+        }
+        case _.includes(POSITION_BOTTOM_ICON, icon): {
+          offset = [-(size / 2), -size];
+          break;
+        }
+        default: {
+          offset = [-(size / 2), -(size / 2)];
+          break;
+        }
       }
-      if (_.includes(POSITION_BOTTOM_ICON, icon)) {
-        return [-(size / 2), -size];
-      }
-      if (_.includes(POSITION_CENTER_ICON, icon)) {
-        return [-(size / 2), -(size / 2)];
-      }
+      return offset;
     },
   },
 
