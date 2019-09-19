@@ -2,9 +2,9 @@
   <basic-marker
     ref="markerRef"
     @markerReady="markerReadyFunc"
-    @markerClick="markerClickFunc"
-    @markerMouseover="markerMouseoverFunc"
-    @markerMouseout="markerMouseoutFunc"
+    @marker-clicked="markerClickedFunc"
+    @marker-mouseovered="markerMouseoveredFunc"
+    @marker-mouseouted="markerMouseoutedFunc"
   />
 </template>
 
@@ -140,14 +140,14 @@ export default {
         this.renderMarkers(data);
       }
     },
-    markerClickFunc (marker) {
-      this.$emit('markerClick', marker);
+    markerClickedFunc (marker) {
+      this.$emit('marker-clicked', marker);
     },
-    markerMouseoverFunc (marker) {
-      this.$emit('markerMouseover', marker);
+    markerMouseoveredFunc (marker) {
+      this.$emit('marker-mouseovered', marker);
     },
-    markerMouseoutFunc (marker) {
-      this.$emit('markerMouseout', marker);
+    markerMouseoutedFunc (marker) {
+      this.$emit('marker-mouseouted', marker);
     },
   },
 };

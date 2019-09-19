@@ -70,7 +70,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'Circle',
+          icon: 'circle',
         },
         {
           zoom: 7,
@@ -84,7 +84,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'Triangle',
+          icon: 'triangle',
         },
         {
           zoom: [8, 10],
@@ -98,7 +98,7 @@ export default {
             color: 'rgba(255, 255, 255, 0.2)',
             fontWeight: 400,
           },
-          icon: 'Hexagon',
+          icon: 'hexagon',
         },
       ],
     };

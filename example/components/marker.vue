@@ -9,8 +9,8 @@
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :inner-label-style="innerLabelStyle"
-      icon="WaterDrop"
-      @markerClick="markerClickFunc"
+      icon="waterDrop"
+      @marker-clicked="markerClickedFunc"
     />
   </base-map>
 </template>
@@ -50,7 +50,7 @@ const MARKERS = [
     label: ['五号点', '描述'],
   },
   {
-    id: 5,
+    id: 6,
     location: [116.286968, 39.863642],
     value: 5,
     label: ['六号点', '描述'],
@@ -66,7 +66,6 @@ export default {
   data () {
     return {
       pointData: [],
-      markerRefs: [],
       innerLabelStyle: {
         padding: [2, 4],
         offset: [0, 10],
@@ -87,7 +86,7 @@ export default {
         {
           value: 1,
           color: 'green',
-          icon: 'Triangle',
+          icon: 'triangle',
           size: 80,
           strokeWidth: 10,
           strokeColor: 'blue',
@@ -109,7 +108,7 @@ export default {
         {
           value: 2,
           color: 'red',
-          icon: 'FivePointsStar',
+          icon: 'fivePointsStar',
           size: 40,
           strokeWidth: 3,
           strokeColor: 'purple',
@@ -117,7 +116,7 @@ export default {
         {
           value: 3,
           color: 'blue',
-          icon: 'WaterDrop',
+          icon: 'waterDrop',
           size: 40,
           innerLabelStyle: {
             textStyles: [
@@ -146,7 +145,7 @@ export default {
   },
 
   methods: {
-    markerClickFunc () {
+    markerClickedFunc () {
       this.pointData = [];
     },
   },

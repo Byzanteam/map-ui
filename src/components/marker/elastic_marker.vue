@@ -48,7 +48,7 @@ export default {
           color: 'transparent',
         }],
         innerLabelStyle: {},
-        icon: 'Circle',
+        icon: 'circle',
       };
     },
   },
