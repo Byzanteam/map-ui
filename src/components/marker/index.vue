@@ -45,7 +45,7 @@ export const MarkerPoint = {
   mixins: [MapMixin],
 
   props: {
-    point: {
+    marker: {
       type: Object,
       default: () => ({}),
     },
@@ -65,17 +65,17 @@ export const MarkerPoint = {
   },
 
   watch: {
-    point (current) {
+    marker (current) {
       this.setMarkerData(current);
     },
     markerStyle () {
-      this.setMarkerData(this.point);
+      this.setMarkerData(this.marker);
     },
     innerLabelStyle () {
-      this.setMarkerData(this.point);
+      this.setMarkerData(this.marker);
     },
     icon () {
-      this.setMarkerData(this.point);
+      this.setMarkerData(this.marker);
     },
   },
 
@@ -96,13 +96,13 @@ export const MarkerPoint = {
 
   data () {
     return {
-      marker: null,
+      instance: null,
     };
   },
 
   methods: {
     sourceReadyFunc () {
-      this.renderMarker(this.point);
+      this.renderMarker(this.marker);
     },
 
     renderMarker (data) {
@@ -115,7 +115,7 @@ export const MarkerPoint = {
           return;
         }
         const shape = this._getShape(SvgMarker);
-        this.marker = new SvgMarker(
+        this.instance = new SvgMarker(
           shape,
           {
             map: this.map,
@@ -124,15 +124,15 @@ export const MarkerPoint = {
             extData: data,
           },
         );
-        this.marker.on('click', e => this.$emit('marker-clicked', e));
-        this.marker.on('mouseover', e => this.$emit('marker-mouseover', e));
-        this.marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-        this.$emit('marker-rendered', this.marker);
+        this.instance.on('click', e => this.$emit('marker-clicked', e));
+        this.instance.on('mouseover', e => this.$emit('marker-mouseover', e));
+        this.instance.on('mouseout', e => this.$emit('marker-mouseout', e));
+        this.$emit('marker-rendered', this.instance);
       });
     },
 
     _getLabelContent (shape) {
-      const { label = '' } = this.point;
+      const { label = '' } = this.marker;
       if (!label) return;
 
       const labelCenter = shape.getCenter();
@@ -175,10 +175,10 @@ export const MarkerPoint = {
     },
 
     clear () {
-      if (this.marker) {
-        this.map.remove(this.marker);
+      if (this.instance) {
+        this.map.remove(this.instance);
       }
-      this.marker = null;
+      this.instance = null;
     },
 
     _getShape (SvgMarker) {

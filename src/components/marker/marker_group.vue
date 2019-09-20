@@ -1,13 +1,13 @@
 <template>
   <div class="marker-group">
     <marker-ponit
-      v-for="(marker, index) in markers"
+      v-for="marker in markers"
       ref="markerRef"
-      :key="index"
+      :key="`${marker.location[0]}${marker.location[1]}`"
       :marker-style="getMarkerStyle(marker)"
       :inner-label-style="getInnerLabelStyle(marker)"
       :icon="getIcon(marker)"
-      :point="marker"
+      :marker="marker"
       @marker-rendered="markerRenderedFunc"
       @marker-clicked="markerClickedFunc"
       @marker-mouseover="markerMouseoverFunc"
@@ -82,7 +82,7 @@ export const MarkerGroup =  {
       if (marker) {
         this.markerRefs.push(marker);
       }
-      if (this.counter === this.markers.length) {
+      if (this.counter >= this.markers.length) {
         this.$parent.$emit('markersRendered', {
           source: this.uuid,
           payload: this.markerRefs,
@@ -129,6 +129,7 @@ export const MarkerGroup =  {
         marker.clear();
       });
       this.markerRefs = [];
+      this.counter = 0;
     },
 
     markerClickedFunc (marker) {
