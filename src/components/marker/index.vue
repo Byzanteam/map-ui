@@ -102,41 +102,33 @@ export const MarkerPoint = {
 
   methods: {
     sourceReadyFunc () {
-      if (typeof AMapUI === 'undefined') {
-        window.console.error(`AMapUI not found:
-          svgMarker component required AMapUI
-          please set use-map-ui property on base-map
-        `);
-      } else {
-        AMapUI.loadUI(['overlay/SvgMarker'], (SvgMarker) => {
-          if (!SvgMarker.supportSvg) {
-            return window.console.error('当前环境不支持SVG');
-          }
-          this.SvgMarker = SvgMarker;
-          this.renderMarker(this.point);
-        });
-      }
+      this.renderMarker(this.point);
     },
 
     renderMarker (data) {
-      if (_.isEmpty(data) || this.markerStyle.color === 'transparent') {
-        this.$emit('marker-rendered');
-        return;
-      }
-      const shape = this._getShape();
-      this.marker = new this.SvgMarker(
-        shape,
-        {
-          map: this.map,
-          position: data.location,
-          iconLabel: this._getLabelContent(shape),
-          extData: data,
-        },
-      );
-      this.marker.on('click', e => this.$emit('marker-clicked', e));
-      this.marker.on('mouseover', e => this.$emit('marker-mouseover', e));
-      this.marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-      this.$emit('marker-rendered', this.marker);
+      AMapUI.loadUI(['overlay/SvgMarker'], (SvgMarker) => {
+        if (!SvgMarker.supportSvg) {
+          return window.console.error('当前环境不支持SVG');
+        }
+        if (_.isEmpty(data) || this.markerStyle.color === 'transparent') {
+          this.$emit('marker-rendered');
+          return;
+        }
+        const shape = this._getShape(SvgMarker);
+        this.marker = new SvgMarker(
+          shape,
+          {
+            map: this.map,
+            position: data.location,
+            iconLabel: this._getLabelContent(shape),
+            extData: data,
+          },
+        );
+        this.marker.on('click', e => this.$emit('marker-clicked', e));
+        this.marker.on('mouseover', e => this.$emit('marker-mouseover', e));
+        this.marker.on('mouseout', e => this.$emit('marker-mouseout', e));
+        this.$emit('marker-rendered', this.marker);
+      });
     },
 
     _getLabelContent (shape) {
@@ -176,7 +168,7 @@ export const MarkerPoint = {
     },
 
     setMarkerData (data) {
-      if (this.map && this.SvgMarker) {
+      if (this.map) {
         this.clear();
         this.renderMarker(data);
       }
@@ -189,7 +181,7 @@ export const MarkerPoint = {
       this.marker = null;
     },
 
-    _getShape () {
+    _getShape (SvgMarker) {
       const {
         color,
         size,
@@ -197,7 +189,7 @@ export const MarkerPoint = {
         strokeWidth,
       } = this.markerPointStyle;
 
-      const IconShape = this.SvgMarker.Shape[_.upperFirst(this.icon)];
+      const IconShape = SvgMarker.Shape[_.upperFirst(this.icon)];
       if (IconShape) {
         return new IconShape({
           width: size,
@@ -207,7 +199,7 @@ export const MarkerPoint = {
           fillColor: color,
         });
       }
-      return new this.SvgMarker.Shape.IconFont({
+      return new SvgMarker.Shape.IconFont({
         icon: `icon-${this.icon}`,
         width: size,
         height: size,

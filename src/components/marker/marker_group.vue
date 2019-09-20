@@ -54,7 +54,7 @@ export const MarkerGroup =  {
     return {
       markerRefs: [],
       uuid: _.uniqueId('marker_'),
-      count: 0,
+      counter: 0,
     };
   },
 
@@ -78,11 +78,11 @@ export const MarkerGroup =  {
 
   methods: {
     markerRenderedFunc (marker) {
-      this.count += 1;
+      this.counter += 1;
       if (marker) {
         this.markerRefs.push(marker);
       }
-      if (this.count === this.markers.length) {
+      if (this.counter === this.markers.length) {
         this.$parent.$emit('markersRendered', {
           source: this.uuid,
           payload: this.markerRefs,
