@@ -5,7 +5,7 @@
     }"
     use-map-ui
   >
-    <marker-group
+    <stratum-marker
       :markers="pointData"
       :marker-style-map="markerStyleMap"
       :inner-label-style="innerLabelStyle"
@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import MarkerGroup from '../../src/components/marker/class_marker';
+import StratumMarker from '../../src/components/marker/stratum_marker';
 import BaseMap from '../../src/components/map.vue';
 
 const MARKERS = [
@@ -59,7 +59,7 @@ const MARKERS = [
 
 export default {
   components: {
-    MarkerGroup,
+    StratumMarker,
     BaseMap,
   },
 

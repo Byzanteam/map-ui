@@ -10,10 +10,10 @@
       :label-style="clusterLabelStyle"
       cluster-key="value"
     >
-      <marker-group
+      <stratum-marker
         :markers="pointData"
       />
-      <marker-group
+      <stratum-marker
         :markers="pointData2"
       />
     </cluster>
@@ -24,14 +24,14 @@
 import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
-import MarkerGroup from '../../src/components/marker/class_marker';
+import StratumMarker from '../../src/components/marker/stratum_marker';
 import MARKERS from './point.json';
 
 export default {
   components: {
     BaseMap,
     Cluster,
-    MarkerGroup,
+    StratumMarker,
   },
 
   data () {

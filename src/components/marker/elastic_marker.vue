@@ -1,5 +1,5 @@
 <template>
-  <marker-group
+  <stratum-marker
     ref="markerPointRef"
     :markers="markers"
     :marker-style-map="markerStyleMap"
@@ -11,11 +11,11 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
-import MarkerGroup from './class_marker.vue';
+import StratumMarker from './stratum_marker.vue';
 
 export default {
   components: {
-    MarkerGroup,
+    StratumMarker,
   },
 
   mixins: [MapMixin],

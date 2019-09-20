@@ -168,7 +168,7 @@ export const MarkerPoint = {
     },
 
     setMarkerData (data) {
-      if (this.map) {
+      if (this.map && typeof AMapUI !== 'undefined') {
         this.clear();
         this.renderMarker(data);
       }

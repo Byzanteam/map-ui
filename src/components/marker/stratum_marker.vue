@@ -1,9 +1,8 @@
 <template>
-  <div class="marker-group">
+  <div class="stratum-marker">
     <marker-ponit
-      v-for="marker in markers"
-      ref="markerRef"
-      :key="`${marker.location[0]}${marker.location[1]}`"
+      v-for="(marker, index) in markers"
+      :key="`${marker.location[0]}${marker.location[1]}${index}`"
       :marker-style="getMarkerStyle(marker)"
       :inner-label-style="getInnerLabelStyle(marker)"
       :icon="getIcon(marker)"
@@ -19,13 +18,15 @@
 <script>
 import _ from 'lodash';
 import MarkerPonit from './index';
+import MapMixin from '../../mixins/map';
 
 const DEFAULT_STYLE_MAP = null;
 
-export const MarkerGroup =  {
+export const StratumMarker =  {
   components: {
     MarkerPonit,
   },
+  mixins: [MapMixin],
 
   props: {
     markers: {
@@ -125,11 +126,11 @@ export const MarkerGroup =  {
     },
 
     clear () {
-      _.forEach(this.$refs.markerRef, (marker) => {
-        marker.clear();
+      _.forEach(this.markerRefs, (marker) => {
+        this.map.remove(marker);
       });
-      this.markerRefs = [];
       this.counter = 0;
+      this.markerRefs = [];
     },
 
     markerClickedFunc (marker) {
@@ -146,5 +147,5 @@ export const MarkerGroup =  {
   },
 };
 
-export default MarkerGroup;
+export default StratumMarker;
 </script>
