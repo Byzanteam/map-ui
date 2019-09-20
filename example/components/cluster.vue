@@ -24,7 +24,7 @@
 import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
-import MarkerGroup from '../../src/components/marker/marker_group';
+import MarkerGroup from '../../src/components/marker/class_marker';
 import MARKERS from './point.json';
 
 export default {

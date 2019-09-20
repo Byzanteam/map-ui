@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import MarkerGroup from '../../src/components/marker/marker_group';
+import MarkerGroup from '../../src/components/marker/class_marker';
 import BaseMap from '../../src/components/map.vue';
 
 const MARKERS = [

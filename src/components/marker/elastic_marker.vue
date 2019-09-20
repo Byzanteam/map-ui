@@ -11,7 +11,7 @@
 <script>
 import _ from 'lodash';
 import MapMixin from '../../mixins/map';
-import MarkerGroup from './marker_group.vue';
+import MarkerGroup from './class_marker.vue';
 
 export default {
   components: {
