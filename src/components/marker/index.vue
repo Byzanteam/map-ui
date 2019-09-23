@@ -139,7 +139,7 @@ export const MarkerPoint = {
       const {
         padding,
         offset = [labelCenter[1], 0],
-        textStyles = [],
+        textStyleMap = [],
       } = this.markerInnerLabelStyle;
 
       let content;
@@ -147,7 +147,7 @@ export const MarkerPoint = {
         content = _.reduce(label, (acc, item, key) => {
           const { fontSize, color, fontWeight } = {
             ...this.markerInnerLabelStyle,
-            ...textStyles[key],
+            ...textStyleMap[key],
           };
           return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
         }, '');

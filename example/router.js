@@ -18,6 +18,7 @@ const router = new VueRouter({
     { path: '/heat-map', component: () => import('./components/heat_map') },
     { path: '/airline', component: () => import('./components/airline') },
     { path: '/cluster', component: () => import('./components/cluster') },
+    { path: '/stratum_marker', component: () => import('./components/stratum_marker') },
   ],
 });
 
