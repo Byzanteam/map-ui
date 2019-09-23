@@ -149,11 +149,15 @@ export const MarkerPoint = {
             ...this.markerInnerLabelStyle,
             ...textStyleMap[key],
           };
-          return `${acc}<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${item}</div>`;
+          return `${acc}${this._getTemplateLabel({
+            fontSize, color, fontWeight, label: item,
+          })}`;
         }, '');
       } else {
         const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
-        content = `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
+        content = this._getTemplateLabel({
+          fontSize, color, fontWeight, label,
+        });
       }
 
       return {
@@ -179,6 +183,16 @@ export const MarkerPoint = {
         this.map.remove(this.instance);
       }
       this.instance = null;
+    },
+
+    _getTemplateLabel (style) {
+      const {
+        fontSize,
+        color,
+        fontWeight,
+        label,
+      } = style;
+      return `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
     },
 
     _getShape (SvgMarker) {
