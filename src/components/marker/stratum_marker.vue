@@ -1,6 +1,6 @@
 <template>
   <div class="stratum-marker">
-    <marker-ponit
+    <marker-point
       v-for="(marker, index) in markers"
       :key="`${marker.location[0]}${marker.location[1]}${index}`"
       :marker-style="getMarkerStyle(marker)"
@@ -17,14 +17,14 @@
 
 <script>
 import _ from 'lodash';
-import MarkerPonit from './index';
+import MarkerPoint from './index';
 import MapMixin from '../../mixins/map';
 
 const DEFAULT_STYLE_MAP = null;
 
 export const StratumMarker =  {
   components: {
-    MarkerPonit,
+    MarkerPoint,
   },
   mixins: [MapMixin],
 
@@ -104,11 +104,12 @@ export const StratumMarker =  {
         ({ value }) => marker.value >= value
       );
 
-      return {
-        color: 'transparent',
-        ...this.markerStyle,
-        ...currentStyle,
-      };
+      if (currentStyle) {
+        return {
+          ...this.markerStyle,
+          ...currentStyle,
+        };
+      }
     },
 
     getInnerLabelStyle (marker) {

@@ -110,7 +110,7 @@ export const MarkerPoint = {
         if (!SvgMarker.supportSvg) {
           return window.console.error('当前环境不支持SVG');
         }
-        if (_.isEmpty(data) || this.markerStyle.color === 'transparent') {
+        if (_.isEmpty(data) || _.isEmpty(this.markerStyle)) {
           this.$emit('marker-rendered');
           return;
         }
