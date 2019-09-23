@@ -149,15 +149,11 @@ export const MarkerPoint = {
             ...this.markerInnerLabelStyle,
             ...textStyleMap[key],
           };
-          return `${acc}${this._getTemplateLabel({
-            fontSize, color, fontWeight, label: item,
-          })}`;
+          return `${acc}${this._getTemplateLabel(fontSize, color, fontWeight, item)}`;
         }, '');
       } else {
         const { fontSize, color, fontWeight } = this.markerInnerLabelStyle;
-        content = this._getTemplateLabel({
-          fontSize, color, fontWeight, label,
-        });
+        content = this._getTemplateLabel(fontSize, color, fontWeight, label);
       }
 
       return {
@@ -185,13 +181,7 @@ export const MarkerPoint = {
       this.instance = null;
     },
 
-    _getTemplateLabel (style) {
-      const {
-        fontSize,
-        color,
-        fontWeight,
-        label,
-      } = style;
+    _getTemplateLabel (fontSize, color, fontWeight, label) {
       return `<div style="font-size:${fontSize}px; color: ${color}; font-weight: ${fontWeight}"; position: relative;">${label}</div>`;
     },
 
