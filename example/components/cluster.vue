@@ -3,16 +3,17 @@
     :map-options="{
       zoom: 4
     }"
+    use-map-ui
   >
     <cluster
       :cluster-style-map="clusterStyleMap"
       :label-style="clusterLabelStyle"
       cluster-key="value"
     >
-      <marker-point
+      <stratum-marker
         :markers="pointData"
       />
-      <marker-point
+      <stratum-marker
         :markers="pointData2"
       />
     </cluster>
@@ -23,14 +24,14 @@
 import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
-import MarkerPoint from '../../src/components/marker';
+import StratumMarker from '../../src/components/marker/stratum_marker';
 import MARKERS from './point.json';
 
 export default {
   components: {
     BaseMap,
     Cluster,
-    MarkerPoint,
+    StratumMarker,
   },
 
   data () {

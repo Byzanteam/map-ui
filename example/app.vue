@@ -36,6 +36,11 @@
           cluster
         </router-link>
       </li>
+      <li>
+        <router-link to="/stratum_marker">
+          stratum_marker
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
