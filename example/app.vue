@@ -7,6 +7,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/elastic_marker">
+          elastic_marker
+        </router-link>
+      </li>
+      <li>
         <router-link to="/regions">
           regions
         </router-link>
@@ -24,6 +29,16 @@
       <li>
         <router-link to="/airline">
           airline
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/cluster">
+          cluster
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/stratum_marker">
+          stratum_marker
         </router-link>
       </li>
     </ul>
