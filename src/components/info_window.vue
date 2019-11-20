@@ -29,6 +29,7 @@ export const InfoWindow =  {
     },
     createInfoWindow (content, location) {
       this.infoWindow = new AMap.InfoWindow({
+        autoMove: true,
         content: `${content}`,
       });
       this.open(location);
