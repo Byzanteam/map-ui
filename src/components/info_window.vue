@@ -1,7 +1,7 @@
 <script>
 import MapMixin from '../mixins/map';
 
-export const infoWindow =  {
+export const InfoWindow =  {
   name: 'InfoWindow',
 
   mixins: [MapMixin],
@@ -27,24 +27,23 @@ export const infoWindow =  {
     mapLoadedFunc () {
       this.$emit('infowindow-ready');
     },
-    createInfoWindow () {
-      const info = `${this.infoWindowHtml}`;
-
+    createInfoWindow (content, location) {
       this.infoWindow = new AMap.InfoWindow({
-        content: info,
+        content: `${content}`,
       });
-      this.open();
+      this.open(location);
       this.$emit('infoWindow-created', this.infoWindow);
     },
 
     close () {
       this.infoWindow.close();
+      this.map.clearInfoWindow();
     },
 
-    open () {
+    open (location) {
       this.infoWindow.open(
         this.map,
-        this.location
+        location
       );
     },
   },
@@ -54,5 +53,5 @@ export const infoWindow =  {
   },
 };
 
-export default infoWindow;
+export default InfoWindow;
 </script>
