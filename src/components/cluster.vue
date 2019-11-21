@@ -42,7 +42,7 @@ const LABERL_FIXED_STYLE = `
   text-align: center;
 `;
 
-export default {
+export const Cluster = {
   name: 'Cluster',
 
   mixins: [MapMixin],
@@ -217,4 +217,6 @@ export default {
     },
   },
 };
+
+export default Cluster;
 </script>
