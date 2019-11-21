@@ -53,6 +53,10 @@ export const Cluster = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
     labelStyle: {
       type: Object,
       default: () => ({}),
@@ -121,6 +125,7 @@ export const Cluster = {
           {
             gridSize: 80,
             renderClusterMarker: this._getClusterContent,
+            ...this.options,
           },
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
