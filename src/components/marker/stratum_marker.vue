@@ -96,14 +96,16 @@ export const StratumMarker =  {
   methods: {
     markerRenderedFunc (marker) {
       this.counter += 1;
-      const new_position = marker.getPosition();
-      const hasMarker = _.find(this.markerRefs, (item) => {
-        const old_position = item.getPosition();
-        return old_position.lng === new_position.lng
+      if (marker) {
+        const new_position = marker.getPosition();
+        const hasMarker = _.find(this.markerRefs, (item) => {
+          const old_position = item.getPosition();
+          return old_position.lng === new_position.lng
         && old_position.lat === new_position.lat;
-      });
-      if (marker && !hasMarker) {
-        this.markerRefs.push(marker);
+        });
+        if (!hasMarker) {
+          this.markerRefs.push(marker);
+        }
       }
       if (this.counter >= this.markers.length) {
         this.$parent.$emit('markersRendered', {
