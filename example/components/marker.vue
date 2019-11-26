@@ -9,7 +9,7 @@
       :marker="point"
       :inner-label-style="innerLabelStyle"
       :marker-style="markerStyle"
-      icon="waterDrop"
+      icon="circle-o"
     />
   </base-map>
 </template>
@@ -33,7 +33,8 @@ export default {
         offset: [0, 0],
       },
       markerStyle: {
-        color: 'blue',
+        color: 'transparent',
+        strokeColor: 'red',
         size: 60,
       },
       point: {
