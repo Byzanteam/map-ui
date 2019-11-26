@@ -11,6 +11,9 @@
             <symbol id="icon-hexagon" viewBox="0 0 1024 1024">
               <path d="M896 704c0 16.213333-8.96 30.293333-22.613333 37.546667l-337.066667 189.44c-6.826667 5.12-15.36 7.68-24.32 7.68-8.96 0-17.493333-2.56-24.32-7.68l-337.066667-189.44A42.282667 42.282667 0 0 1 128 704v-384c0-16.213333 8.96-30.293333 22.613333-37.546667l337.066667-189.44c6.826667-5.12 15.36-7.68 24.32-7.68 8.96 0 17.493333 2.56 24.32 7.68l337.066667 189.44c13.653333 7.253333 22.613333 21.333333 22.613333 37.546667v384z" fill="" ></path>
             </symbol>
+            <symbol id="icon-circle-o" viewBox="0 0 1024 1024">
+              <circle cx="512" cy="512" r="500"></circle>
+            </symbol>
           </svg>`,
       t = (e = document.getElementsByTagName('script'))[e.length - 1].getAttribute('data-injectcss'); if (t && !d.__iconfont__svg__cssinject__) { d.__iconfont__svg__cssinject__ = !0; try { document.write('<style>.svgfont {display: inline-block;width: 1em;height: 1em;fill: currentColor;vertical-align: -0.1em;font-size:16px;}</style>'); } catch (e) { console && console.log(e); } }!(function (e) {
     if (document.addEventListener) if (~['complete', 'loaded', 'interactive'].indexOf(document.readyState))setTimeout(e, 0); else { var t = function () { document.removeEventListener('DOMContentLoaded', t, !1), e(); }; document.addEventListener('DOMContentLoaded', t, !1); } else document.attachEvent && (o = e, i = d.document, l = !1, (c = function () { try { i.documentElement.doScroll('left'); } catch (e) { return void setTimeout(c, 50); }n(); })(), i.onreadystatechange = function () { i.readyState == 'complete' && (i.onreadystatechange = null, n()); }); function n () { l || (l = !0, o()); } let o,
