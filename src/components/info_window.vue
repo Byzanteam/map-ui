@@ -31,6 +31,7 @@ export const InfoWindow =  {
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
         content: `${content}`,
+        offset: new AMap.Pixel(0, -8),
       });
       this.open(location);
       this.$emit('infoWindow-created', this.infoWindow);
@@ -44,7 +45,7 @@ export const InfoWindow =  {
     open (location) {
       this.infoWindow.open(
         this.map,
-        location
+        location,
       );
     },
   },

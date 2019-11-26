@@ -7,18 +7,7 @@ const MASS_OPTIONS =  {
   zIndex: 111,
 };
 
-const STYLES = [
-  {
-    url: 'https://a.amap.com/jsapi_demos/static/images/mass0.png',
-    anchor: [6, 6],
-    size: [11, 11],
-  },
-  {
-    url: 'https://a.amap.com/jsapi_demos/static/images/mass1.png',
-    anchor: [4, 4],
-    size: [7, 7],
-  },
-];
+const STYLES = [];
 
 export const MassMarker = {
   name: 'MassMarker',
@@ -45,6 +34,13 @@ export const MassMarker = {
       this.clear();
       if (this.mass) {
         this.mass.setData(value);
+      }
+    },
+    massStyles (value) {
+      this.clear();
+      if (this.mass) {
+        this.mass.setStyle(value);
+        this.mass.setData(this.markers);
       }
     },
   },
