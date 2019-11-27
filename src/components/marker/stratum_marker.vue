@@ -9,6 +9,7 @@
       :marker="marker"
       @marker-rendered="markerRenderedFunc"
       @marker-clicked="markerClickedFunc"
+      @marker-dbclicked="markerClickedFunc"
       @marker-mouseover="markerMouseoverFunc"
       @marker-mouseout="markerMouseoutFunc"
     />
@@ -160,6 +161,10 @@ export const StratumMarker =  {
 
     markerClickedFunc (marker) {
       this.$emit('marker-clicked', marker);
+    },
+
+    markerDbclickedFunc (marker) {
+      this.$emit('marker-dbclicked', marker);
     },
 
     markerMouseoverFunc (marker) {
