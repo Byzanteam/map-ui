@@ -9,7 +9,7 @@
       :marker="marker"
       @marker-rendered="markerRenderedFunc"
       @marker-clicked="markerClickedFunc"
-      @marker-dbclicked="markerClickedFunc"
+      @marker-dbclicked="markerDbclickedFunc"
       @marker-mouseover="markerMouseoverFunc"
       @marker-mouseout="markerMouseoutFunc"
     />
