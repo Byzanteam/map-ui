@@ -169,12 +169,12 @@ export const MarkerPoint = {
       };
     },
 
-    setMarkerData (data) {
+    setMarkerData: _.debounce((data) => {
       if (this.map && typeof AMapUI !== 'undefined') {
         this.clear();
         this.renderMarker(data);
       }
-    },
+    }),
 
     clear () {
       if (this.instance) {
