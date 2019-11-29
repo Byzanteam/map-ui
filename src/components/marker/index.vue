@@ -169,17 +169,19 @@ export const MarkerPoint = {
       };
     },
 
-    setMarkerData: _.debounce((data) => {
+    setMarkerData (data) {
       if (this.map && typeof AMapUI !== 'undefined') {
         this.clear();
         this.renderMarker(data);
       }
-    }),
+    },
 
     clear () {
-      if (this.instance) {
-        this.map.remove(this.instance);
-      }
+      this.map.getAllOverlays().forEach((overlay) => {
+        if (overlay.getExtData().location) {
+          this.map.remove(overlay);
+        }
+      });
       this.instance = null;
     },
 
