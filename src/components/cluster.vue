@@ -77,6 +77,10 @@ export const Cluster = {
       type: Array,
       default: () => [],
     },
+    clusterContent: {
+      type: Function,
+      default: null,
+    },
     clusterKey: {
       type: String,
       default: '',
@@ -162,7 +166,7 @@ export const Cluster = {
           this.allMarkers,
           {
             gridSize: 80,
-            renderClusterMarker: this._getClusterContent,
+            renderClusterMarker: this.clusterContent || this._getClusterContent,
             ...this.options,
           },
         );
