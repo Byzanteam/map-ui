@@ -98,6 +98,7 @@ export const MarkerPoint = {
   data () {
     return {
       instance: null,
+      timer: null,
     };
   },
 
@@ -125,8 +126,16 @@ export const MarkerPoint = {
             extData: data,
           },
         );
-        this.instance.on('click', e => this.$emit('marker-clicked', e));
-        this.instance.on('dblclick', e => this.$emit('marker-dbclicked', e));
+        this.instance.on('click', (e) => {
+          this.timer && clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.$emit('marker-clicked', e);
+          }, 300);
+        });
+        this.instance.on('dblclick', (e) => {
+          this.timer && clearTimeout(this.timer);
+          this.$emit('marker-dbclicked', e);
+        });
         this.instance.on('mouseover', e => this.$emit('marker-mouseover', e));
         this.instance.on('mouseout', e => this.$emit('marker-mouseout', e));
         this.$emit('marker-rendered', this.instance);
