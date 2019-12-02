@@ -53,9 +53,17 @@ export const Cluster = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
+    points: {
+      type: Array,
+      default: () => ([]),
+    },
     options: {
       type: Object,
       default: () => ({}),
+    },
+    markerContent: {
+      type: String,
+      default: '',
     },
     labelStyle: {
       type: Object,
@@ -94,10 +102,22 @@ export const Cluster = {
         this.markersGroup, (acc, cur) => acc.push(...acc, ...cur), []
       );
     },
+    allMarkers () {
+      return _.map((this.points), point => new AMap.Marker({
+        position: point.location,
+        content: this.markerContent,
+        offset: new AMap.Pixel(-15, -15),
+        extData: point,
+      })).concat(this.markers);
+    },
   },
 
   watch: {
     markers () {
+      this.clear();
+      this.updateCluster();
+    },
+    points () {
       this.clear();
       this.updateCluster();
     },
@@ -115,13 +135,13 @@ export const Cluster = {
       this.cluster && this.cluster.clearMarkers();
     },
     updateCluster () {
-      this.cluster.setMarkers(this.markers);
+      this.cluster.setMarkers(this.allMarkers);
     },
     _renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
           this.map,
-          this.markers,
+          this.allMarkers,
           {
             gridSize: 80,
             renderClusterMarker: this._getClusterContent,
