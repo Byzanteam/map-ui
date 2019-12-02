@@ -87,6 +87,7 @@ export const Cluster = {
     return {
       markersGroup: {},
       cluster: null,
+      timer: null,
     };
   },
 
@@ -103,12 +104,27 @@ export const Cluster = {
       );
     },
     allMarkers () {
-      return _.map((this.points), point => new AMap.Marker({
-        position: point.location,
-        content: this.markerContent,
-        offset: new AMap.Pixel(-15, -15),
-        extData: point,
-      })).concat(this.markers);
+      return _.map((this.points), (point) => {
+        const marker = new AMap.Marker({
+          position: point.location,
+          content: this.markerContent,
+          offset: new AMap.Pixel(point.offset[0], point.offset[1]),
+          extData: point,
+        });
+        marker.on('click', (e) => {
+          this.timer && clearTimeout(this.timer);
+          this.timer = setTimeout(() => {
+            this.$emit('marker-clicked', e);
+          }, 300);
+        });
+        marker.on('dblclick', (e) => {
+          this.timer && clearTimeout(this.timer);
+          this.$emit('marker-dbclicked', e);
+        });
+        marker.on('mouseover', e => this.$emit('marker-mouseover', e));
+        marker.on('mouseout', e => this.$emit('marker-mouseout', e));
+        return marker;
+      }).concat(this.markers);
     },
   },
 
@@ -135,7 +151,9 @@ export const Cluster = {
       this.cluster && this.cluster.clearMarkers();
     },
     updateCluster () {
-      this.cluster.setMarkers(this.allMarkers);
+      if (this.cluster) {
+        this.cluster.setMarkers(this.allMarkers);
+      }
     },
     _renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
