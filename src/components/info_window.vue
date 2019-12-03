@@ -15,6 +15,10 @@ export const InfoWindow =  {
       type: Array,
       default: () => ([]),
     },
+    options: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -32,6 +36,7 @@ export const InfoWindow =  {
         autoMove: true,
         content: `${content}`,
         offset: new AMap.Pixel(0, -8),
+        ...this.options,
       });
       this.open(location);
       this.$emit('infoWindow-created', this.infoWindow);
