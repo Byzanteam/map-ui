@@ -31,14 +31,15 @@ export const InfoWindow =  {
     mapLoadedFunc () {
       this.$emit('infowindow-ready');
     },
-    createInfoWindow (content, location) {
+    createInfoWindow (options) {
+      const { offset = [0, -8] } = options;
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
-        content,
-        offset: new AMap.Pixel(0, -8),
+        content: options.content,
+        offset: new AMap.Pixel(offset[0], offset[1]),
         ...this.options,
       });
-      this.open(location);
+      this.open(options.location);
       this.$emit('infoWindow-created', this.infoWindow);
     },
 
