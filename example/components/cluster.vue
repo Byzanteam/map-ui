@@ -10,6 +10,7 @@
       :label-style="clusterLabelStyle"
       :points="clusterData"
       :marker-content="markerContent"
+      :cluster-content="clusterContent"
     >
       <stratum-marker
         :markers="pointData"
@@ -293,6 +294,20 @@ export default {
         location: item.lnglat,
         ...item,
       }));
+    },
+  },
+
+  methods: {
+    clusterContent  (context) {
+      const node = `<div
+        style='width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: red;
+        border: 3px solid rgba(255, 255, 255, 0.2)'>
+          ${context.count}
+        </div>`;
+      context.marker.setContent(node);
     },
   },
 };

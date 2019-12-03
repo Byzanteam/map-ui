@@ -112,7 +112,9 @@ export const Cluster = {
         const marker = new AMap.Marker({
           position: point.location,
           content: this.markerContent,
-          offset: new AMap.Pixel(point.offset[0], point.offset[1]),
+          offset: point.offset
+            ? new AMap.Pixel(point.offset[0], point.offset[1])
+            : new AMap.Pixel(0, 0),
           extData: point,
         });
         marker.on('click', (e) => {
