@@ -34,7 +34,7 @@ export const InfoWindow =  {
     createInfoWindow (content, location) {
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
-        content: `${content}`,
+        content,
         offset: new AMap.Pixel(0, -8),
         ...this.options,
       });
