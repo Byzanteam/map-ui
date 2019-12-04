@@ -46,6 +46,7 @@ export const InfoWindow =  {
     close () {
       this.infoWindow.close();
       this.map.clearInfoWindow();
+      this.$emit('window-closed');
     },
 
     open (location) {
