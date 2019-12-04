@@ -168,7 +168,7 @@ export const BaseMap = {
 
     _resize: _.debounce(function debounceResize () {
       this.$emit('map-resize', this.map.getBounds());
-    }, 100),
+    }, 1000),
 
     _loadSource () {
       this.__loadMapSource();
