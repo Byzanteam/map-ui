@@ -151,21 +151,19 @@ export const Cluster = {
 
   methods: {
     mapLoadedFunc () {
-      this._renderCluster();
+      this._renderCluster(this.allMarkers);
     },
     clear () {
-      this.cluster && this.cluster.clearMarkers();
+      this.cluster && this.cluster.setMap(null);
     },
     updateCluster () {
-      if (this.cluster) {
-        this.cluster.setMarkers(this.allMarkers);
-      }
+      this._renderCluster(this.allMarkers);
     },
-    _renderCluster () {
+    _renderCluster (markers) {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
           this.map,
-          this.allMarkers,
+          markers,
           {
             gridSize: 80,
             renderClusterMarker: this.clusterContent || this._getClusterContent,
