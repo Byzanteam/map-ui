@@ -40,7 +40,9 @@ export const InfoWindow =  {
         ...this.options,
       });
       this.open(options.location);
-      this.$emit('infoWindow-created', this.infoWindow);
+      this.$emit('window-opened', this.infoWindow);
+      this.infoWindow.on('close', this.$emit('window-closed'));
+      this.infoWindow.on('open', this.$emit('window-opened'));
     },
 
     close () {
