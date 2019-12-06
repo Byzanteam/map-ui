@@ -41,6 +41,11 @@
           stratum_marker
         </router-link>
       </li>
+      <li>
+        <router-link to="/info_window">
+          info_window
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
