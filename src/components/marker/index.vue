@@ -66,7 +66,7 @@ export const MarkerPoint = {
   },
 
   watch: {
-    conditions () {
+    options () {
       this.setMarkerData(this.marker);
     },
   },
@@ -84,7 +84,7 @@ export const MarkerPoint = {
         ...this.innerLabelStyle,
       };
     },
-    conditions () {
+    options () {
       return {
         marker: this.marker,
         markerStyle: this.markerStyle,
