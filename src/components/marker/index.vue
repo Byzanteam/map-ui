@@ -66,16 +66,7 @@ export const MarkerPoint = {
   },
 
   watch: {
-    marker (current) {
-      this.setMarkerData(current);
-    },
-    markerStyle () {
-      this.setMarkerData(this.marker);
-    },
-    innerLabelStyle () {
-      this.setMarkerData(this.marker);
-    },
-    icon () {
+    conditions () {
       this.setMarkerData(this.marker);
     },
   },
@@ -91,6 +82,14 @@ export const MarkerPoint = {
       return {
         ...DEFAULT_INNER_LABEL_STYLE,
         ...this.innerLabelStyle,
+      };
+    },
+    conditions () {
+      return {
+        marker: this.marker,
+        markerStyle: this.markerStyle,
+        innerLabelStyle: this.innerLabelStyle,
+        icon: this.icon,
       };
     },
   },
