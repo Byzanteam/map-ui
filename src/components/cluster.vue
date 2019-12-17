@@ -135,11 +135,7 @@ export const Cluster = {
   },
 
   watch: {
-    markers () {
-      this.clear();
-      this.updateCluster();
-    },
-    points () {
+    allMarkers () {
       this.clear();
       this.updateCluster();
     },
