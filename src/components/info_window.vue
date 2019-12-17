@@ -61,7 +61,6 @@ export const InfoWindow =  {
         ...options,
       });
       this.open(location);
-      this.$emit('window-opened', this.infoWindow);
     },
 
     close () {
@@ -75,6 +74,7 @@ export const InfoWindow =  {
           this.map,
           location,
         );
+        this.$emit('window-opened', this.infoWindow);
       }
     },
   },
