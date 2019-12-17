@@ -15,7 +15,7 @@ export const InfoWindow =  {
       type: Array,
       default: () => ([]),
     },
-    options: {
+    infoWindowOptions: {
       type: Object,
       default: () => ({}),
     },
@@ -28,23 +28,17 @@ export const InfoWindow =  {
   },
 
   watch: {
-    location: {
-      hanlder  (value) {
-        this.createInfoWindow({
-          location: value,
-          content: this.infoWindowHtml,
-        });
-      },
-      immediate: true,
+    location (value) {
+      this.createInfoWindow({
+        location: value,
+        content: this.infoWindowHtml,
+      });
     },
-    infoWindowHtml: {
-      hanlder (value) {
-        this.createInfoWindow({
-          location: this.location,
-          content: value,
-        });
-      },
-      immediate: true,
+    infoWindowHtml (value) {
+      this.createInfoWindow({
+        location: this.location,
+        content: value,
+      });
     },
   },
 
@@ -52,25 +46,31 @@ export const InfoWindow =  {
     mapLoadedFunc () {
       this.$emit('infowindow-ready');
     },
+
     createInfoWindow ({ location, content }) {
-      const { offset = [0, -8] } = this.options;
+      const { offset = [0, -8] } = this.infoWindowOptions;
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
         content,
         offset: new AMap.Pixel(offset[0], offset[1]),
-        ...this.options,
+        ...this.infoWindowOptions,
       });
-      this.infoWindow.open(
-        this.map,
-        location,
-      );
+      this.open(location);
       this.$emit('window-opened', this.infoWindow);
     },
 
     close () {
       this.infoWindow.close();
-      this.map.clearInfoWindow();
       this.$emit('window-closed');
+    },
+
+    open (location) {
+      if (this.infoWindow) {
+        this.infoWindow.open(
+          this.map,
+          location,
+        );
+      }
     },
   },
 

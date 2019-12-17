@@ -10,7 +10,8 @@
         v-for="(marker, index) in markers"
         :key="index"
         :marker="marker"
-        @marker-click=""
+        :marker-style="markerStyle"
+        @marker-clicked="createWindow(marker)"
       />
       <info-window
         ref="windowRef"
@@ -19,24 +20,6 @@
         :info-window-html="infoData.content"
       />
     </base-map>
-    <button
-      class="open-btn"
-      @mouseover="createWindow({
-        location: [116.258446, 37.686622],
-        content: '<div>123</div>'
-      })"
-    >
-      打开信息框1
-    </button>
-    <button
-      class="open-btn"
-      @mouseover="createWindow({
-        location: [116.858446, 38.686622],
-        content: '<div>456</div>'
-      })"
-    >
-      打开信息框2
-    </button>
   </div>
 </template>
 
@@ -55,9 +38,14 @@ export default {
   data () {
     return {
       markers: [
-        { location: [116.258446, 37.686622] },
-        { location: [113.559954, 22.124049] },
+        { location: [116.258446, 37.686622], label: '一号点', content: '<div>123</div>' },
+        { location: [113.559954, 22.124049], label: '二号点', content: '<div>456</div>' },
       ],
+      markerStyle: {
+        color: 'transparent',
+        strokeColor: 'red',
+        size: 30,
+      },
       infoData: {
         location: [0, 0],
         content: '<div></div>',
@@ -68,6 +56,7 @@ export default {
   methods: {
     createWindow (info) {
       this.infoData = info;
+      this.$refs.windowRef.open();
     },
   },
 };
