@@ -42,7 +42,7 @@ const LABERL_FIXED_STYLE = `
   text-align: center;
 `;
 
-export default {
+export const Cluster = {
   name: 'Cluster',
 
   mixins: [MapMixin],
@@ -52,6 +52,10 @@ export default {
       type: String,
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
+    },
+    options: {
+      type: Object,
+      default: () => ({}),
     },
     labelStyle: {
       type: Object,
@@ -64,6 +68,10 @@ export default {
     clusterStyleMap: {
       type: Array,
       default: () => [],
+    },
+    clusterContent: {
+      type: Function,
+      default: null,
     },
     clusterKey: {
       type: String,
@@ -108,7 +116,7 @@ export default {
       this._renderCluster();
     },
     clear () {
-      this.cluster && this.cluster.clearMarkers();
+      this.cluster && this.cluster.setMap(null);
     },
     updateCluster () {
       this.cluster.setMarkers(this.markers);
@@ -120,7 +128,8 @@ export default {
           this.markers,
           {
             gridSize: 80,
-            renderClusterMarker: this._getClusterContent,
+            renderClusterMarker: this.clusterContent || this._getClusterContent,
+            ...this.options,
           },
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
@@ -217,4 +226,6 @@ export default {
     },
   },
 };
+
+export default Cluster;
 </script>
