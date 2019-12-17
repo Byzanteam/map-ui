@@ -31,24 +31,21 @@ export const InfoWindow =  {
     options () {
       return {
         location: this.location,
-        infoWindowHtml: this.infoWindowHtml,
-        infoWindowOptions: this.infoWindowOptions,
+        content: this.infoWindowHtml,
+        options: this.infoWindowOptions,
       };
     },
   },
 
   watch: {
-    options ({ location, infoWindowHtml, infoWindowOptions }) {
-      this.createInfoWindow({
-        location,
-        content: infoWindowHtml,
-        options: infoWindowOptions,
-      });
+    options (value) {
+      this.createInfoWindow(value);
     },
   },
 
   methods: {
     mapLoadedFunc () {
+      this.createInfoWindow(this.options);
       this.$emit('infowindow-ready');
     },
 
