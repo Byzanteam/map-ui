@@ -304,7 +304,9 @@ export default {
         height: 40px;
         border-radius: 50%;
         background-color: red;
-        border: 3px solid rgba(255, 255, 255, 0.2)'>
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        line-height: 40px'>
           ${context.count}
         </div>`;
       context.marker.setContent(node);
