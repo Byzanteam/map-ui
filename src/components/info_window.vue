@@ -27,17 +27,22 @@ export const InfoWindow =  {
     };
   },
 
-  watch: {
-    location (value) {
-      this.createInfoWindow({
-        location: value,
-        content: this.infoWindowHtml,
-      });
-    },
-    infoWindowHtml (value) {
-      this.createInfoWindow({
+  computed: {
+    options () {
+      return {
         location: this.location,
-        content: value,
+        infoWindowHtml: this.infoWindowHtml,
+        infoWindowOptions: this.infoWindowOptions,
+      };
+    },
+  },
+
+  watch: {
+    options ({ location, infoWindowHtml, infoWindowOptions }) {
+      this.createInfoWindow({
+        location,
+        content: infoWindowHtml,
+        options: infoWindowOptions,
       });
     },
   },
@@ -47,13 +52,13 @@ export const InfoWindow =  {
       this.$emit('infowindow-ready');
     },
 
-    createInfoWindow ({ location, content }) {
+    createInfoWindow ({ location, content, options }) {
       const { offset = [0, -8] } = this.infoWindowOptions;
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
         content,
         offset: new AMap.Pixel(offset[0], offset[1]),
-        ...this.infoWindowOptions,
+        ...options,
       });
       this.open(location);
       this.$emit('window-opened', this.infoWindow);
@@ -65,7 +70,7 @@ export const InfoWindow =  {
     },
 
     open (location) {
-      if (this.infoWindow) {
+      if (this.infoWindow && !this.infoWindow.getIsOpen()) {
         this.infoWindow.open(
           this.map,
           location,
