@@ -53,17 +53,9 @@ export const Cluster = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
-    points: {
-      type: Array,
-      default: () => ([]),
-    },
     options: {
       type: Object,
       default: () => ({}),
-    },
-    markerContent: {
-      type: String,
-      default: '',
     },
     labelStyle: {
       type: Object,
@@ -91,8 +83,6 @@ export const Cluster = {
     return {
       markersGroup: {},
       cluster: null,
-      timer: null,
-      markers: [],
     };
   },
 
@@ -103,15 +93,15 @@ export const Cluster = {
         ...this.labelStyle,
       };
     },
-    allMarkers () {
-      return this.markers.concat(_.transform(
+    markers () {
+      _.transform(
         this.markersGroup, (acc, cur) => acc.push(...acc, ...cur), []
-      ));
+      );
     },
   },
 
   watch: {
-    allMarkers () {
+    markers () {
       this.clear();
       this.updateCluster();
     },
@@ -123,7 +113,6 @@ export const Cluster = {
 
   methods: {
     mapLoadedFunc () {
-      this._renderMarkers();
       this._renderCluster();
     },
 
@@ -135,20 +124,6 @@ export const Cluster = {
       this._renderCluster();
     },
 
-    _renderMarkers () {
-      this.markers = _.map((this.points), (point) => {
-        const marker = new AMap.Marker({
-          position: point.location,
-          content: this.markerContent,
-          offset: point.offset
-            ? new AMap.Pixel(point.offset[0], point.offset[1])
-            : new AMap.Pixel(0, 0),
-          extData: point,
-        });
-        this._bindMarkerEvent(marker);
-        return marker;
-      });
-    },
     _renderCluster () {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
@@ -254,20 +229,6 @@ export const Cluster = {
       </div>`;
     },
 
-    _bindMarkerEvent (marker) {
-      marker.on('click', (e) => {
-        this.timer && clearTimeout(this.timer);
-        this.timer = setTimeout(() => {
-          this.$emit('marker-clicked', e);
-        }, 300);
-      });
-      marker.on('dblclick', (e) => {
-        this.timer && clearTimeout(this.timer);
-        this.$emit('marker-dbclicked', e);
-      });
-      marker.on('mouseover', e => this.$emit('marker-mouseover', e));
-      marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-    },
   },
 };
 
