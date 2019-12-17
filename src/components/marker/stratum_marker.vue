@@ -23,6 +23,13 @@ import MapMixin from '../../mixins/map';
 
 const DEFAULT_STYLE_MAP = null;
 
+const DEFAULT_MAERKER_POINT_STYLE = {
+  color: '#04BF78',
+  size: 24,
+  strokeColor: 'rgba(255, 255, 255, 0.2)',
+  strokeWidth: 1,
+};
+
 export const StratumMarker =  {
   components: {
     MarkerPoint,
@@ -78,6 +85,15 @@ export const StratumMarker =  {
     },
   },
 
+  computed: {
+    markerPointStyle () {
+      return {
+        ...DEFAULT_MAERKER_POINT_STYLE,
+        ...this.markerStyle,
+      };
+    },
+  },
+
   methods: {
     markerRenderedFunc (marker) {
       this.counter += 1;
@@ -97,7 +113,7 @@ export const StratumMarker =  {
      */
     getMarkerStyle (marker) {
       if (!this.markerStyleMap || !_.isNumber(marker.value)) {
-        return this.markerStyle;
+        return this.markerPointStyle;
       }
 
       const currentStyle = _.findLast(
