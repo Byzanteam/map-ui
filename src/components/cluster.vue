@@ -113,19 +113,19 @@ export const Cluster = {
 
   methods: {
     mapLoadedFunc () {
-      this._renderCluster();
+      this._renderCluster(this.markers);
     },
     clear () {
       this.cluster && this.cluster.setMap(null);
     },
     updateCluster () {
-      this.cluster.setMarkers(this.markers);
+      this._renderCluster(this.markers);
     },
-    _renderCluster () {
+    _renderCluster (markers) {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
           this.map,
-          this.markers,
+          markers,
           {
             gridSize: 80,
             renderClusterMarker: this.clusterContent || this._getClusterContent,
