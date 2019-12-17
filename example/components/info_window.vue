@@ -15,7 +15,7 @@
       />
       <info-window
         ref="windowRef"
-        :options="{closeWhenClickMap: true}"
+        :info-window-options="{closeWhenClickMap: true}"
         :location="infoData.location"
         :info-window-html="infoData.content"
       />
