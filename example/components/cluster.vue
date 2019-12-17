@@ -8,7 +8,9 @@
     <cluster
       :cluster-style-map="clusterStyleMap"
       :label-style="clusterLabelStyle"
-      cluster-key="value"
+      :points="clusterData"
+      :marker-content="markerContent"
+      :cluster-content="clusterContent"
     >
       <stratum-marker
         :markers="pointData"
@@ -25,6 +27,7 @@ import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
 import StratumMarker from '../../src/components/marker/stratum_marker';
+import cities from './cities';
 
 export default {
   components: {
@@ -35,6 +38,7 @@ export default {
 
   data () {
     return {
+      markerContent: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
       pointData: [
         {
           id: 1,
@@ -284,6 +288,26 @@ export default {
         };
         return point2;
       });
+    },
+    clusterData () {
+      return _.map(cities, item => ({
+        location: item.lnglat,
+        ...item,
+      }));
+    },
+  },
+
+  methods: {
+    clusterContent  (context) {
+      const node = `<div
+        style='width: 40px;
+        height: 40px;
+        border-radius: 50%;
+        background-color: red;
+        border: 3px solid rgba(255, 255, 255, 0.2)'>
+          ${context.count}
+        </div>`;
+      context.marker.setContent(node);
     },
   },
 };
