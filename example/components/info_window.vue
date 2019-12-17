@@ -46,11 +46,12 @@ export default {
         strokeColor: 'red',
         size: 30,
       },
-      infoData: {
-        location: [0, 0],
-        content: '<div></div>',
-      },
+      infoData: {},
     };
+  },
+
+  created () {
+    [this.infoData] = this.markers;
   },
 
   methods: {

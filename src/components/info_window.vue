@@ -13,7 +13,7 @@ export const InfoWindow =  {
     },
     location: {
       type: Array,
-      default: () => ([]),
+      default: () => ([0, 0]),
     },
     infoWindowOptions: {
       type: Object,
@@ -50,7 +50,7 @@ export const InfoWindow =  {
     },
 
     createInfoWindow ({ location, content, options }) {
-      const { offset = [0, -8] } = this.infoWindowOptions;
+      const { offset = [0, -8] } = options;
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
         content,
@@ -69,7 +69,7 @@ export const InfoWindow =  {
       if (this.infoWindow && !this.infoWindow.getIsOpen()) {
         this.infoWindow.open(
           this.map,
-          location,
+          location || this.location,
         );
         this.$emit('window-opened', this.infoWindow);
       }
