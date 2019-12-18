@@ -1,26 +1,24 @@
 <template>
-  <div class="container">
-    <base-map
-      :map-options="{
-        zoom: 4
-      }"
-      use-map-ui
-    >
-      <marker-point
-        v-for="(marker, index) in markers"
-        :key="index"
-        :marker="marker"
-        :marker-style="markerStyle"
-        @marker-clicked="createWindow(marker)"
-      />
-      <info-window
-        ref="windowRef"
-        :info-window-options="{closeWhenClickMap: true}"
-        :location="infoData.location"
-        :info-window-html="infoData.content"
-      />
-    </base-map>
-  </div>
+  <base-map
+    :map-options="{
+      zoom: 4
+    }"
+    use-map-ui
+  >
+    <marker-point
+      v-for="(marker, index) in markers"
+      :key="index"
+      :marker="marker"
+      :marker-style="markerStyle"
+      @marker-clicked="createWindow(marker)"
+    />
+    <info-window
+      ref="windowRef"
+      :info-window-options="{closeWhenClickMap: true}"
+      :location="infoData.location"
+      :info-window-html="infoData.content"
+    />
+  </base-map>
 </template>
 
 <script>
@@ -62,23 +60,3 @@ export default {
   },
 };
 </script>
-
-<style lang="scss" scoped>
-.container {
-  width: 100%;
-  height: 100%;
-}
-
-.open-btn {
-  position: absolute;
-  bottom: 20px;
-
-  &:nth-child(1) {
-    left: 20px;
-  }
-
-  &:nth-child(2) {
-    left: 120px;
-  }
-}
-</style>

@@ -62,7 +62,7 @@ export const InfoWindow =  {
 
     close () {
       this.infoWindow.close();
-      this.$emit('window-closed');
+      this.$emit('window-closed', this.infoWindow);
     },
 
     open (location) {
