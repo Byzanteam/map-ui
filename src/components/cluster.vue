@@ -42,7 +42,7 @@ const LABERL_FIXED_STYLE = `
   text-align: center;
 `;
 
-export default {
+export const Cluster = {
   name: 'Cluster',
 
   mixins: [MapMixin],
@@ -52,6 +52,10 @@ export default {
       type: String,
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
+    },
+    options: {
+      type: Object,
+      default: () => ({}),
     },
     labelStyle: {
       type: Object,
@@ -64,6 +68,10 @@ export default {
     clusterStyleMap: {
       type: Array,
       default: () => [],
+    },
+    clusterContent: {
+      type: Function,
+      default: null,
     },
     clusterKey: {
       type: String,
@@ -105,22 +113,23 @@ export default {
 
   methods: {
     mapLoadedFunc () {
-      this._renderCluster();
+      this._renderCluster(this.markers);
     },
     clear () {
-      this.cluster && this.cluster.clearMarkers();
+      this.cluster && this.cluster.setMap(null);
     },
     updateCluster () {
-      this.cluster.setMarkers(this.markers);
+      this._renderCluster(this.markers);
     },
-    _renderCluster () {
+    _renderCluster (markers) {
       this.map.plugin(['AMap.MarkerClusterer'], () => {
         this.cluster = new AMap.MarkerClusterer(
           this.map,
-          this.markers,
+          markers,
           {
             gridSize: 80,
-            renderClusterMarker: this._getClusterContent,
+            renderClusterMarker: this.clusterContent || this._getClusterContent,
+            ...this.options,
           },
         );
         this.cluster.on('click', e => (this.$emit('clusterClick', e)));
@@ -217,4 +226,6 @@ export default {
     },
   },
 };
+
+export default Cluster;
 </script>
