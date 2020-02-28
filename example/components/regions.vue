@@ -4,8 +4,9 @@
     features="none"
   >
     <regions
-      :groups="groups"
       :areas="areas"
+      @area-mouseover="areaMouseOverFunc"
+      @area-mouseout="areaMouseOutFunc"
     />
     <text-marker
       :texts="labels"
@@ -18,6 +19,7 @@
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
 import TextMarker from '../../src/components/text_marker.vue';
+import Geojson from '../regions.json';
 
 const AREA_GROUPS = [
   {
@@ -146,7 +148,7 @@ export default {
 
   data () {
     return {
-      areas: [],
+      areas: Geojson.features,
       labels: REGISON_LABELS,
       labelStyle: {
         'font-size': '18px',
@@ -161,15 +163,24 @@ export default {
     this.groups = AREA_GROUPS;
     this.labelMarkers = LABEL_DATA;
 
-    fetch('http://nitrogen.skylarkly.com/geo/100000?district=false', {
-      method: 'GET',
-      headers: {
-        Authorization: 'Token 5e4cdf89bed7d739668292c70f9983ee16c5bdf52a5d1d67',
-        'Content-Type': 'application/json',
-      },
-    }).then(res => res.json()).then((res) => {
-      this.areas = res.data.features;
-    });
+    // fetch('http://nitrogen.skylarkly.com/geo/100000?district=false', {
+    //   method: 'GET',
+    //   headers: {
+    //     Authorization: 'Token 5e4cdf89bed7d739668292c70f9983ee16c5bdf52a5d1d67',
+    //     'Content-Type': 'application/json',
+    //   },
+    // }).then(res => res.json()).then((res) => {
+    //   this.areas = res.data.features;
+    // });
+  },
+
+  methods: {
+    areaMouseOverFunc (geo) {
+      console.log(geo);
+    },
+    areaMouseOutFunc () {
+      console.log('out');
+    },
   },
 };
 </script>
