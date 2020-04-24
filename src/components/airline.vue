@@ -111,6 +111,10 @@ export const AirLine = {
         return val > 0;
       },
     },
+    lineRenderOptions: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -129,6 +133,13 @@ export const AirLine = {
   computed: {
     groupedEdgesByStartPoint () {
       return _.groupBy(this.edges, edge => edge.source);
+    },
+
+    airLineRenderOptions () {
+      return {
+        ...this.lineRenderOptions,
+        ...DEFAULT_RENDER_OPTIONS,
+      };
     },
   },
 
@@ -201,7 +212,7 @@ export const AirLine = {
         map: this.map,
         autoSetFitView: false,
         getPath: pathData => pathData.path,
-        renderOptions: DEFAULT_RENDER_OPTIONS,
+        renderOptions: this.airLineRenderOptions,
       });
       this.pathSimplifier.setData(_.map(this.edges, (edge, i) => (
         {
