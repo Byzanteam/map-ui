@@ -25,7 +25,6 @@ import _ from 'lodash';
 import BaseMap from '../../src/components/map.vue';
 import Cluster from '../../src/components/cluster';
 import StratumMarker from '../../src/components/marker/stratum_marker';
-import cities from './cities';
 
 export default {
   components: {
