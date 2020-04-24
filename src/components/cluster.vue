@@ -53,17 +53,9 @@ export const Cluster = {
       default: 'circle',
       validator: value => DEFAULT_ICON_TYPES.includes(value),
     },
-    points: {
-      type: Array,
-      default: () => ([]),
-    },
     options: {
       type: Object,
       default: () => ({}),
-    },
-    markerContent: {
-      type: String,
-      default: '',
     },
     labelStyle: {
       type: Object,
@@ -91,7 +83,6 @@ export const Cluster = {
     return {
       markersGroup: {},
       cluster: null,
-      timer: null,
     };
   },
 
@@ -107,39 +98,10 @@ export const Cluster = {
         this.markersGroup, (acc, cur) => acc.push(...acc, ...cur), []
       );
     },
-    allMarkers () {
-      return _.map((this.points), (point) => {
-        const marker = new AMap.Marker({
-          position: point.location,
-          content: this.markerContent,
-          offset: point.offset
-            ? new AMap.Pixel(point.offset[0], point.offset[1])
-            : new AMap.Pixel(0, 0),
-          extData: point,
-        });
-        marker.on('click', (e) => {
-          this.timer && clearTimeout(this.timer);
-          this.timer = setTimeout(() => {
-            this.$emit('marker-clicked', e);
-          }, 300);
-        });
-        marker.on('dblclick', (e) => {
-          this.timer && clearTimeout(this.timer);
-          this.$emit('marker-dbclicked', e);
-        });
-        marker.on('mouseover', e => this.$emit('marker-mouseover', e));
-        marker.on('mouseout', e => this.$emit('marker-mouseout', e));
-        return marker;
-      }).concat(this.markers);
-    },
   },
 
   watch: {
     markers () {
-      this.clear();
-      this.updateCluster();
-    },
-    points () {
       this.clear();
       this.updateCluster();
     },
@@ -151,13 +113,13 @@ export const Cluster = {
 
   methods: {
     mapLoadedFunc () {
-      this._renderCluster(this.allMarkers);
+      this._renderCluster(this.markers);
     },
     clear () {
       this.cluster && this.cluster.setMap(null);
     },
     updateCluster () {
-      this._renderCluster(this.allMarkers);
+      this._renderCluster(this.markers);
     },
     _renderCluster (markers) {
       this.map.plugin(['AMap.MarkerClusterer'], () => {

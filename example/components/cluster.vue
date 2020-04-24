@@ -8,8 +8,6 @@
     <cluster
       :cluster-style-map="clusterStyleMap"
       :label-style="clusterLabelStyle"
-      :points="clusterData"
-      :marker-content="markerContent"
       :cluster-content="clusterContent"
     >
       <stratum-marker
@@ -38,7 +36,10 @@ export default {
 
   data () {
     return {
-      markerContent: '<div style="background-color: hsla(180, 100%, 50%, 0.7); height: 24px; width: 24px; border: 1px solid hsl(180, 100%, 40%); border-radius: 12px; box-shadow: hsl(180, 100%, 50%) 0px 0px 1px;"></div>',
+      clusterLabelStyle: {
+        fontSize: 14,
+        fontWeight: 100,
+      },
       pointData: [
         {
           id: 1,
@@ -216,10 +217,6 @@ export default {
           label: '53.2',
         },
       ],
-      clusterLabelStyle: {
-        fontSize: 14,
-        fontWeight: 100,
-      },
       clusterStyleMap: [
         {
           limit: 1,
@@ -289,12 +286,6 @@ export default {
         return point2;
       });
     },
-    clusterData () {
-      return _.map(cities, item => ({
-        location: item.lnglat,
-        ...item,
-      }));
-    },
   },
 
   methods: {
@@ -304,7 +295,9 @@ export default {
         height: 40px;
         border-radius: 50%;
         background-color: red;
-        border: 3px solid rgba(255, 255, 255, 0.2)'>
+        border: 3px solid rgba(255, 255, 255, 0.2);
+        text-align: center;
+        line-height: 40px'>
           ${context.count}
         </div>`;
       context.marker.setContent(node);
