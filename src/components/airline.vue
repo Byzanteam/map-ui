@@ -350,6 +350,10 @@ export const AirLine = {
       return 3.6 * (length / this.duration);
     },
   },
+
+  beforeDestroy () {
+    this.clear();
+  },
 };
 
 export default AirLine;
