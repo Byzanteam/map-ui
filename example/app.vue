@@ -41,11 +41,6 @@
           stratum_marker
         </router-link>
       </li>
-      <li>
-        <router-link to="/mass_marker">
-          mass_marker
-        </router-link>
-      </li>
     </ul>
     <router-view />
   </div>
