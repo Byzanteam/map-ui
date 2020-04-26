@@ -111,7 +111,7 @@ export const AirLine = {
         return val > 0;
       },
     },
-    lineRenderOptions: {
+    airLineOptions: {
       type: Object,
       default: () => ({}),
     },
@@ -137,8 +137,8 @@ export const AirLine = {
 
     airLineRenderOptions () {
       return {
-        ...this.lineRenderOptions,
         ...DEFAULT_RENDER_OPTIONS,
+        ...this.airLineOptions,
       };
     },
   },
