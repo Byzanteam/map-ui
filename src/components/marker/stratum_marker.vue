@@ -9,7 +9,6 @@
       :marker="marker"
       @marker-rendered="markerRenderedFunc"
       @marker-clicked="markerClickedFunc"
-      @marker-dbclicked="markerDbclickedFunc"
       @marker-mouseover="markerMouseoverFunc"
       @marker-mouseout="markerMouseoutFunc"
     />
@@ -98,15 +97,7 @@ export const StratumMarker =  {
     markerRenderedFunc (marker) {
       this.counter += 1;
       if (marker) {
-        const new_position = marker.getPosition();
-        const hasMarker = _.find(this.markerRefs, (item) => {
-          const old_position = item.getPosition();
-          return old_position.lng === new_position.lng
-        && old_position.lat === new_position.lat;
-        });
-        if (!hasMarker) {
-          this.markerRefs.push(marker);
-        }
+        this.markerRefs.push(marker);
       }
       if (this.counter >= this.markers.length) {
         this.$parent.$emit('markersRendered', {
@@ -161,10 +152,6 @@ export const StratumMarker =  {
 
     markerClickedFunc (marker) {
       this.$emit('marker-clicked', marker);
-    },
-
-    markerDbclickedFunc (marker) {
-      this.$emit('marker-dbclicked', marker);
     },
 
     markerMouseoverFunc (marker) {
