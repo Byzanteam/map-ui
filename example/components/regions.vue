@@ -5,8 +5,6 @@
   >
     <regions
       :areas="areas"
-      @area-mouseover="areaMouseOverFunc"
-      @area-mouseout="areaMouseOutFunc"
     />
     <text-marker
       :texts="labels"
@@ -172,15 +170,6 @@ export default {
     }).then(res => res.json()).then((res) => {
       this.areas = res.data.features;
     });
-  },
-
-  methods: {
-    areaMouseOverFunc (geo) {
-      console.log(geo);
-    },
-    areaMouseOutFunc () {
-      console.log('out');
-    },
   },
 };
 </script>

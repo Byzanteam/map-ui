@@ -19,7 +19,6 @@ const router = new VueRouter({
     { path: '/airline', component: () => import('./components/airline') },
     { path: '/cluster', component: () => import('./components/cluster') },
     { path: '/stratum_marker', component: () => import('./components/stratum_marker') },
-    { path: '/mass_marker', component: () => import('./components/mass_marker') },
   ],
 });
 
