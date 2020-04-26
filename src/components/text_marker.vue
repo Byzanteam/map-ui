@@ -66,7 +66,7 @@ export const TextMarker = {
     _generateOverlayGroup (texts) {
       this.overlayGroup = new AMap.OverlayGroup(texts);
       this.overlayGroup.setMap(this.map);
-      this.overlayGroup.on('click', e => this.$emit('Group-clicked', e));
+      this.overlayGroup.on('click', e => this.$emit('group-clicked', e));
     },
   },
 };
