@@ -163,15 +163,15 @@ export default {
     this.groups = AREA_GROUPS;
     this.labelMarkers = LABEL_DATA;
 
-    // fetch('http://nitrogen.skylarkly.com/geo/100000?district=false', {
-    //   method: 'GET',
-    //   headers: {
-    //     Authorization: 'Token 5e4cdf89bed7d739668292c70f9983ee16c5bdf52a5d1d67',
-    //     'Content-Type': 'application/json',
-    //   },
-    // }).then(res => res.json()).then((res) => {
-    //   this.areas = res.data.features;
-    // });
+    fetch('http://nitrogen.skylarkly.com/geo/100000?district=false', {
+      method: 'GET',
+      headers: {
+        Authorization: 'Token 5e4cdf89bed7d739668292c70f9983ee16c5bdf52a5d1d67',
+        'Content-Type': 'application/json',
+      },
+    }).then(res => res.json()).then((res) => {
+      this.areas = res.data.features;
+    });
   },
 
   methods: {
