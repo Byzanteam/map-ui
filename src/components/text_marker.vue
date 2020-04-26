@@ -67,6 +67,8 @@ export const TextMarker = {
       this.overlayGroup = new AMap.OverlayGroup(texts);
       this.overlayGroup.setMap(this.map);
       this.overlayGroup.on('click', e => this.$emit('group-clicked', e));
+      this.overlayGroup.on('mouseover', e => this.$emit('group-mouseover', e));
+      this.overlayGroup.on('mouseout', e => this.$emit('group-mouseout', e));
     },
   },
 };
