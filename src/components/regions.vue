@@ -117,8 +117,8 @@ export const Regions = {
         });
         shape.setOptions(areaStyle);
         shape.on('click', () => this._areaClicked(shape, geoJSON));
-        shape.on('mouseover', () => this._areaMouseover(shape, areaHoverStyle, geoJSON));
-        shape.on('mouseout', () => this._areaMouseout(shape, areaStyle, geoJSON));
+        shape.on('mouseover', () => shape.setOptions(areaHoverStyle));
+        shape.on('mouseout', () => this._areaMouseout(shape, areaStyle));
         shape.setMap(this.map);
         return { shape, geoJSON };
       });
@@ -195,14 +195,9 @@ export const Regions = {
       }
       this.$emit('area-clicked', geoJSON, area, this);
     },
-    _areaMouseover (area, style, geoJSON) {
-      area.setOptions(style);
-      this.$emit('area-mouseover', geoJSON, area, this);
-    },
-    _areaMouseout (area, style, geoJSON) {
+    _areaMouseout (area, style) {
       if (this._isSelected(this._findAreaByShape(area))) return;
       area.setOptions(style);
-      this.$emit('area-mouseout', geoJSON, area, this);
     },
     _findArea (area) {
       return area instanceof AMap.GeoJSON
