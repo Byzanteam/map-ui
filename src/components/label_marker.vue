@@ -90,6 +90,7 @@ export const LabelMarker =  {
           },
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
+        this.labelLayer.on('click', e => this.$emit('label-clicked', e));
       });
     },
   },
