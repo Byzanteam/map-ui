@@ -159,6 +159,9 @@ export const AirLine = {
         this.batchTimer = this._createBatchTimer();
       }
     },
+    airLineOptions (val) {
+      this.airLineStyle = val;
+    },
   },
 
   methods: {
