@@ -133,6 +133,7 @@ export const BaseMap = {
       this.$emit('map-created', this.map);
       // 对内
       this.excuteCbs('mapCreated', this.map);
+      this.map.on('click', e => this.$emit('map-click', e));
     },
 
     registerCbs (type, cb) {

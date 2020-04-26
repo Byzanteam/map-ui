@@ -90,6 +90,9 @@ export const LabelMarker =  {
           },
         };
         this.labelLayer.add(new AMap.LabelMarker(label));
+        this.labelLayer.on('click', e => this.$emit('label-clicked', e, this.labelLayer));
+        this.labelLayer.on('mouseover', e => this.$emit('label-mouseover', e, this.labelLayer));
+        this.labelLayer.on('mouseout', e => this.$emit('label-mouseout', e, this.labelLayer));
       });
     },
   },
