@@ -4,6 +4,7 @@
     features="none"
   >
     <regions
+      :groups="groups"
       :areas="areas"
     />
     <text-marker
@@ -17,7 +18,6 @@
 import BaseMap from '../../src/components/map.vue';
 import Regions from '../../src/components/regions.vue';
 import TextMarker from '../../src/components/text_marker.vue';
-import Geojson from '../regions.json';
 
 const AREA_GROUPS = [
   {
@@ -146,7 +146,7 @@ export default {
 
   data () {
     return {
-      areas: Geojson.features,
+      areas: [],
       labels: REGISON_LABELS,
       labelStyle: {
         'font-size': '18px',
