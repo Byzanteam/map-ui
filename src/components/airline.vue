@@ -138,8 +138,11 @@ export const AirLine = {
     airLineRenderOptions () {
       return {
         ...DEFAULT_RENDER_OPTIONS,
-        ...this.airLineOptions,
+        ...this.airLineStyle,
       };
+    },
+    airLineStyle () {
+      return this.airLineOptions;
     },
   },
 
