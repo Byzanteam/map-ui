@@ -49,7 +49,7 @@ export default {
   },
 
   created () {
-    [this.infoData] = this.markers;
+    this.infoData = this.markers;
   },
 
   methods: {
