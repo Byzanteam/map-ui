@@ -185,11 +185,9 @@ export const MarkerPoint = {
     },
 
     clear () {
-      this.map.getAllOverlays().forEach((overlay) => {
-        if (overlay.getExtData().location) {
-          this.map.remove(overlay);
-        }
-      });
+      if (this.instance) {
+        this.map.remove(this.instance);
+      }
       this.instance = null;
     },
 
