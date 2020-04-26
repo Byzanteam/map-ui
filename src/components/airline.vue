@@ -127,6 +127,7 @@ export const AirLine = {
         tasks: [],
         counter: 0,
       },
+      airLineStyle: this.airLineOptions,
     };
   },
 
@@ -140,9 +141,6 @@ export const AirLine = {
         ...DEFAULT_RENDER_OPTIONS,
         ...this.airLineStyle,
       };
-    },
-    airLineStyle () {
-      return this.airLineOptions;
     },
   },
 
