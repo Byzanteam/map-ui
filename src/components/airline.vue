@@ -171,7 +171,7 @@ export const AirLine = {
 
     renderPoints () {
       this.pointMarkers = _.map(this.points, (point) => {
-        const circle = new AMap.MassMarker({
+        const circle = new AMap.CircleMarker({
           center: point.position,
           radius: 5,
           strokeColor: 'white',
