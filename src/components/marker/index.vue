@@ -66,7 +66,7 @@ export const MarkerPoint = {
   },
 
   watch: {
-    options() {
+    options () {
       this.setMarkerData(this.marker);
     },
     markerStyle: {
