@@ -159,10 +159,15 @@ export const AirLine = {
         this.batchTimer = this._createBatchTimer();
       }
     },
-    airLineOptions (val) {
-      this.airLineStyle = {
-        ...val,
-      };
+    airLineOptions: {
+      deep: true,
+      handler (val) {
+        this.airLineStyle = {
+          ...val,
+        };
+        this.clearPathSimplifier();
+        this.renderPathSimplifierIfReady();
+      },
     },
   },
 
