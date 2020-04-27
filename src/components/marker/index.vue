@@ -66,8 +66,16 @@ export const MarkerPoint = {
   },
 
   watch: {
-    options () {
+    options() {
       this.setMarkerData(this.marker);
+    },
+    markerStyle: {
+      deep: true,
+      handler (val) {
+        this.pointStyle = {
+          ...val,
+        };
+      },
     },
   },
 
@@ -87,7 +95,7 @@ export const MarkerPoint = {
     options () {
       return {
         marker: this.marker,
-        markerStyle: this.markerStyle,
+        markerStyle: this.pointStyle,
         innerLabelStyle: this.innerLabelStyle,
         icon: this.icon,
       };
@@ -98,6 +106,7 @@ export const MarkerPoint = {
     return {
       instance: null,
       timer: null,
+      pointStyle: this.markerStyle,
     };
   },
 
