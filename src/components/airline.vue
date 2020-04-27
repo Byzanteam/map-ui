@@ -219,7 +219,7 @@ export const AirLine = {
 
     renderPathSimplifier (PathSimplifier) {
       this.pathSimplifier = new PathSimplifier({
-        zIndex: 100,
+        zIndex: 110,
         map: this.map,
         autoSetFitView: false,
         getPath: pathData => pathData.path,
