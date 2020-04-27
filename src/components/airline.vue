@@ -160,7 +160,9 @@ export const AirLine = {
       }
     },
     airLineOptions (val) {
-      this.airLineStyle = val;
+      this.airLineStyle = {
+        ...val,
+      };
     },
   },
 
