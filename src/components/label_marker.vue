@@ -96,6 +96,10 @@ export const LabelMarker =  {
       });
     },
   },
+
+  beforeDestroy () {
+    this.clear();
+  },
 };
 
 export default LabelMarker;

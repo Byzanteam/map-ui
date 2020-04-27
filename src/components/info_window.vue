@@ -60,6 +60,12 @@ export const InfoWindow =  {
       this.open(location);
     },
 
+    clear () {
+      if (this.infoWindow) {
+        this.infoWindow.clear();
+      }
+    },
+
     close () {
       this.infoWindow.close();
       this.$emit('window-closed', this.infoWindow);
@@ -74,6 +80,10 @@ export const InfoWindow =  {
         this.$emit('window-opened', this.infoWindow);
       }
     },
+  },
+
+  beforeDestroy () {
+    this.clear();
   },
 
   render () {

@@ -162,6 +162,10 @@ export const StratumMarker =  {
       this.$emit('marker-mouseout', marker);
     },
   },
+
+  beforeDestroy () {
+    this.clear();
+  },
 };
 
 export default StratumMarker;
