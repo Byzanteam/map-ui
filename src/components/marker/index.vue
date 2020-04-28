@@ -156,9 +156,6 @@ export const MarkerPoint = {
 
       const labelCenter = shape.getCenter();
       const {
-        display,
-        flexDirection,
-        justifyContent,
         padding,
         offset = [labelCenter[1], 0],
         textStyleMap = [],
@@ -181,9 +178,6 @@ export const MarkerPoint = {
       return {
         innerHTML: content,
         style: {
-          display,
-          flexDirection,
-          justifyContent,
           top: `${offset[1]}px`,
           left: `${offset[0]}px`,
           padding: `${padding[0]}px ${padding[1]}px`,
