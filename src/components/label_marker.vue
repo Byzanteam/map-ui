@@ -72,7 +72,7 @@ export const LabelMarker =  {
     _renderLabelMarker () {
       // geoJSON is 110, 这个要比那个高才行
       this.labelLayer = new AMap.LabelsLayer({
-        zIndex: 121,
+        zIndex: 111,
       });
       this.map.add(this.labelLayer);
       _.each(this.labelMarkers, (item) => {
