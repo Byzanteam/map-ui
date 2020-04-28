@@ -51,6 +51,8 @@ export const Regions = {
     // 优化的时候可以考虑简化结构或者 seletedAreas 不被监视
     return {
       selectedAreas: [],
+      newAreaStyle: {},
+      newAreaHoverStyle: {},
     };
   },
 
@@ -96,6 +98,28 @@ export const Regions = {
         const { areaHoverStyle } = this._getGeoJSONStyle(item.geoJSON);
         item.shape.setOptions(areaHoverStyle);
       });
+    },
+
+    areaStyle: {
+      deep: true,
+      handler (val) {
+        this.newAreaStyle = {
+          ...val,
+        };
+        this.clear();
+        this.renderGeoJSON();
+      },
+    },
+
+    areaHoverStyle: {
+      deep: true,
+      handler (val) {
+        this.newAreaHoverStyle = {
+          ...val,
+        };
+        this.clear();
+        this.renderGeoJSON();
+      },
     },
   },
 
@@ -232,16 +256,16 @@ export const Regions = {
       return {
         areaStyle: {
           ...DEFAULT_AREA_STYLE,
-          ...this.areaStyle,
+          ...this.newAreaStyle,
           ...style,
         },
         // hover 的样式默认继承正常的样式
         areaHoverStyle: {
           ...DEFAULT_AREA_STYLE,
-          ...this.areaStyle,
+          ...this.newAreaStyle,
           ...style,
           ...DEFAULT_AREA_HOVER_STYLE,
-          ...this.areaHoverStyle,
+          ...this.newAreaHoverStyle,
           ...hoverStyle,
         },
       };
