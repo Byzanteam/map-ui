@@ -41,6 +41,11 @@
           stratum_marker
         </router-link>
       </li>
+      <li>
+        <router-link to="/simple_marker">
+          simple_marker
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
