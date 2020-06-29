@@ -23,6 +23,10 @@ export const BaseMap = {
         return Array.isArray(val) || _.includes(['all', 'none'], val);
       },
     },
+    satellite: {
+      type: Boolean,
+      default: false,
+    },
     mapStyle: {
       type: String,
       default: jsApi.style || '',
@@ -120,11 +124,20 @@ export const BaseMap = {
     },
 
     initialize () {
+      const layers = [];
+      if (this.satellite) {
+        layers.push(new AMap.TileLayer.Satellite(),);
+      }
       this.map = new AMap.Map(this.$el, {
+        resizeEnable: true,
         ...this.mapOptions,
+        layers,
         features: this.mapFeatures,
         mapStyle: this.mapStyle,
       });
+      this.map.on('moveend', this._resize);
+      this.map.on('zoomend', this._resize);
+      this.map.on('resize', this._resize);
       // 对外
       this.$emit('map-created', this.map);
       // 对内
@@ -160,6 +173,10 @@ export const BaseMap = {
         cb(value);
       }
     },
+
+    _resize: _.debounce(function debounceResize () {
+      this.$emit('map-resize', this.map.getBounds());
+    }, 100),
 
     _loadSource () {
       this.__loadMapSource();

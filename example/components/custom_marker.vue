@@ -3,25 +3,25 @@
     :map-options="{
       zoom: 4
     }"
-    use-map-ui
   >
-    <base-marker
-      :marker="point"
-      :inner-label-style="innerLabelStyle"
-      :marker-style="markerStyle"
-      icon="circle-o"
+    <custom-marker
+      :marker="[104.070542,30.651783]"
+      content="<img style='position: relative; width: 48px; height: 48px;' src='https://slp-qiniu-beta.skylarkly.com/FjVNFXy6c0M_v-17J7of4PsEsbzG'>"
+      :options="{
+        anchor: 'bottom-center'
+      }"
     />
   </base-map>
 </template>
 
 <script>
-import BaseMarker from '../../src/components/marker/index';
+import CustomMarker from '../../src/components/marker/custom_marker';
 import BaseMap from '../../src/components/map.vue';
 
 export default {
   components: {
     BaseMap,
-    BaseMarker,
+    CustomMarker,
   },
 
   data () {
@@ -29,17 +29,15 @@ export default {
       innerLabelStyle: {
         color: 'red',
         fontSize: 10,
-        padding: [10, 0],
+        padding: ['10px', 0],
         offset: [0, 0],
       },
       markerStyle: {
-        color: 'transparent',
-        strokeColor: 'red',
-        size: 60,
+        backgroundColor: '',
       },
       point: {
         id: 1,
-        location: [116.258446, 37.686622],
+        location: [116.258446, 38.986622],
         value: 0,
         label: '一号点',
       },

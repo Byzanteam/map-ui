@@ -37,8 +37,18 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/simple-marker">
-          simpleMarker
+        <router-link to="/stratum_marker">
+          stratum_marker
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/simple_marker">
+          simple_marker
+        </router-link>
+      </li>
+      <li>
+        <router-link to="/custom_marker">
+          custom_marker
         </router-link>
       </li>
     </ul>

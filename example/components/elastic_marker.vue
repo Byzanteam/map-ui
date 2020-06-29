@@ -3,6 +3,7 @@
     :map-options="{
       zoom: 4
     }"
+    use-map-ui
   >
     <elastic-marker
       :markers="pointData"
