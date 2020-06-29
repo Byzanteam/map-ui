@@ -20,6 +20,7 @@ const router = new VueRouter({
     { path: '/cluster', component: () => import('./components/cluster') },
     { path: '/stratum_marker', component: () => import('./components/stratum_marker') },
     { path: '/simple_marker', component: () => import('./components/simple_marker') },
+    { path: '/custom_marker', component: () => import('./components/custom_marker') },
   ],
 });
 
