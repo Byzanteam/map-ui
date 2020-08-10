@@ -16,9 +16,26 @@ export const CustomMarker = {
       type: Array,
       default: () => [0, 0],
     },
+    anchor: {
+      type: String,
+      default: 'bottom-center',
+    },
+    zIndex: {
+      type: Number,
+      default: 100,
+    },
     options: {
       type: Object,
       default: () => {},
+    },
+  },
+
+  computed: {
+    markerOptions () {
+      return {
+        marker: this.marker,
+        options: this.options,
+      };
     },
   },
 
@@ -26,11 +43,17 @@ export const CustomMarker = {
     marker (value) {
       this.setMarkerData(value);
     },
-    content () {
-      this.setMarkerData(this.marker);
+    content (value) {
+      this.instance.setContent(value);
     },
-    offset () {
-      this.setMarkerData(this.marker);
+    offset (value) {
+      this.instance.setOffset(value);
+    },
+    anchor (value) {
+      this.instance.setAnchor(value);
+    },
+    zIndex (value) {
+      this.instance.setzIndex(value);
     },
     options: {
       handler () {
@@ -56,6 +79,8 @@ export const CustomMarker = {
         content: this.content,
         offset: new AMap.Pixel(this.offset[0], this.offset[1]),
         extData: marker,
+        anchor: this.anchor,
+        zIndex: this.zIndex,
       });
 
       this.instance.on('click', e => this.$emit('marker-clicked', e));
@@ -64,6 +89,14 @@ export const CustomMarker = {
       this.$emit('marker-rendered', this.instance);
 
       this.map.add(this.instance);
+    },
+
+    show () {
+      this.instance.show();
+    },
+
+    hide () {
+      this.instance.hide();
     },
 
     clear () {
