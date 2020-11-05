@@ -44,6 +44,11 @@ export const Regions = {
       type: Boolean,
       default: false,
     },
+
+    zIndex: {
+      type: Number,
+      default: 10,
+    },
   },
 
   data () {
@@ -210,6 +215,7 @@ export const Regions = {
     _generatePolygon (lnglats) {
       return new AMap.Polygon({
         path: lnglats,
+        zIndex: this.zIndex,
       });
     },
     _getGroupByCode (code) {
