@@ -111,6 +111,10 @@ export const AirLine = {
         return val > 0;
       },
     },
+    airLineOptions: {
+      type: Object,
+      default: () => ({}),
+    },
   },
 
   data () {
@@ -123,12 +127,20 @@ export const AirLine = {
         tasks: [],
         counter: 0,
       },
+      airLineStyle: this.airLineOptions,
     };
   },
 
   computed: {
     groupedEdgesByStartPoint () {
       return _.groupBy(this.edges, edge => edge.source);
+    },
+
+    airLineRenderOptions () {
+      return {
+        ...DEFAULT_RENDER_OPTIONS,
+        ...this.airLineStyle,
+      };
     },
   },
 
@@ -146,6 +158,16 @@ export const AirLine = {
       } else {
         this.batchTimer = this._createBatchTimer();
       }
+    },
+    airLineOptions: {
+      deep: true,
+      handler (val) {
+        this.airLineStyle = {
+          ...val,
+        };
+        this.clearPathSimplifier();
+        this.renderPathSimplifierIfReady();
+      },
     },
   },
 
@@ -197,11 +219,11 @@ export const AirLine = {
 
     renderPathSimplifier (PathSimplifier) {
       this.pathSimplifier = new PathSimplifier({
-        zIndex: 100,
+        zIndex: 111,
         map: this.map,
         autoSetFitView: false,
         getPath: pathData => pathData.path,
-        renderOptions: DEFAULT_RENDER_OPTIONS,
+        renderOptions: this.airLineRenderOptions,
       });
       this.pathSimplifier.setData(_.map(this.edges, (edge, i) => (
         {
@@ -338,6 +360,10 @@ export const AirLine = {
       // 1m/s = 3.6km/h
       return 3.6 * (length / this.duration);
     },
+  },
+
+  beforeDestroy () {
+    this.clear();
   },
 };
 

@@ -42,13 +42,13 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/simple_marker">
-          simple_marker
+        <router-link to="/custom_marker">
+          custom_marker
         </router-link>
       </li>
       <li>
-        <router-link to="/custom_marker">
-          custom_marker
+        <router-link to="/info_window">
+          info_window
         </router-link>
       </li>
     </ul>

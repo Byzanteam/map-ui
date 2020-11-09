@@ -6,10 +6,13 @@
     use-map-ui
   >
     <base-marker
-      :marker="point"
-      :inner-label-style="innerLabelStyle"
-      :marker-style="markerStyle"
+      v-for="(marker, index) in markers"
+      :key="index"
+      :marker="marker.marker"
+      :inner-label-style="marker.innerLabelStyle"
+      :marker-style="marker.markerStyle"
       icon="circle-o"
+      @marker-clicked="markerClickFunc"
     />
   </base-map>
 </template>
@@ -26,6 +29,14 @@ export default {
 
   data () {
     return {
+      points: [
+        {
+          id: 3,
+          location: [118.058446, 24.686622],
+          value: 0,
+          label: '三号点',
+        },
+      ],
       innerLabelStyle: {
         color: 'red',
         fontSize: 10,
@@ -37,13 +48,49 @@ export default {
         strokeColor: 'red',
         size: 60,
       },
-      point: {
-        id: 1,
-        location: [116.258446, 37.686622],
-        value: 0,
-        label: '一号点',
+      selectedMarkerStyle: {
+        color: 'blue',
+        strokeColor: 'red',
+        size: 60,
       },
+      selectedInnerLabelStyle: {
+        color: '#ffffff',
+        fontSize: 16,
+        padding: [10, 0],
+        offset: [0, 0],
+      },
+      selected: null,
     };
+  },
+
+  computed: {
+    markers () {
+      const a = this.points.map((point) => {
+        if (this.selected === point.id) {
+          return {
+            marker: point,
+            markerStyle: this.selectedMarkerStyle,
+            innerLabelStyle: this.selectedInnerLabelStyle,
+          };
+        }
+        return {
+          marker: point,
+          markerStyle: this.markerStyle,
+          innerLabelStyle: this.innerLabelStyle,
+        };
+      });
+      return a;
+    },
+  },
+
+  methods: {
+    markerClickFunc (e) {
+      if (this.selected === e.target.getExtData().id) {
+        this.selected = '';
+      } else {
+        this.selected = e.target.getExtData().id;
+      }
+    },
   },
 };
 </script>
