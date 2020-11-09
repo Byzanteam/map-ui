@@ -6,7 +6,7 @@
   >
     <custom-marker
       :marker="marker"
-      content="<img style='position: relative; width: 48px; height: 48px;' src='https://slp-qiniu-beta.skylarkly.com/FjVNFXy6c0M_v-17J7of4PsEsbzG'>"
+      :content="markerContent"
       :options="{
         anchor: 'bottom-center'
       }"
@@ -41,6 +41,14 @@ export default {
         value: 0,
         label: '一号点',
       },
+      markerContent: `
+        <img
+          style='position: relative;
+          width: 48px;
+          height: 48px;'
+          src='https://slp-qiniu-beta.skylarkly.com/FjVNFXy6c0M_v-17J7of4PsEsbzG'
+        >
+      `,
     };
   },
 };
