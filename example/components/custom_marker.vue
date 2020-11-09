@@ -5,7 +5,7 @@
     }"
   >
     <custom-marker
-      :marker="[104.070542,30.651783]"
+      :marker="marker"
       content="<img style='position: relative; width: 48px; height: 48px;' src='https://slp-qiniu-beta.skylarkly.com/FjVNFXy6c0M_v-17J7of4PsEsbzG'>"
       :options="{
         anchor: 'bottom-center'
@@ -35,9 +35,9 @@ export default {
       markerStyle: {
         backgroundColor: '',
       },
-      point: {
+      marker: {
         id: 1,
-        location: [116.258446, 38.986622],
+        point: [116.258446, 38.986622],
         value: 0,
         label: '一号点',
       },

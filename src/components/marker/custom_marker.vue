@@ -106,7 +106,6 @@ export const CustomMarker = {
       this.instance = null;
     },
   },
-
 };
 
 export default CustomMarker;

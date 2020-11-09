@@ -7,5 +7,4 @@ export * from './components/heat_map.vue';
 export * from './components/airline.vue';
 export * from './components/text_marker.vue';
 export * from './components/marker/stratum_marker.vue';
-export * from './components/mask.vue';
 export * from './components/marker/custom_marker.vue';
