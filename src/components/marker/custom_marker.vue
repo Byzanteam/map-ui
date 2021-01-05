@@ -99,6 +99,12 @@ export const CustomMarker = {
       this.instance.hide();
     },
 
+    setZIndexNumber (value) {
+      if (this.instance) {
+        this.instance.setzIndex(value);
+      }
+    },
+
     clear () {
       if (this.instance) {
         this.map.remove(this.instance);
