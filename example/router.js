@@ -21,6 +21,7 @@ const router = new VueRouter({
     { path: '/stratum_marker', component: () => import('./components/stratum_marker') },
     { path: '/simple_marker', component: () => import('./components/simple_marker') },
     { path: '/custom_marker', component: () => import('./components/custom_marker') },
+    { path: '/3d', component: () => import('./components/object3D') },
   ],
 });
 
