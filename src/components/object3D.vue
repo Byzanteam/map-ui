@@ -7,8 +7,8 @@ export const Object3D = {
   props: {
     // 模型路径
     modelSourcePath: {
-      type: String,
-      default: '',
+      type: Array,
+      default: [],
     },
     // 光照配置
     lightOption: {
@@ -35,13 +35,13 @@ export const Object3D = {
   watch: {
     map (value) {
       if (value && typeof AMapUI === 'undefined') {
-        this.load3DSource();
+        this.renderModel();
       }
     },
   },
 
   methods: {
-    load3DSource () {
+    renderModel () {
       // 光线配置，即光照，打光
       this.map.AmbientLight = new AMap.Lights.AmbientLight(
         ...this.lightOption.ambientLight
@@ -53,10 +53,14 @@ export const Object3D = {
       const object3Dlayer = new AMap.Object3DLayer();
       this.map.add(object3Dlayer);
       AMap.plugin(['AMap.GltfLoader'], () => {
-        // 创建AMap.GltfLoader插件实例
+        this.loadSource(object3Dlayer);
+      });
+    },
+    loadSource (object3Dlayer) {
+      for (let i = 0; i < this.modelSourcePath.length; i += 1) {
         const gltf = new AMap.GltfLoader();
         // 调用load方法，加载 glTF 模型资源
-        const model_source_path = this.modelSourcePath;
+        const model_source_path = this.modelSourcePath[i];
         const urlDuck = `/${model_source_path}.gltf`;
         gltf.load(urlDuck, (gltfModel) => {
           // gltfModel 为解析后的gltf对象
@@ -73,7 +77,7 @@ export const Object3D = {
           gltfModel.rotateZ(0);
           object3Dlayer.add(gltfModel);
         });
-      });
+      }
     },
   },
 };

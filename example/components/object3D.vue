@@ -3,11 +3,14 @@
     :map-options="{
       viewMode: '3D',
       pitch: 30,
-      rotation: 25,
-      zoom: 18,
-      center: [104.069755, 30.61565],
-      showIndoorMap: false
+      rotation: 65,
+      zoom: 16,
+      center: [104.068251, 30.587363],
+      showIndoorMap: false,
+      showBuildingBlock:false,
     }"
+    map-style="amap://styles/4af33ebc995aa04f3685f273e774e85f"
+    :use-map-ui="true"
   >
     <object3-d
       :model-source-path="modelPath"
@@ -29,15 +32,15 @@ export default {
 
   data () {
     return {
-      modelPath: 'test/fengde',
+      modelPath: ['test/3Dtest'],
       lightOption: {
         ambientLight: [[1, 1, 1], 1],
         directionLight: [[1, 0, -0.5], [1, 1, 1], 0.5],
       },
       modelOption: {
-        position: [104.069755, 30.61565],
-        scale: 3,
-        height: 3,
+        position: [104.068251, 30.587363],
+        scale: 8,
+        height: 8,
         scene: 0,
       },
     };
