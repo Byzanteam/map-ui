@@ -17,6 +17,7 @@
       :model-source-path="modelPath"
       :light-option="lightOption"
       :model-option="modelOption"
+      @modelClick="modelClick"
     />
   </base-map>
 </template>
@@ -45,6 +46,12 @@ export default {
         scene: 0,
       },
     };
+  },
+
+  methods: {
+    modelClick (index, object, point, distance) {
+      console.log(index, object, point, distance);
+    },
   },
 };
 </script>

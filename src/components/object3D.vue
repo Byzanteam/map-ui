@@ -55,6 +55,7 @@ export const Object3D = {
       AMap.plugin(['AMap.GltfLoader'], () => {
         this.loadSource(object3Dlayer);
       });
+      const _this = this;
       this.map.on('click', function readModelSource (ev) {
         const { pixel } = ev;
         const px = new AMap.Pixel(pixel.x, pixel.y);
@@ -69,8 +70,7 @@ export const Object3D = {
         const {
           index, object, point, distance,
         } = obj;
-        console.log('总览', obj, '序号：', index, '对象：', object, '坐标点：', point, '距离：', distance);
-        // this.$emit('modelClick', obj);
+        _this.$emit('modelClick', index, object, point, distance);
       });
     },
     loadSource (object3Dlayer) {
@@ -80,14 +80,13 @@ export const Object3D = {
         const model_source_path = this.modelSourcePath[i];
         const urlDuck = `/${model_source_path}`;
         gltf.load(urlDuck, (gltfModel) => {
+          // gltfModel 为解析后的gltf对象
           // 开启模型透明开关
           this.$nextTick(() => {
             for (let a = 0; a < gltfModel.layerMesh.length; a += 1) {
               gltfModel.layerMesh[a].transparent = true;
             }
           });
-          console.log(gltfModel);
-          // gltfModel 为解析后的gltf对象
           const {
             position, scale, height, scene,
           } = this.modelOption;
