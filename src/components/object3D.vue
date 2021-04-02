@@ -24,7 +24,7 @@ export const Object3D = {
       default: () => ({
         modelOption: {
           position: [104.069755, 30.61565],
-          scale: 10,
+          scale: 7.75,
           height: 10,
           scene: 0,
         },
@@ -55,23 +55,47 @@ export const Object3D = {
       AMap.plugin(['AMap.GltfLoader'], () => {
         this.loadSource(object3Dlayer);
       });
+      this.map.on('click', function readModelSource (ev) {
+        const { pixel } = ev;
+        const px = new AMap.Pixel(pixel.x, pixel.y);
+        const obj = this.getObject3DByContainerPos(
+          px, [object3Dlayer], false
+        ) || {};
+
+        // 1 选中的 face 所在的索引；
+        // 2 object3D 对象，这里为当前 Mesh；
+        // 3 被拾取到的对象和拾取射线的交叉点的3D坐标；
+        // 4 交叉点距透视原点的距离
+        const {
+          index, object, point, distance,
+        } = obj;
+        console.log('总览', obj, '序号：', index, '对象：', object, '坐标点：', point, '距离：', distance);
+        // this.$emit('modelClick', obj);
+      });
     },
     loadSource (object3Dlayer) {
       for (let i = 0; i < this.modelSourcePath.length; i += 1) {
         const gltf = new AMap.GltfLoader();
         // 调用load方法，加载 glTF 模型资源
         const model_source_path = this.modelSourcePath[i];
-        const urlDuck = `/${model_source_path}.gltf`;
+        const urlDuck = `/${model_source_path}`;
         gltf.load(urlDuck, (gltfModel) => {
+          // 开启模型透明开关
+          this.$nextTick(() => {
+            for (let a = 0; a < gltfModel.layerMesh.length; a += 1) {
+              gltfModel.layerMesh[a].transparent = true;
+            }
+          });
+          console.log(gltfModel);
           // gltfModel 为解析后的gltf对象
           const {
             position, scale, height, scene,
           } = this.modelOption;
           gltfModel.setOption({
             position: new AMap.LngLat(position[0], position[1]),
-            scale, // 非必须，默认1
-            height, // 非必须，默认0
-            scene, // 非必须，默认0
+            scale,
+            height,
+            scene,
           });
           gltfModel.rotateX(90);
           gltfModel.rotateZ(0);

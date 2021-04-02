@@ -3,13 +3,14 @@
     :map-options="{
       viewMode: '3D',
       pitch: 30,
-      rotation: 65,
-      zoom: 16,
-      center: [104.068251, 30.587363],
+      rotation: 0,
+      zoom: 13,
+      center: [104.049835, 30.566256],
       showIndoorMap: false,
       showBuildingBlock:false,
+      skyColor: '#5A75C6'
     }"
-    map-style="amap://styles/4af33ebc995aa04f3685f273e774e85f"
+    map-style="amap://styles/47544281fde20c50707a56083af07455"
     :use-map-ui="true"
   >
     <object3-d
@@ -32,15 +33,15 @@ export default {
 
   data () {
     return {
-      modelPath: ['test/3Dtest'],
+      modelPath: ['test/test7.gltf'],
       lightOption: {
         ambientLight: [[1, 1, 1], 1],
-        directionLight: [[1, 0, -0.5], [1, 1, 1], 0.5],
+        directionLight: [[0, -1, 1], [1, 1, 1], 1],
       },
       modelOption: {
-        position: [104.068251, 30.587363],
-        scale: 8,
-        height: 8,
+        position: [104.04969, 30.566186],
+        scale: 7.75,
+        height: 10,
         scene: 0,
       },
     };
