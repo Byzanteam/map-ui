@@ -5,6 +5,10 @@
     :marker-style-map="markerStyleMap"
     :inner-label-style="innerLabelStyle"
     :icon="icon"
+    @marker-clicked="markerClickedFunc"
+    @marker-dbclicked="markerDbclickedFunc"
+    @marker-mouseover="markerMouseoverFunc"
+    @marker-mouseout="markerMouseoutFunc"
   />
 </template>
 
@@ -85,6 +89,18 @@ export default {
         }
         return zoom === this.zoom;
       });
+    },
+    markerClickedFunc (marker) {
+      this.$emit('marker-clicked', marker);
+    },
+    markerDbclickedFunc (marker) {
+      this.$emit('marker-dbclicked', marker);
+    },
+    markerMouseoverFunc (marker) {
+      this.$emit('marker-mouseover', marker);
+    },
+    markerMouseoutFunc (marker) {
+      this.$emit('marker-mouseout', marker);
     },
   },
 };
