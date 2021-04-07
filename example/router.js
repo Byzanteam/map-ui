@@ -19,9 +19,9 @@ const router = new VueRouter({
     { path: '/airline', component: () => import('./components/airline') },
     { path: '/cluster', component: () => import('./components/cluster') },
     { path: '/stratum_marker', component: () => import('./components/stratum_marker') },
+    { path: '/custom_marker', component: () => import('./components/custom_marker') },
     { path: '/info_window', component: () => import('./components/info_window') },
     { path: '/simple_marker', component: () => import('./components/simple_marker') },
-    { path: '/custom_marker', component: () => import('./components/custom_marker') },
     { path: '/3d', component: () => import('./components/object3D') },
   ],
 });

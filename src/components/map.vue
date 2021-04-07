@@ -23,10 +23,6 @@ export const BaseMap = {
         return Array.isArray(val) || _.includes(['all', 'none'], val);
       },
     },
-    satellite: {
-      type: Boolean,
-      default: false,
-    },
     mapStyle: {
       type: String,
       default: jsApi.style || '',
@@ -124,14 +120,9 @@ export const BaseMap = {
     },
 
     initialize () {
-      const layers = [];
-      if (this.satellite) {
-        layers.push(new AMap.TileLayer.Satellite(),);
-      }
       this.map = new AMap.Map(this.$el, {
         resizeEnable: true,
         ...this.mapOptions,
-        layers,
         features: this.mapFeatures,
         mapStyle: this.mapStyle,
       });
