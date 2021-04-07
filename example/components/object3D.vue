@@ -66,7 +66,7 @@ const MARKERS = [
         fontSize: 12,
       },
     ],
-    label: ['星星', '这是星星'],
+    label: [''],
     img: 'http://photocdn.sohu.com/20130925/Img387224863.jpg',
   },
   {
@@ -82,19 +82,6 @@ const MARKERS = [
     value: 2,
     label: '四号点',
   },
-  // {
-  //   id: 5,
-  //   location: [104.049235, 30.566206],
-  //   value: 5,
-  //   label: '五号点',
-  // },
-  // {
-  //   id: 6,
-  //   location: [104.043835, 30.566056],
-  //   value: 20,
-  //   label: ['六号点特别长', '描述也很长', '这排用默认字体样式'],
-  //   img: 'http://static01.lvye.com/portal/201604/28/093110pb7151d134r1rvet.jpg',
-  // },
 ];
 
 export default {
