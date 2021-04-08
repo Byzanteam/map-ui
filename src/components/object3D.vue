@@ -74,6 +74,7 @@ export const Object3D = {
       });
     },
     loadSource (object3Dlayer) {
+      console.log(object3Dlayer);
       for (let i = 0; i < this.modelSourcePath.length; i += 1) {
         const gltf = new AMap.GltfLoader();
         // 调用load方法，加载 glTF 模型资源

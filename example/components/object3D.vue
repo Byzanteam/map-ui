@@ -13,6 +13,15 @@
     map-style="amap://styles/47544281fde20c50707a56083af07455"
     :use-map-ui="true"
   >
+    <regions
+      ref="outlineRegion"
+      :z-index="0"
+      :bubble="true"
+      :areas="guixiGeojson.features"
+      :area-style="outlineAreaStyle"
+      :area-hover-style="outlineAreaHoverStyle"
+      @area-clicked="areaClicked"
+    />
     <simple-marker
       :markers="pointData"
       :marker-label-style="markerLabelStyle"
@@ -33,6 +42,9 @@
 import BaseMap from '../../src/components/map.vue';
 import Object3D from '../../src/components/object3D';
 import SimpleMarker from '../../src/components/marker/simple_marker';
+import Regions from '../../src/components/regions';
+import guixiGeojson from '../../public/test/geojson/guixi_map.json';
+import communityRegion from '../../public/test/geojson/guixi_community.json';
 
 const MARKERS = [
   {
@@ -89,10 +101,25 @@ export default {
     BaseMap,
     Object3D,
     SimpleMarker,
+    Regions,
   },
 
   data () {
     return {
+      guixiGeojson, // 地图geoJson偏离修正
+      communityRegion, // 同上
+      outlineAreaStyle: {
+        strokeColor: '#00b1ff', strokeStyle: 'dashed', fillOpacity: 0.2, strokeWeight: 3,
+      },
+      outlineAreaHoverStyle: {
+        strokeColor: '#00b1ff', fillOpacity: 0.2, strokeWeight: 3,
+      },
+      communityAreaStyle: {
+        strokeColor: '#30b699', fillColor: '#32c5ff', fillOpacity: 0.1, strokeWeight: 2,
+      },
+      communityAreaHoverStyle: {
+        strokeColor: '#30b699', fillColor: '#32c5ff', fillOpacity: 0, strokeWeight: 2,
+      },
       modelPath: ['test/test7.gltf'],
       lightOption: {
         ambientLight: [[1, 1, 1], 1],
@@ -168,6 +195,9 @@ export default {
   methods: {
     modelClick (index, object, point, distance) {
       console.log(index, object, point, distance);
+    },
+    areaClicked (geoJSON, area) {
+      console.log('区域点击', geoJSON, area);
     },
   },
 };
