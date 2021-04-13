@@ -1,33 +1,27 @@
 <template>
   <base-map
+    ref="map"
     :map-options="{
       viewMode: '3D',
-      pitch: 30,
-      rotation: 0,
-      zoom: 13,
+      pitch: 60,
+      zoom: 14,
       center: [104.049835, 30.566256],
+      resizeEnable: true,
       showIndoorMap: false,
       showBuildingBlock:false,
-      skyColor: '#5A75C6'
     }"
-    map-style="amap://styles/47544281fde20c50707a56083af07455"
+    map-style="amap://styles/b71b42b9bcd91bf21d3dee1ed11ceee5"
     :use-map-ui="true"
+    @mouse-moving="stopRotate"
   >
     <regions
       ref="outlineRegion"
       :z-index="0"
       :bubble="true"
-      :areas="guixiGeojson.features"
-      :area-style="outlineAreaStyle"
-      :area-hover-style="outlineAreaHoverStyle"
+      :areas="communityRegion.features"
+      :area-style="communityAreaStyle"
+      :area-hover-style="communityAreaHoverStyle"
       @area-clicked="areaClicked"
-    />
-    <simple-marker
-      :markers="pointData"
-      :marker-label-style="markerLabelStyle"
-      :marker-style="markerStyle"
-      :marker-style-map="markerStyleMap"
-      icon="waterDrop"
     />
     <object3-d
       :model-source-path="modelPath"
@@ -39,80 +33,33 @@
 </template>
 
 <script>
+import gcoord from 'gcoord';
 import BaseMap from '../../src/components/map.vue';
 import Object3D from '../../src/components/object3D';
-import SimpleMarker from '../../src/components/marker/simple_marker';
 import Regions from '../../src/components/regions';
 import guixiGeojson from '../../public/test/geojson/guixi_map.json';
 import communityRegion from '../../public/test/geojson/guixi_community.json';
-
-const MARKERS = [
-  {
-    id: 1,
-    location: [104.049835, 30.562256],
-    value: 0,
-    labelStyles: [
-      {
-        color: 'blue',
-        fontSize: 14,
-      },
-      {
-        color: 'red',
-        fontSize: 12,
-      },
-    ],
-    label: ['一号点', '描述'],
-    img: 'http://img.sccnn.com/bimg/337/35663.jpg',
-  },
-  {
-    id: 2,
-    location: [104.049435, 30.566056],
-    value: 1.5,
-    labelStyles: [
-      {
-        color: '#4196ff',
-        fontSize: 14,
-      },
-      {
-        color: '#ff8441',
-        fontSize: 12,
-      },
-    ],
-    label: [''],
-    img: 'http://photocdn.sohu.com/20130925/Img387224863.jpg',
-  },
-  {
-    id: 3,
-    location: [104.049135, 30.564156],
-    value: 2,
-    label: '三号点',
-    img: 'http://static01.lvye.com/portal/201604/28/093110pb7151d134r1rvet.jpg',
-  },
-  {
-    id: 4,
-    location: [104.045235, 30.566156],
-    value: 2,
-    label: '四号点',
-  },
-];
 
 export default {
   components: {
     BaseMap,
     Object3D,
-    SimpleMarker,
     Regions,
   },
 
   data () {
     return {
-      guixiGeojson, // 地图geoJson偏离修正
-      communityRegion, // 同上
+      guixiGeojson: gcoord.transform(
+        guixiGeojson, gcoord.WGS84, gcoord.GCJ02
+      ), // 地图geoJson偏离修正
+      communityRegion: gcoord.transform(
+        communityRegion, gcoord.WGS84, gcoord.GCJ02
+      ), // 同上
       outlineAreaStyle: {
-        strokeColor: '#00b1ff', strokeStyle: 'dashed', fillOpacity: 0.2, strokeWeight: 3,
+        strokeColor: '#3BF1C7', strokeStyle: 'dashed', fillColor: '#32c5ff', fillOpacity: 0.2, strokeWeight: 3,
       },
       outlineAreaHoverStyle: {
-        strokeColor: '#00b1ff', fillOpacity: 0.2, strokeWeight: 3,
+        strokeColor: '#3BF1C7', fillOpacity: 0.2, strokeWeight: 3,
       },
       communityAreaStyle: {
         strokeColor: '#30b699', fillColor: '#32c5ff', fillOpacity: 0.1, strokeWeight: 2,
@@ -120,76 +67,38 @@ export default {
       communityAreaHoverStyle: {
         strokeColor: '#30b699', fillColor: '#32c5ff', fillOpacity: 0, strokeWeight: 2,
       },
-      modelPath: ['test/test7.gltf'],
+      modelPath: ['test/only-guixi.gltf'],
       lightOption: {
         ambientLight: [[1, 1, 1], 1],
-        directionLight: [[0, -1, 1], [1, 1, 1], 1],
+        directionLight: [[1, -1, 5], [1, 1, 1], 1],
       },
-      modelOption: {
+      modelOption: [{
         position: [104.04969, 30.566186],
         scale: 7.75,
         height: 10,
         scene: 0,
+      }],
+      mouseOnMove: false,
+      mousePosition: {
+        x: 0,
+        y: 0,
       },
-      pointData: MARKERS,
-      markerStyle: {
-        icon: 'triangle-down',
-        size: 80,
-      },
-      markerLabelStyle: {
-        padding: 10,
-        color: 'purple',
-        fontSize: 13,
-        fontweight: 500,
-      },
-      markerStyleMap: [
-        {
-          value: 1,
-          icon: 'star',
-          labelStyles: [
-            {
-              color: 'blue',
-              fontSize: 15,
-            },
-            {
-              color: 'red',
-              fontSize: 17,
-            },
-          ],
-        },
-        {
-          value: 4,
-          icon: 'triangleDown',
-          labelStyles: [
-            {
-              color: 'blue',
-              fontSize: 20,
-            },
-            {
-              color: 'red',
-              fontSize: 30,
-            },
-          ],
-        },
-        {
-          value: 10,
-          icon: 'triangleDown',
-          size: 80,
-          labelStyles: [
-            {
-              color: '#b70019',
-              fontSize: 50,
-              fontweight: 900,
-            },
-            {
-              color: '#9e0693',
-              fontSize: 90,
-              fontweight: 900,
-            },
-          ],
-        },
-      ],
+      timer: null,
     };
+  },
+
+  watch: {
+    mouseOnMove (value) {
+      if (value && this.timer) {
+        clearInterval(this.timer);
+      } else {
+        this.rotate();
+      }
+    },
+  },
+
+  created () {
+    this.rotate();
   },
 
   methods: {
@@ -197,7 +106,26 @@ export default {
       console.log(index, object, point, distance);
     },
     areaClicked (geoJSON, area) {
+      this.$refs.map.map.setCenter([104.07860861130011, 30.57640644162895]);
       console.log('区域点击', geoJSON, area);
+    },
+    rotate () {
+      this.timer = setInterval(() => {
+        this.$refs.map.map.setRotation(
+          (this.$refs.map.map.getRotation() + 0.1) % 360
+        );
+      }, 100);
+    },
+    stopRotate (e) {
+      this.modelOption.x = e.pixel.x;
+      this.modelOption.y = e.pixel.y;
+      this.mouseOnMove = true;
+      setTimeout(() => {
+        if (this.modelOption.x === e.pixel.x
+          && this.modelOption.y === e.pixel.y) {
+          this.mouseOnMove = false;
+        }
+      }, 3000);
     },
   },
 };

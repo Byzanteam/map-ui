@@ -20,16 +20,22 @@ export const Object3D = {
     },
     // 模型配置
     modelOption: {
-      type: Object,
-      default: () => ({
+      type: Array,
+      default: () => ([{
         modelOption: {
           position: [104.069755, 30.61565],
           scale: 7.75,
           height: 10,
           scene: 0,
         },
-      }),
+      }]),
     },
+  },
+
+  data () {
+    return {
+      timer: null,
+    };
   },
 
   watch: {
@@ -42,6 +48,7 @@ export const Object3D = {
 
   methods: {
     renderModel () {
+      const _this = this;
       // 光线配置，即光照，打光
       this.map.AmbientLight = new AMap.Lights.AmbientLight(
         ...this.lightOption.ambientLight
@@ -55,7 +62,6 @@ export const Object3D = {
       AMap.plugin(['AMap.GltfLoader'], () => {
         this.loadSource(object3Dlayer);
       });
-      const _this = this;
       this.map.on('click', function readModelSource (ev) {
         const { pixel } = ev;
         const px = new AMap.Pixel(pixel.x, pixel.y);
@@ -74,7 +80,6 @@ export const Object3D = {
       });
     },
     loadSource (object3Dlayer) {
-      console.log(object3Dlayer);
       for (let i = 0; i < this.modelSourcePath.length; i += 1) {
         const gltf = new AMap.GltfLoader();
         // 调用load方法，加载 glTF 模型资源
@@ -90,7 +95,7 @@ export const Object3D = {
           });
           const {
             position, scale, height, scene,
-          } = this.modelOption;
+          } = this.modelOption[i];
           gltfModel.setOption({
             position: new AMap.LngLat(position[0], position[1]),
             scale,
