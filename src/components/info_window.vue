@@ -66,7 +66,7 @@ export const InfoWindow =  {
     },
 
     open (location) {
-      if (this.infoWindow && !this.infoWindow.getIsOpen()) {
+      if (this.infoWindow && !this.infoWindow.getIsOpen() && this.infoWindowHtml !== '') {
         this.infoWindow.open(
           this.map,
           location || this.location,

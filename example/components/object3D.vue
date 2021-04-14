@@ -29,6 +29,19 @@
       :model-option="modelOption"
       @modelClick="modelClick"
     />
+    <marker-point
+      v-for="(marker, index) in markers"
+      :key="index"
+      :marker="marker"
+      :marker-style="markerStyle"
+      @marker-clicked="createWindow(marker)"
+    />
+    <info-window
+      ref="windowRef"
+      :info-window-options="{closeWhenClickMap: true}"
+      :location="infoData.location"
+      :info-window-html="infoData.content"
+    />
   </base-map>
 </template>
 
@@ -37,6 +50,8 @@ import gcoord from 'gcoord';
 import BaseMap from '../../src/components/map.vue';
 import Object3D from '../../src/components/object3D';
 import Regions from '../../src/components/regions';
+import MarkerPoint from '../../src/components/marker/index';
+import infoWindow from '../../src/components/info_window.vue';
 import guixiGeojson from '../../public/test/geojson/guixi_map.json';
 import communityRegion from '../../public/test/geojson/guixi_community.json';
 
@@ -45,6 +60,8 @@ export default {
     BaseMap,
     Object3D,
     Regions,
+    MarkerPoint,
+    infoWindow,
   },
 
   data () {
@@ -84,6 +101,16 @@ export default {
         y: 0,
       },
       timer: null,
+      markers: [
+        { location: [104.049835, 30.566256], label: '一号点', content: '<div>123</div>' },
+        { location: [104.029835, 30.566256], label: '二号点', content: '<div>456</div>' },
+      ],
+      markerStyle: {
+        color: 'transparent',
+        strokeColor: 'red',
+        size: 30,
+      },
+      infoData: {},
     };
   },
 
@@ -99,6 +126,7 @@ export default {
 
   created () {
     this.rotate();
+    this.infoData = this.markers;
   },
 
   methods: {
@@ -126,6 +154,10 @@ export default {
           this.mouseOnMove = false;
         }
       }, 3000);
+    },
+    createWindow (info) {
+      this.infoData = info;
+      this.$refs.windowRef.open();
     },
   },
 };
