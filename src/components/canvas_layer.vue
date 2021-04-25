@@ -1,7 +1,7 @@
 <script>
 import MapMixin from '../mixins/map';
 
-export default {
+export const CanvasLayer = {
   mixins: [MapMixin],
 
   props: {
@@ -53,8 +53,10 @@ export default {
     useDraw () {
       this.draw();
       this.canvasLayer.reFresh();
-      AMap.Util.requestAnimFrame(this.test);
+      AMap.Util.requestAnimFrame(this.useDraw);
     },
   },
 };
+
+export default CanvasLayer;
 </script>
