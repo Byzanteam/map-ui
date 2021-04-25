@@ -52,6 +52,11 @@
         </router-link>
       </li>
       <li>
+        <router-link to="/canvas-layer">
+          canvas_layer
+        </router-link>
+      </li>
+      <li>
         <router-link to="/simple_marker">
           simple_marker
         </router-link>

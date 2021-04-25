@@ -54,8 +54,8 @@ export const InfoWindow =  {
       this.infoWindow = new AMap.InfoWindow({
         autoMove: true,
         content,
-        offset: new AMap.Pixel(offset[0], offset[1]),
         ...options,
+        offset: new AMap.Pixel(offset[0], offset[1]),
       });
       this.open(location);
     },
