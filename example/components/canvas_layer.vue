@@ -23,7 +23,7 @@
 
 <script>
 import BaseMap from '../../src/components/map.vue';
-import CanvasLayer from '../../src/components/canvas_layer.vue';
+import { CanvasLayer } from '../../src/components/canvas_layer.vue';
 
 export default {
   components: {
