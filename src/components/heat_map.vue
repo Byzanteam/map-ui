@@ -23,6 +23,10 @@ export const HeatMap = {
       type: Array,
       default: () => [0, 1],
     },
+    options: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data () {
@@ -53,6 +57,7 @@ export const HeatMap = {
             radius: this.heatPointRadius,
             gradient: this.heatPointColorMap,
             opacity: this.heatPointOpacity,
+            ...this.options,
           }
         );
 
