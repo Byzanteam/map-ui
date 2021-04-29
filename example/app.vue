@@ -57,11 +57,6 @@
         </router-link>
       </li>
       <li>
-        <router-link to="/simple_marker">
-          simple_marker
-        </router-link>
-      </li>
-      <li>
         <router-link to="/3d">
           3D
         </router-link>
