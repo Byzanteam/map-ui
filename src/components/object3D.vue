@@ -38,15 +38,10 @@ export const Object3D = {
     };
   },
 
-  watch: {
-    map (value) {
-      if (value && typeof AMapUI === 'undefined') {
-        this.renderModel();
-      }
-    },
-  },
-
   methods: {
+    mapLoadedFunc () {
+      this.renderModel();
+    },
     renderModel () {
       const _this = this;
       // 光线配置，即光照，打光
