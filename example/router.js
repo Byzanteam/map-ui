@@ -22,7 +22,6 @@ const router = new VueRouter({
     { path: '/custom_marker', component: () => import('./components/custom_marker') },
     { path: '/info_window', component: () => import('./components/info_window') },
     { path: '/canvas-layer', component: () => import('./components/canvas_layer') },
-    { path: '/simple_marker', component: () => import('./components/simple_marker') },
     { path: '/3d', component: () => import('./components/object3D') },  ],
 });
 
