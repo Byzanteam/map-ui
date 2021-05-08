@@ -128,6 +128,7 @@ export const AirLine = {
         counter: 0,
       },
       airLineStyle: this.airLineOptions,
+      curvatureValue: this.curvature,
     };
   },
 
@@ -165,6 +166,14 @@ export const AirLine = {
         this.airLineStyle = {
           ...val,
         };
+        this.clearPathSimplifier();
+        this.renderPathSimplifierIfReady();
+      },
+    },
+    curvature: {
+      deep: true,
+      handler (val) {
+        this.curvatureValue = val;
         this.clearPathSimplifier();
         this.renderPathSimplifierIfReady();
       },
@@ -334,7 +343,7 @@ export const AirLine = {
             lengthx = Math.abs(start[0] - end[0]),
             lengthy = Math.abs(start[1] - end[1]),
             length = Math.max(lengthx, lengthy),
-            modulus = this.curvature * length * 0.4;
+            modulus = this.curvatureValue * length * 0.4;
       while (result.length <= this.pieceCount) {
         const i = result.length,
               lamda = i / this.pieceCount,
