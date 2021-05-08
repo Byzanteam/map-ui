@@ -129,6 +129,7 @@ export const BaseMap = {
       this.map.on('moveend', this._resize);
       this.map.on('zoomend', this._resize);
       this.map.on('resize', this._resize);
+      this.map.on('mousemove', e => this.$emit('mouse-moving', e));
       // 对外
       this.$emit('map-created', this.map);
       // 对内

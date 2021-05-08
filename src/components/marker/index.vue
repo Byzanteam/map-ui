@@ -182,6 +182,11 @@ export const MarkerPoint = {
           left: `${offset[0]}px`,
           padding: `${padding[0]}px ${padding[1]}px`,
           'white-space': 'nowrap',
+          'text-overflow': 'ellipsis',
+          overflow: 'hidden',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
         },
       };
     },

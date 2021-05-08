@@ -3893,6 +3893,11 @@ gauge@~2.7.3:
     strip-ansi "^3.0.1"
     wide-align "^1.1.0"
 
+gcoord@^0.3.1:
+  version "0.3.1"
+  resolved "https://registry.yarnpkg.com/gcoord/-/gcoord-0.3.1.tgz#42dcccf055472f352214b20e4b2a994927836d50"
+  integrity sha512-fY0Ql0ja67tsZbj75sHEy1mGC2Y1hU37D7XOeiaqubQCvJmuCwRhjCiyUnUEayjqQ5t22EoYTH9MwgaXB7IxCg==
+
 get-caller-file@^1.0.1:
   version "1.0.3"
   resolved "https://registry.npm.taobao.org/get-caller-file/download/get-caller-file-1.0.3.tgz#f978fa4c90d1dfe7ff2d6beda2a515e713bdcf4a"
