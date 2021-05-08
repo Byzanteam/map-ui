@@ -61,6 +61,11 @@
           3D
         </router-link>
       </li>
+      <li>
+        <router-link to="/pathReplay">
+          pathReplay
+        </router-link>
+      </li>
     </ul>
     <router-view />
   </div>
