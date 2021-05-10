@@ -28,6 +28,14 @@ export const pathReplay = {
       type: Array,
       default: () => [],
     },
+    speed: {
+      type: Number,
+      default: 10000,
+    },
+    startTime: {
+      type: Number,
+      default: 1000,
+    },
   },
 
   methods: {
@@ -35,17 +43,17 @@ export const pathReplay = {
       this.setMarkerData(this.marker);
       this.renderLine();
       this.renderPassedLine();
-      // setInterval(this.startAnimation, 1000);
-      this.startAnimation();
+      setTimeout(this.startAnimation, this.startTime);
+      // this.startAnimation();
     },
 
     renderLine () {
       this.lineInstane = new AMap.Polyline({
         path: this.path,
-        strokeWeight: 24,
+        strokeWeight: 4,
         // borderWeight: 2, // 线条宽度，默认为 1
         strokeColor: '#A8FBC0', // 线条颜色
-        strokeOpacity: 0.6,
+        strokeOpacity: 0,
         lineJoin: 'round', // 折线拐点连接处样式
       });
 
@@ -53,10 +61,11 @@ export const pathReplay = {
     },
     renderPassedLine () {
       this.passedLineInstane = new AMap.Polyline({
-        strokeWeight: 24,
+        strokeWeight: 0,
+        lineCap: 'round',
         // borderWeight: 4, // 线条宽度，默认为 1
-        strokeColor: '#A8FBC0', // 线条颜色
-        strokeOpacity: 0.6,
+        strokeColor: 'orange', // 线条颜色
+        strokeOpacity: 0,
         lineJoin: 'round', // 折线拐点连接处样式
       });
 
@@ -87,7 +96,7 @@ export const pathReplay = {
     },
     startAnimation () {
       console.log(this.instance);
-      this.instance.moveAlong(this.path, 18000, k => k, true);
+      this.instance.moveAlong(this.path, this.speed, k => k, true);
     },
     pauseAnimation () {
       this.instance.pauseMove();

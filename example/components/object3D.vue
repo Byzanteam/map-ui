@@ -29,12 +29,19 @@
       :model-option="modelOption"
       @modelClick="modelClick"
     />
-    <marker-point
-      v-for="(marker, index) in markers"
-      :key="index"
+    <path-replay
+      v-for="(item, index) in path"
+      :key="index+item.path"
+      ref="path"
+      :path="item.path"
+      :speed="item.speed"
+      :start-time="item.startTime"
       :marker="marker"
-      :marker-style="markerStyle"
-      @marker-clicked="createWindow(marker)"
+      :content="markerContent"
+      :options="{
+        autoRotation: true,
+        angle:-90,
+      }"
     />
     <info-window
       ref="windowRef"
@@ -50,8 +57,8 @@ import gcoord from 'gcoord';
 import BaseMap from '../../src/components/map.vue';
 import Object3D from '../../src/components/object3D';
 import Regions from '../../src/components/regions';
-import MarkerPoint from '../../src/components/marker/index';
 import infoWindow from '../../src/components/info_window.vue';
+import PathReplay from '../../src/components/pathReplay';
 import guixiGeojson from '../../public/test/geojson/guixi_map.json';
 import communityRegion from '../../public/test/geojson/guixi_community.json';
 
@@ -60,8 +67,8 @@ export default {
     BaseMap,
     Object3D,
     Regions,
-    MarkerPoint,
     infoWindow,
+    PathReplay,
   },
 
   data () {
@@ -105,12 +112,77 @@ export default {
         { location: [104.049835, 30.566256], label: '一号点', content: '<div>123</div>' },
         { location: [104.029835, 30.566256], label: '二号点', content: '<div>456</div>' },
       ],
-      markerStyle: {
-        color: 'transparent',
-        strokeColor: 'red',
-        size: 30,
-      },
       infoData: {},
+      path: [
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.069735,30.532125], [104.067415, 30.608657]],
+          speed: 4800,
+          startTime: 0,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.069735,30.532125], [104.067415, 30.608657]],
+          speed: 4800,
+          startTime: 1000,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.069735,30.532125], [104.067415, 30.608657]],
+          speed: 4800,
+          startTime: 2000,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.069735,30.532125],[104.069671,30.535516],[104.06944,30.542345],[104.069317,30.546864],[104.069317,30.546864],[104.068861,30.560418],[104.0687,30.565691],[104.068513,30.572069],[104.068438,30.57569],[104.068352,30.578983],[104.068134,30.585938],[104.068053,30.588788],[104.067731,30.59807],[104.067415,30.608657]],
+          speed: 4800,
+          startTime: 3000,
+        },
+
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.067415, 30.608657], [104.069488, 30.532125]],
+          speed: 4800,
+          startTime: 1000,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.067415, 30.608657], [104.069488, 30.532125]],
+          speed: 4800,
+          startTime: 2000,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.067415, 30.608657], [104.069488, 30.532125]],
+          speed: 4800,
+          startTime: 3000,
+        },
+        {
+          // eslint-disable-next-line max-len
+          path: [[104.067415, 30.608657], [104.069488, 30.532125]],
+          speed: 4800,
+          startTime: 4000,
+        },
+      ],
+      innerLabelStyle: {
+        color: 'red',
+        fontSize: 10,
+        padding: ['10px', 0],
+        offset: [0, 0],
+      },
+      markerStyle: {
+        backgroundColor: '',
+      },
+      marker: {
+        point: [104.069606, 30.532093],
+        value: 0,
+        label: '一号点',
+      },
+      markerContent: `
+        <div
+          class="marker-point"
+        />
+      `,
     };
   },
 
@@ -138,11 +210,11 @@ export default {
       console.log('区域点击', geoJSON, area);
     },
     rotate () {
-      this.timer = setInterval(() => {
-        this.$refs.map.map.setRotation(
-          (this.$refs.map.map.getRotation() + 0.1) % 360
-        );
-      }, 100);
+      // this.timer = setInterval(() => {
+      //   this.$refs.map.map.setRotation(
+      //     (this.$refs.map.map.getRotation() + 0.025) % 360
+      //   );
+      // }, 100);
     },
     stopRotate (e) {
       this.modelOption.x = e.pixel.x;
@@ -162,3 +234,13 @@ export default {
   },
 };
 </script>
+
+<style>
+.marker-point {
+  position: relative;
+  width: 31px;
+  height: 3px;
+  background-image: url("../../public/test/markpoint.png");
+  background-size: 100% 100%;
+}
+</style>

@@ -1,9 +1,16 @@
 <template>
   <base-map
     :map-options="{
+      viewMode: '3D',
+      pitch: 60,
       zoom: 14,
       center: [104.049835, 30.566256],
+      resizeEnable: true,
+      showIndoorMap: false,
+      showBuildingBlock:false,
     }"
+    map-style="amap://styles/b71b42b9bcd91bf21d3dee1ed11ceee5"
+    :use-map-ui="true"
   >
     <path-replay
       ref="path"
@@ -11,7 +18,8 @@
       :marker="marker"
       :content="markerContent"
       :options="{
-        anchor: 'bottom-center'
+        anchor: 'bottom-center',
+        autoRotation: true
       }"
     />
   </base-map>
@@ -21,7 +29,6 @@
 // import CustomMarker from '../../src/components/marker/custom_marker';
 import PathReplay from '../../src/components/pathReplay';
 import BaseMap from '../../src/components/map.vue';
-import markerPoint from "../../public/test/markpoint.png";
 
 export default {
   components: {
@@ -65,10 +72,11 @@ export default {
 <style>
 .marker-point {
   position: relative;
-  width: 124px;
-  height: 24px;
-  transform: rotate(270deg);
+  width: 62px;
+  height: 6px;
+  /*transform: rotate(270deg);*/
   background-image: url("../../public/test/markpoint.png");
+  /*background: aquamarine;*/
   background-size: 100% 100%;
 }
 </style>
