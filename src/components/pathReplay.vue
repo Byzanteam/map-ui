@@ -1,24 +1,23 @@
 <script>
 import ClusterMarker from './marker/custom_marker';
 
-// const DEFAULT_PATH_STYLE = {
-//   map: this.map,
-//   // path: lineArr,
-//   showDir: true,
-//   strokeColor: '#28F',
-//   strokeOpacity: 1,
-//   strokeWeight: 6,
-//   strokeStyle: 'solid',
-// };
-//
-// const DEFAULT_PASSED_PATH_STYLE = {
-//   map: this.map,
-//   // path: lineArr,
-//   strokeColor: '#28F',
-//   strokeOpacity: 1,
-//   strokeWeight: 6,
-//   strokeStyle: 'solid',
-// };
+const DEFAULT_PATH_OPTIONS = {
+  path:[[104.069735,30.532125], [104.067415, 30.608657]],
+  strokeWeight: 4,
+  // borderWeight: 2, // 线条宽度，默认为 1
+  strokeColor: '#A8FBC0', // 线条颜色
+  strokeOpacity: 0,
+  lineJoin: 'round', // 折线拐点连接处样式
+};
+
+const DEFAULT_PASSED_PATH_OPTIONS= {
+  strokeWeight: 0,
+  lineCap: 'round',
+  // borderWeight: 4, // 线条宽度，默认为 1
+  strokeColor: 'orange', // 线条颜色
+  strokeOpacity: 0,
+  lineJoin: 'round', // 折线拐点连接处样式
+};
 
 export const pathReplay = {
   mixins: [ClusterMarker],
@@ -49,24 +48,14 @@ export const pathReplay = {
 
     renderLine () {
       this.lineInstane = new AMap.Polyline({
-        path: this.path,
-        strokeWeight: 4,
-        // borderWeight: 2, // 线条宽度，默认为 1
-        strokeColor: '#A8FBC0', // 线条颜色
-        strokeOpacity: 0,
-        lineJoin: 'round', // 折线拐点连接处样式
+        ...DEFAULT_PATH_OPTIONS,
       });
 
       this.map.add(this.lineInstane);
     },
     renderPassedLine () {
       this.passedLineInstane = new AMap.Polyline({
-        strokeWeight: 0,
-        lineCap: 'round',
-        // borderWeight: 4, // 线条宽度，默认为 1
-        strokeColor: 'orange', // 线条颜色
-        strokeOpacity: 0,
-        lineJoin: 'round', // 折线拐点连接处样式
+        ...DEFAULT_PASSED_PATH_OPTIONS,
       });
 
       this.map.add(this.passedLineInstane);
