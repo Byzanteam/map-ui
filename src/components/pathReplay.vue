@@ -20,10 +20,13 @@ import ClusterMarker from './marker/custom_marker';
 //   strokeStyle: 'solid',
 // };
 
-export const pathReplay = {
+export const PathReplay = {
   mixins: [ClusterMarker],
 
   props: {
+    marker: {
+      type: Object,
+    },
     path: {
       type: Array,
       default: () => [],
@@ -95,7 +98,6 @@ export const pathReplay = {
       this.map.add(this.instance);
     },
     startAnimation () {
-      console.log(this.instance);
       this.instance.moveAlong(this.path, this.speed, k => k, true);
     },
     pauseAnimation () {
@@ -117,5 +119,5 @@ export const pathReplay = {
   },
 };
 
-export default pathReplay;
+export default PathReplay;
 </script>
