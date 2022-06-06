@@ -37,6 +37,10 @@ export const BaseMap = {
       type: Boolean,
       default: false,
     },
+    satellite: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data () {
@@ -120,9 +124,14 @@ export const BaseMap = {
     },
 
     initialize () {
+      const layers = [];
+      if (this.satellite) {
+        layers.push(new AMap.TileLayer.Satellite());
+      }
       this.map = new AMap.Map(this.$el, {
         resizeEnable: true,
         ...this.mapOptions,
+        layers,
         features: this.mapFeatures,
         mapStyle: this.mapStyle,
       });
