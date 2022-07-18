@@ -13,3 +13,4 @@ export * from './components/marker/custom_marker.vue';
 export * from './components/object3D.vue';
 export * from './components/pathReplay';
 export * from './components/mask.vue';
+export * from './components/custom-polygon.vue';

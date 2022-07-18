@@ -24,6 +24,7 @@ const router = new VueRouter({
     { path: '/canvas-layer', component: () => import('./components/canvas_layer') },
     { path: '/3d', component: () => import('./components/object3D') },
     { path: '/pathReplay', component: () => import('./components/path_replay') },
+    { path: '/polygon', component: () => import('./components/polygon') },
   ],
 });
 
