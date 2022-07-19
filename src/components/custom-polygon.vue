@@ -52,7 +52,10 @@ export const CustomPolygon =  {
         this.polyEditor = new AMap.PolyEditor(this.map, this.polygon);
       });
       this.polygon.on('click', this.$emit('polygon-click', this.polygon));
-      this.polygon.on('dblclick', this.$emit('polygon-dblclick', this.polygon));
+      this.polygon.on('dblclick', () => {
+        this.open();
+        this.$emit('polygon-dblclick', this.polygon);
+      });
     },
     open () {
       if (this.polyEditor) {
