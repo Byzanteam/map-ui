@@ -15,6 +15,10 @@ export const CustomPolygon =  {
       type: Array,
       default: () => [],
     },
+    data: {
+      type: Object,
+      default: () => {},
+    },
   },
 
   data () {
@@ -41,21 +45,27 @@ export const CustomPolygon =  {
       this.$emit('poly-ready');
     },
     createPolygon () {
-      this.polygon = new AMap.Polygon({
+      const polygon = new AMap.Polygon({
         path: this.path,
         ...this.polyStyle,
         zIndex: 50,
+        extData: this.data,
       });
-      this.map.add(this.polygon);
-      this.map.setFitView([this.polygon]);
+      this.map.add(polygon);
       this.map.plugin(['AMap.PolyEditor'], () => {
-        this.polyEditor = new AMap.PolyEditor(this.map, this.polygon);
+        this.polyEditor = new AMap.PolyEditor(this.map, polygon);
+        this.polyEditor.on('end', (e) => {
+          this.$emit('edit-end', e.target);
+        });
       });
-      this.polygon.on('click', this.$emit('polygon-click', this.polygon));
-      this.polygon.on('dblclick', () => {
+      polygon.on('click', (e) => {
+        this.$emit('polygon-click', polygon, e.target);
+      });
+      polygon.on('dblclick', (e) => {
         this.open();
-        this.$emit('polygon-dblclick', this.polygon);
+        this.$emit('polygon-dblclick', polygon, e.target);
       });
+      this.polygon = polygon;
     },
     open () {
       if (this.polyEditor) {
