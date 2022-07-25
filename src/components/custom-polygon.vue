@@ -59,11 +59,11 @@ export const CustomPolygon =  {
         });
       });
       polygon.on('click', (e) => {
-        this.$emit('polygon-click', polygon, e.target);
+        this.$emit('polygon-click', e, this.polyEditor);
       });
       polygon.on('dblclick', (e) => {
         this.open();
-        this.$emit('polygon-dblclick', polygon, e.target);
+        this.$emit('polygon-dblclick', e, this.polyEditor);
       });
       this.polygon = polygon;
     },
