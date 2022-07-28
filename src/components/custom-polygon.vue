@@ -25,6 +25,7 @@ export const CustomPolygon =  {
     return {
       polygon: null,
       polyEditor: null,
+      timer: null,
     };
   },
 
@@ -59,9 +60,13 @@ export const CustomPolygon =  {
         });
       });
       polygon.on('click', (e) => {
-        this.$emit('polygon-click', e, this.polyEditor);
+        this.timer && clearTimeout(this.timer);
+        this.timer = setTimeout(() => {
+          this.$emit('polygon-click', e, this.polyEditor);
+        }, 300);
       });
       polygon.on('dblclick', (e) => {
+        this.timer && clearTimeout(this.timer);
         this.open();
         this.$emit('polygon-dblclick', e, this.polyEditor);
       });
