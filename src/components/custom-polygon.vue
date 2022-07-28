@@ -26,6 +26,7 @@ export const CustomPolygon =  {
       polygon: null,
       polyEditor: null,
       timer: null,
+      initPath: [],
     };
   },
 
@@ -38,6 +39,10 @@ export const CustomPolygon =  {
         this.polygon.setOptions(value);
       }
     },
+  },
+
+  created () {
+    this.initPath = this.path;
   },
 
   methods: {
@@ -71,6 +76,9 @@ export const CustomPolygon =  {
         this.$emit('polygon-dblclick', e, this.polyEditor);
       });
       this.polygon = polygon;
+    },
+    reset (paths) {
+      this.polygon.setPath(paths);
     },
     open () {
       if (this.polyEditor) {
