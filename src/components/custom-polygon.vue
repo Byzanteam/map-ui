@@ -31,18 +31,11 @@ export const CustomPolygon =  {
   },
 
   watch: {
-    path (value) {
-      this.polygon.setPath(value);
-    },
     polyStyle (value) {
       if (this.polygon) {
         this.polygon.setOptions(value);
       }
     },
-  },
-
-  created () {
-    this.initPath = this.path;
   },
 
   methods: {
