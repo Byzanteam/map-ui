@@ -23,6 +23,10 @@ export const BaseMap = {
         return Array.isArray(val) || _.includes(['all', 'none'], val);
       },
     },
+    mapKey: {
+      type: String,
+      default: jsApi.key || '',
+    },
     mapStyle: {
       type: String,
       default: jsApi.style || '',
@@ -178,7 +182,7 @@ export const BaseMap = {
     __loadMapSource () {
       if (!this.mapReady) {
         this.__insertScript(
-          `https://webapi.amap.com/maps?v=${jsApi.version}&key=${jsApi.key}`,
+          `https://webapi.amap.com/maps?v=${jsApi.version}&key=${this.mapKey}`,
           () => {
             this.mapReady = true;
           },
