@@ -7,9 +7,6 @@
 <script>
 import _ from 'lodash';
 
-const { amap } = require('../../config.json');
-
-const { jsApi, mapUi } = amap;
 const AVAILABLE_FEATURES = ['bg', 'point', 'road', 'building'];
 
 export const BaseMap = {
@@ -23,13 +20,21 @@ export const BaseMap = {
         return Array.isArray(val) || _.includes(['all', 'none'], val);
       },
     },
+    mapJsApiVersion: {
+      type: String,
+      default: '1.4.15',
+    },
+    mapUiVersion: {
+      Default: String,
+      default: '1.0.11',
+    },
     mapKey: {
       type: String,
-      default: jsApi.key || '',
+      default: '589b5c001b469482903a085837155e99',
     },
     mapStyle: {
       type: String,
-      default: jsApi.style || '',
+      default: '',
     },
     mapOptions: {
       type: Object,
@@ -182,7 +187,7 @@ export const BaseMap = {
     __loadMapSource () {
       if (!this.mapReady) {
         this.__insertScript(
-          `https://webapi.amap.com/maps?v=${jsApi.version}&key=${this.mapKey}`,
+          `https://webapi.amap.com/maps?v=${this.mapJsApiVersion}&key=${this.mapKey}`,
           () => {
             this.mapReady = true;
           },
@@ -193,7 +198,7 @@ export const BaseMap = {
     __loadUISource () {
       if (!this.mapUIReady) {
         this.__insertScript(
-          `https://webapi.amap.com/ui/1.0/main.js?v=${mapUi.version}`,
+          `https://webapi.amap.com/ui/1.0/main.js?v=${this.mapUiVersion}`,
           () => {
             this.mapUIReady = true;
           },
