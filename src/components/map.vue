@@ -22,11 +22,11 @@ export const BaseMap = {
     },
     mapJsApiVersion: {
       type: String,
-      default: '1.4.15',
+      required: true,
     },
     mapUiVersion: {
       Default: String,
-      default: '1.0.11',
+      required: true,
     },
     mapKey: {
       type: String,
