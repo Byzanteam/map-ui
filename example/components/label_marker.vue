@@ -1,6 +1,8 @@
 <template>
   <base-map
     :map-options="{zoom: 4}"
+    :map-js-api-version="'1.4.15'"
+    :map-ui-version="'1.0.11'"
     features="none"
   >
     <label-marker :label-markers="labelMarkers" />

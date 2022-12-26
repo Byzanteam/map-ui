@@ -2,6 +2,8 @@
   <base-map
     :features="['bg', 'road']"
     :map-options="{ zoom: 5 }"
+    :map-js-api-version="'1.4.15'"
+    :map-ui-version="'1.0.11'"
     use-map-ui
   >
     <air-line

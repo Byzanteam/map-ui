@@ -4,6 +4,8 @@
       zoom: 15,
       center: [116.335183, 39.941735]
     }"
+    :map-js-api-version="'1.4.15'"
+    :map-ui-version="'1.0.11'"
     use-map-ui
   >
     <canvas-layer
