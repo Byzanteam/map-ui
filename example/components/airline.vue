@@ -4,6 +4,7 @@
     :map-options="{ zoom: 5 }"
     :map-js-api-version="'1.4.15'"
     :map-ui-version="'1.0.11'"
+    :map-key="'589b5c001b469482903a085837155e99'"
     use-map-ui
   >
     <air-line

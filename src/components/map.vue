@@ -30,7 +30,7 @@ export const BaseMap = {
     },
     mapKey: {
       type: String,
-      default: '589b5c001b469482903a085837155e99',
+      required: true,
     },
     mapStyle: {
       type: String,
