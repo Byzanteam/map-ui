@@ -7,9 +7,6 @@
 <script>
 import _ from 'lodash';
 
-const { amap } = require('../../config.json');
-
-const { jsApi, mapUi } = amap;
 const AVAILABLE_FEATURES = ['bg', 'point', 'road', 'building'];
 
 export const BaseMap = {
@@ -23,9 +20,21 @@ export const BaseMap = {
         return Array.isArray(val) || _.includes(['all', 'none'], val);
       },
     },
+    mapJsApiVersion: {
+      type: String,
+      required: true,
+    },
+    mapUiVersion: {
+      Default: String,
+      required: true,
+    },
+    mapKey: {
+      type: String,
+      required: true,
+    },
     mapStyle: {
       type: String,
-      default: jsApi.style || '',
+      default: '',
     },
     mapOptions: {
       type: Object,
@@ -178,7 +187,7 @@ export const BaseMap = {
     __loadMapSource () {
       if (!this.mapReady) {
         this.__insertScript(
-          `https://webapi.amap.com/maps?v=${jsApi.version}&key=${jsApi.key}`,
+          `https://webapi.amap.com/maps?v=${this.mapJsApiVersion}&key=${this.mapKey}`,
           () => {
             this.mapReady = true;
           },
@@ -189,7 +198,7 @@ export const BaseMap = {
     __loadUISource () {
       if (!this.mapUIReady) {
         this.__insertScript(
-          `https://webapi.amap.com/ui/1.0/main.js?v=${mapUi.version}`,
+          `https://webapi.amap.com/ui/1.0/main.js?v=${this.mapUiVersion}`,
           () => {
             this.mapUIReady = true;
           },
